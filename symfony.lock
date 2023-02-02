@@ -276,6 +276,9 @@
             "./config/packages/messenger.yaml"
         ]
     },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.13.0"
+    },
     "symfony/webpack-encore-bundle": {
         "version": "1.16",
         "recipe": {
