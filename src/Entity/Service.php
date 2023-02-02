@@ -18,7 +18,7 @@ class Service
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 2555)]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -27,18 +27,28 @@ class Service
     #[ORM\Column(length: 255)]
     private ?string $localisation = null;
 
-    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'id_service')]
-    private Collection $id_user;
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, mappedBy: 'services')]
+    private Collection $ID_utilisateur;
+
+    #[ORM\ManyToMany(targetEntity: Demandes::class, mappedBy: 'ID_utilisateur')]
+    private Collection $ID_demande;
+
+    #[ORM\OneToMany(mappedBy: 'ID_service', targetEntity: Demandes::class, orphanRemoval: true)]
+    private Collection $ID_demandes;
+
+    #[ORM\ManyToOne(inversedBy: 'ID_service')]
+    private ?Evenement $ID_evenement = null;
 
     #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'services')]
     private Collection $users;
 
     public function __construct()
     {
-        $this->id_user = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->ID_utilisateur = new ArrayCollection();
+        $this->ID_demande = new ArrayCollection();
+        $this->ID_demandes = new ArrayCollection();
     }
-
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -93,25 +103,75 @@ class Service
     }
 
     /**
-     * @return Collection<int, utilisateur>
+     * @return Collection<int, Utilisateur>
      */
-    public function getIdUser(): Collection
+    public function getIDUtilisateur(): Collection
     {
-        return $this->id_user;
+        return $this->ID_utilisateur;
     }
 
-    public function addIdUser(utilisateur $idUser): self
+    public function addIDUtilisateur(Utilisateur $iDUtilisateur): self
     {
-        if (!$this->id_user->contains($idUser)) {
-            $this->id_user->add($idUser);
+        if (!$this->ID_utilisateur->contains($iDUtilisateur)) {
+            $this->ID_utilisateur->add($iDUtilisateur);
+            $iDUtilisateur->addService($this);
         }
 
         return $this;
     }
 
-    public function removeIdUser(utilisateur $idUser): self
+    public function removeIDUtilisateur(Utilisateur $iDUtilisateur): self
     {
-        $this->id_user->removeElement($idUser);
+        if ($this->ID_utilisateur->removeElement($iDUtilisateur)) {
+            $iDUtilisateur->removeService($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demandes>
+     */
+    public function getIDDemande(): Collection
+    {
+        return $this->ID_demande;
+    }
+
+    public function addIDDemande(Demandes $iDDemande): self
+    {
+        if (!$this->ID_demande->contains($iDDemande)) {
+            $this->ID_demande->add($iDDemande);
+            $iDDemande->addIDUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIDDemande(Demandes $iDDemande): self
+    {
+        if ($this->ID_demande->removeElement($iDDemande)) {
+            $iDDemande->removeIDUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demandes>
+     */
+    public function getIDDemandes(): Collection
+    {
+        return $this->ID_demandes;
+    }
+
+    public function getIDEvenement(): ?Evenement
+    {
+        return $this->ID_evenement;
+    }
+
+    public function setIDEvenement(?Evenement $ID_evenement): self
+    {
+        $this->ID_evenement = $ID_evenement;
 
         return $this;
     }
@@ -139,4 +199,10 @@ class Service
 
         return $this;
     }
+    
+    public function __toString(): string
+    {
+        return $this -> getId();
+    }
+
 }
