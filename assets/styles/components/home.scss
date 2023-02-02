@@ -14,10 +14,18 @@
     > div{
         margin-bottom: 10px;
     }
-    .image-picture img{
-        height: 300px;
-        width: 100%;
-        border-radius: 20px;
+    .image-picture {
+        position: relative;
+        svg{
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        img{
+            height: 300px;
+            width: 100%;
+            border-radius: 20px;
+        }
     }
     .note{
         margin-left: 5px;

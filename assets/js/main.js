@@ -1,31 +1,59 @@
 'use strict';
+
+import onDataFilter from './event.js';
+
 /*************************************************************************************************/
 /* ************************************** CODE PRINCIPAL *************************************** */
 /*************************************************************************************************/
-
-import './event';
-import './ajax';
-import './anim';
-import './utilities';
-
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Création puis démarrage de l'application.
 
-    document.querySelector('.btn-filter').addEventListener('click', function(){
+    /*************************************************************************************************/
+    /* ****************************************** DONNEES ****************************************** */
+    /*************************************************************************************************/
+
+    let btnChoiceEvents = document.querySelectorAll('.btn-choise-event')
+    let princilalCategories = document.querySelectorAll('.principal-category')
+
+    /*************************************************************************************************/
+    /****************************************** PROGRAMME ********************************************/
+    /*************************************************************************************************/
+
+    document.querySelector('.btn-filter').addEventListener('click', function () {
         document.querySelector('.search').setAttribute('id', 'border')
         document.querySelector('.filter-list').style.display = 'block'
     })
 
-    document.querySelector('.close-btn').addEventListener('click', function(){
+    document.querySelector('.close-btn-filter').addEventListener('click', function () {
         console.log(this)
         document.querySelector('.search').removeAttribute('id', 'border')
         document.querySelector('.filter-list').style.display = 'none'
 
     })
 
-    document.querySelector('.filter-list').style.display = 'none'
+    for (const btnChoiceEvent of btnChoiceEvents) {
+        btnChoiceEvent.addEventListener('click', onDataFilter)
+    }
 
+    for(const princilalCategorie of princilalCategories){
 
-    console.log("test main js")
+        princilalCategorie.addEventListener('click', function(){
+
+            for (let index = 0; index < princilalCategories.length; index++) {
+
+                princilalCategories[index].style.background = 'rgba(118, 118, 118, 0.05)'
+            
+            }
+
+            this.style.background = 'rgba(118, 118, 118, 0.2)'
+
+            console.log(this.dataset.category)
+            
+
+        })
+    }
+
+    princilalCategories[0].style.background = 'rgba(118, 118, 118, 0.2)'
+
 
 });
