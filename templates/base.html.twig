@@ -14,6 +14,202 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header>
+            <nav class="container navbar flex jcb aic">
+                <h1><a href="#">Logo</a></h1>
+                <div class="search flex aic">
+                    <i class="fa fa-search"></i>
+                    <input type="text" name="" id="" placeholder="Filtrez vos recherches ici">
+                    <div>
+                        <img src="{{ asset('build/images/settings.svg') }}" alt="filtre" class="btn-filter">
+                        <div class="filter-list">
+                            <div>
+                                <button class="close-btn-filter"><i class="fa-regular fa-circle-xmark"></i></button>
+                                <span>Filtres</span>
+                            </div>
+                            <hr />
+                            <div>
+                                <label>Fouchette de prix</label>
+                                <div class="flex jcb container-price-filter">
+                                    <input type="number" name="" id="" placeholder="Minimum">
+                                    <hr />
+                                    <input type="number" name="" id="" placeholder="Maximum">
+                                </div>
+                                <label for="">Date de l’événement et nombre de jours </label>
+                                <div class="flex jcb">
+                                    <input type="text" name="" id="" placeholder="JJ/MM/AAAA">
+                                    <hr />
+                                    <input type="number" name="" id="" placeholder="0">
+                                </div>
+                            </div>
+                            <hr />
+                            <div>
+                                <label for="">Type d’évènement </label>
+                                <div>
+                                    <ul class="flex jcb fww">
+                                        <li class="flex aic"><button class="btn-choise-event" data-filter="mariage"></button><label for="">Mariage</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Anniversaire</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Baptème / Barrmivah</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Soirée privée</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Soirée d’entreprise</label></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <hr />
+                            <div>
+                                <label for="">Service</label>
+                                <div>
+                                    <ul class="flex jcb fww">
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Salle</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Traiteur</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Wedding Planer</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">DJ</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Orchestre</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Décorateur</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Fleuriste</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Photo/ Vidéo</label></li>
+                                        <li class="flex aic"><button class="btn-choise-event"></button><label for="">Maquillage </label></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <hr />
+                            <div>
+                                <label for="">Option de réservation </label>
+                            </div>
+                            <hr />
+                            <div class="text-center">
+                                <button class="btn-valid-filter">Valider</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <ul class="flex jcb">
+                    <li>
+                        <a href="#" class="flex aic">
+                            <span>Favori</span>
+                            <i class="fa-regular fa-heart"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex aic">
+                            <span>Réservations</span>
+                            <i class="fa-regular fa-calendar"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex aic">
+                            <span>Messages</span>
+                            <i class="fa-regular fa-message"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex aic">
+                            <span>Connexion</span>
+                            <i class="fa-regular fa-circle-user"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+         <aside class="container">
+                <nav>
+                    <ul class="flex jcc">
+                        <li class="principal-category" data-category="mariage">
+                            <a href="#" class="flex fdc aic jcb h-100">
+                                <img src="{{ asset('build/images/mariage.svg') }}" alt="Mariage">
+                                <span>Mariage</span>
+                            </a>
+                        </li>
+                        <li class="principal-category" data-category="anniversaire">
+                            <a href="#" class="flex fdc aic h-100">
+                                <img src="{{ asset('build/images/anniversaire.svg') }}" alt="Anniversaire">
+                                <span>Anniversaire</span>
+                            </a>
+                        </li>
+                        <li class="principal-category" data-category="soiree-privee">
+                            <a href="#" class="flex fdc aic h-100">
+                                <img src="{{ asset('build/images/soiree.svg') }}" alt="Soirée privée">
+                                <span>Soirée privée</span>
+                            </a>
+                        </li>
+                        <li class="principal-category" data-category="anniversaire">
+                            <a href="#" class="flex fdc aic h-100">
+                                <img src="{{ asset('build/images/anniversaire.svg') }}" alt="Anniversaire">
+                                <span>Anniversaire</span>
+                            </a>
+                        </li>
+                        <li class="principal-category" data-category="naissance">
+                            <a href="#" class="flex fdc aic h-100">
+                                <img src="{{ asset('build/images/naissance.svg') }}" alt="Naissance">
+                                <span>Naissance</span>
+                            </a>
+                        </li>
+                        <li class="principal-category" data-category="soiree-privee">
+                            <a href="#" class="flex fdc aic h-100">
+                                <img src="{{ asset('build/images/soiree.svg') }}" alt="Soirée privée">
+                                <span>Soirée privée</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+        <main class="container">
+           
+            {% block body %}{% endblock %}
+        </main>
+        <footer>
+            <nav class="container flex jcb">
+            <div>
+                <a href="#" class="menu-title">Lorem, ipsum dolor.</a>
+                <ul>
+                    <li><a href="#">Lorem, ipsum dolor.</a></li>
+                    <li><a href="#">Maiores, suscipit quisquam?</a></li>
+                    <li><a href="#">Quasi, omnis numquam?</a></li>
+                    <li><a href="#">Expedita, est modi?</a></li>
+                    <li><a href="#">Nostrum, dicta sapiente!</a></li>
+                    <li><a href="#">Harum, sed nulla?</a></li>
+                    <li><a href="#">Molestias, assumenda accusamus!</a></li>
+                </ul>
+            </div>
+            <div>
+                <a href="#" class="menu-title">Lorem, ipsum dolor.</a>
+                <ul>
+                    <li><a href="#">Lorem, ipsum dolor.</a></li>
+                    <li><a href="#">Maiores, suscipit quisquam?</a></li>
+                    <li><a href="#">Quasi, omnis numquam?</a></li>
+                    <li><a href="#">Expedita, est modi?</a></li>
+                    <li><a href="#">Nostrum, dicta sapiente!</a></li>
+                    <li><a href="#">Harum, sed nulla?</a></li>
+                    <li><a href="#">Molestias, assumenda accusamus!</a></li>
+                </ul>
+            </div>
+            <div>
+                <a href="#" class="menu-title">Lorem, ipsum dolor.</a>
+                <ul>
+                    <li><a href="#">Lorem, ipsum dolor.</a></li>
+                    <li><a href="#">Maiores, suscipit quisquam?</a></li>
+                    <li><a href="#">Quasi, omnis numquam?</a></li>
+                    <li><a href="#">Expedita, est modi?</a></li>
+                    <li><a href="#">Nostrum, dicta sapiente!</a></li>
+                    <li><a href="#">Harum, sed nulla?</a></li>
+                    <li><a href="#">Molestias, assumenda accusamus!</a></li>
+                </ul>
+            </div>
+            <div>
+                <a href="#" class="menu-title">Lorem, ipsum dolor.</a>
+                <ul>
+                    <li><a href="#">Lorem, ipsum dolor.</a></li>
+                    <li><a href="#">Maiores, suscipit quisquam?</a></li>
+                    <li><a href="#">Quasi, omnis numquam?</a></li>
+                    <li><a href="#">Expedita, est modi?</a></li>
+                    <li><a href="#">Nostrum, dicta sapiente!</a></li>
+                    <li><a href="#">Harum, sed nulla?</a></li>
+                    <li><a href="#">Molestias, assumenda accusamus!</a></li>
+                </ul>
+            </div>
+                
+            </nav>
+        </footer>
     </body>
 </html>

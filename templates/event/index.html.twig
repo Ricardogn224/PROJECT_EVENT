@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<div class="home-page">
+    <p class="ranking-order text-center">Classement par ordre de pertinance</p>
+    <div class="articles flex jcc fww">
+        {% for i in 0..11 %}
+            <a href="#" class="article-item">
+                <div class="image-picture">
+                    <i class="fa-solid fa-heart"></i>
+                    <img src="{{ asset('build/images/article.jpg') }}" alt="Article">
+                </div>
+                <div class="flex jcb">
+                    <p>Espace majorette, Bordeau</p>
+                    <div class="flex aic">
+                        <div><i class="fa-solid fa-star"></i></div>
+                        <div class="note">4,88</div>
+                    </div>
+                </div>
+                <div>
+                    <p>Professional</p>
+                    <p>Prochaine dispo. 4 févr.</p>
+                    <p>700 € par jour</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
