@@ -39,7 +39,7 @@ class Service
     #[ORM\ManyToOne(inversedBy: 'ID_service')]
     private ?Evenement $ID_evenement = null;
 
-    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'services')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'services')]
     private Collection $users;
 
     public function __construct()
