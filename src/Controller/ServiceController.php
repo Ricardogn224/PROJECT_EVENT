@@ -51,8 +51,10 @@ class ServiceController extends AbstractController
     #[Route('/{id}/edit', name: 'app_service_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Service $service, ServiceRepository $serviceRepository): Response
     {
+        #dd($service);
         $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $serviceRepository->save($service, true);

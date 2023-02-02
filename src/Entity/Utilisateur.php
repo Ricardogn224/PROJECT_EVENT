@@ -33,10 +33,18 @@ class Utilisateur
     #[ORM\OneToMany(mappedBy: 'ID_user', targetEntity: Demandes::class, orphanRemoval: true)]
     private Collection $ID_demandes;
 
+    #[ORM\OneToMany(mappedBy: 'ID_utilisateur', targetEntity: Disponibilite::class)]
+    private Collection $ID_disponibilite;
+
+    #[ORM\OneToMany(mappedBy: 'ID_emmeteur', targetEntity: Message::class, orphanRemoval: true)]
+    private Collection $ID_message;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
         $this->ID_demandes = new ArrayCollection();
+        $this->ID_disponibilite = new ArrayCollection();
+        $this->ID_message = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -146,8 +154,68 @@ class Utilisateur
         return $this;
     }
 
+    /**
+     * @return Collection<int, Disponibilite>
+     */
+    public function getIDDisponibilite(): Collection
+    {
+        return $this->ID_disponibilite;
+    }
+
+    public function addIDDisponibilite(Disponibilite $iDDisponibilite): self
+    {
+        if (!$this->ID_disponibilite->contains($iDDisponibilite)) {
+            $this->ID_disponibilite->add($iDDisponibilite);
+            $iDDisponibilite->setIDUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIDDisponibilite(Disponibilite $iDDisponibilite): self
+    {
+        if ($this->ID_disponibilite->removeElement($iDDisponibilite)) {
+            // set the owning side to null (unless already changed)
+            if ($iDDisponibilite->getIDUtilisateur() === $this) {
+                $iDDisponibilite->setIDUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this -> getId();
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getIDMessage(): Collection
+    {
+        return $this->ID_message;
+    }
+
+    public function addIDMessage(Message $iDMessage): self
+    {
+        if (!$this->ID_message->contains($iDMessage)) {
+            $this->ID_message->add($iDMessage);
+            $iDMessage->setIDEmmeteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIDMessage(Message $iDMessage): self
+    {
+        if ($this->ID_message->removeElement($iDMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($iDMessage->getIDEmmeteur() === $this) {
+                $iDMessage->setIDEmmeteur(null);
+            }
+        }
+
+        return $this;
     }
 }

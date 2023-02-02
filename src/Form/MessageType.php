@@ -2,30 +2,27 @@
 
 namespace App\Form;
 
-use App\Entity\Service;
+use App\Entity\Message;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ServiceType extends AbstractType
+class MessageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('description')
-            ->add('prix')
-            ->add('localisation')
-            ->add('ID_utilisateur')
-            ->add('ID_demande')
-            ->add('ID_evenement')
+            ->add('message')
+            ->add('date')
+            ->add('ID_emmeteur')
+            ->add('ID_destinataire')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Service::class,
+            'data_class' => Message::class,
         ]);
     }
 }

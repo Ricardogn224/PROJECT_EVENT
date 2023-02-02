@@ -20,6 +20,14 @@ class Message
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ID_message')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $ID_emmeteur = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $ID_destinataire = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +53,30 @@ class Message
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getIDEmmeteur(): ?Utilisateur
+    {
+        return $this->ID_emmeteur;
+    }
+
+    public function setIDEmmeteur(?Utilisateur $ID_emmeteur): self
+    {
+        $this->ID_emmeteur = $ID_emmeteur;
+
+        return $this;
+    }
+
+    public function getIDDestinataire(): ?Utilisateur
+    {
+        return $this->ID_destinataire;
+    }
+
+    public function setIDDestinataire(?Utilisateur $ID_destinataire): self
+    {
+        $this->ID_destinataire = $ID_destinataire;
 
         return $this;
     }

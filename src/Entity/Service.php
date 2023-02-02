@@ -36,13 +36,16 @@ class Service
     #[ORM\OneToMany(mappedBy: 'ID_service', targetEntity: Demandes::class, orphanRemoval: true)]
     private Collection $ID_demandes;
 
+    #[ORM\ManyToOne(inversedBy: 'ID_service')]
+    private ?Evenement $ID_evenement = null;
+
     public function __construct()
     {
         $this->ID_utilisateur = new ArrayCollection();
         $this->ID_demande = new ArrayCollection();
         $this->ID_demandes = new ArrayCollection();
     }
-
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -158,8 +161,22 @@ class Service
         return $this->ID_demandes;
     }
 
+    public function getIDEvenement(): ?Evenement
+    {
+        return $this->ID_evenement;
+    }
+
+    public function setIDEvenement(?Evenement $ID_evenement): self
+    {
+        $this->ID_evenement = $ID_evenement;
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this -> getId();
     }
+
+  
 }
