@@ -27,12 +27,16 @@ class Service
     #[ORM\Column(length: 255)]
     private ?string $localisation = null;
 
-    #[ORM\ManyToMany(targetEntity: utilisateur::class, inversedBy: 'id_service')]
+    #[ORM\ManyToMany(targetEntity: Utilisateur::class, inversedBy: 'id_service')]
     private Collection $id_user;
+
+    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'services')]
+    private Collection $users;
 
     public function __construct()
     {
         $this->id_user = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,6 +112,30 @@ class Service
     public function removeIdUser(utilisateur $idUser): self
     {
         $this->id_user->removeElement($idUser);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, user>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(user $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(user $user): self
+    {
+        $this->users->removeElement($user);
 
         return $this;
     }
