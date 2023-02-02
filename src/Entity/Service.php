@@ -39,6 +39,9 @@ class Service
     #[ORM\ManyToOne(inversedBy: 'ID_service')]
     private ?Evenement $ID_evenement = null;
 
+    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'services')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->ID_utilisateur = new ArrayCollection();
@@ -173,10 +176,33 @@ class Service
         return $this;
     }
 
+    /**
+     * @return Collection<int, user>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(user $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(user $user): self
+    {
+        $this->users->removeElement($user);
+
+        return $this;
+    }
+    
     public function __toString(): string
     {
         return $this -> getId();
     }
 
-  
 }
