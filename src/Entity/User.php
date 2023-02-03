@@ -40,12 +40,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $prenom = null;
 
-    #[ORM\ManyToMany(targetEntity: Service::class, mappedBy: 'users')]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Service::class)]
     private Collection $services;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Demandes::class)]
+    private Collection $demandes;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Disponibilite::class)]
+    private Collection $disponibilites;
 
     public function __construct()
     {
         $this->services = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
+        $this->disponibilites = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,7 +174,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->services->contains($service)) {
             $this->services->add($service);
-            $service->addUser($this);
+            $service->setUser($this);
         }
 
         return $this;
@@ -175,9 +183,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeService(Service $service): self
     {
         if ($this->services->removeElement($service)) {
-            $service->removeUser($this);
+            // set the owning side to null (unless already changed)
+            if ($service->getUser() === $this) {
+                $service->setUser(null);
+            }
         }
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Disponibilite>
+     */
+    public function getDisponibilites(): Collection
+    {
+        return $this->disponibilites;
+    }
+
+    public function addDisponibilite(Disponibilite $disponibilite): self
+    {
+        if (!$this->disponibilites->contains($disponibilite)) {
+            $this->disponibilites->add($disponibilite);
+            $disponibilite->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDisponibilite(Disponibilite $disponibilite): self
+    {
+        if ($this->disponibilites->removeElement($disponibilite)) {
+            // set the owning side to null (unless already changed)
+            if ($disponibilite->getUser() === $this) {
+                $disponibilite->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

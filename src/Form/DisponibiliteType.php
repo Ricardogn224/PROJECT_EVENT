@@ -14,7 +14,6 @@ class DisponibiliteType extends AbstractType
         $builder
             ->add('date')
             ->add('statut')
-            ->add('ID_utilisateur')
         ;
     }
 

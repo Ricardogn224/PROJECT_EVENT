@@ -2,26 +2,25 @@
 
 namespace App\Controller;
 
-use App\Entity\Utilisateur;
-use App\Form\UtilisateurType;
-use App\Repository\UtilisateurRepository;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/utilisateur')]
+#[Route('/admin/utilisateur')]
 class UtilisateurController extends AbstractController
 {
-    #[Route('/', name: 'app_utilisateur_index', methods: ['GET'])]
-    public function index(UtilisateurRepository $utilisateurRepository): Response
+    #[Route('/', name: 'app_user_index', methods: ['GET'])]
+    public function index(UserRepository $userRepository): Response
     {
         return $this->render('utilisateur/index.html.twig', [
-            'utilisateurs' => $utilisateurRepository->findAll(),
+            'utilisateurs' => $userRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_utilisateur_new', methods: ['GET', 'POST'])]
+    /*#[Route('/new', name: 'app_utilisateur_new', methods: ['GET', 'POST'])]
     public function new(Request $request, UtilisateurRepository $utilisateurRepository): Response
     {
         $utilisateur = new Utilisateur();
@@ -74,5 +73,5 @@ class UtilisateurController extends AbstractController
         }
 
         return $this->redirectToRoute('app_utilisateur_index', [], Response::HTTP_SEE_OTHER);
-    }
+    }*/
 }

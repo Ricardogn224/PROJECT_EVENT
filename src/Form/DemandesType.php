@@ -15,8 +15,7 @@ class DemandesType extends AbstractType
             ->add('date')
             ->add('prix')
             ->add('statut')
-            ->add('ID_user')
-            ->add('ID_service')
+            ->add('service')
         ;
     }
 
