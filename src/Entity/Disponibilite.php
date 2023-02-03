@@ -20,8 +20,8 @@ class Disponibilite
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ID_disponibilite')]
-    private ?Utilisateur $ID_utilisateur = null;
+    #[ORM\ManyToOne(inversedBy: 'disponibilites')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -52,15 +52,16 @@ class Disponibilite
         return $this;
     }
 
-    public function getIDUtilisateur(): ?Utilisateur
+    public function getUser(): ?User
     {
-        return $this->ID_utilisateur;
+        return $this->user;
     }
 
-    public function setIDUtilisateur(?Utilisateur $ID_utilisateur): self
+    public function setUser(?User $user): self
     {
-        $this->ID_utilisateur = $ID_utilisateur;
+        $this->user = $user;
 
         return $this;
     }
+
 }
