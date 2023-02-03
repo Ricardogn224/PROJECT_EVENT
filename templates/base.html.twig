@@ -16,7 +16,7 @@
     <body>
         <header>
             <nav class="container navbar flex jcb aic">
-                <h1><a href="#">Logo</a></h1>
+                <h1><a href="/">Logo</a></h1>
                 <div class="search flex aic">
                     <i class="fa fa-search"></i>
                     <input type="text" name="" id="" placeholder="Filtrez vos recherches ici">
@@ -104,64 +104,31 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="flex aic">
-                            <span>Connexion</span>
-                            <i class="fa-regular fa-circle-user"></i>
-                        </a>
+                        {% if app.user %}
+                            <a href="/profil" class="flex aic">
+                                <span>{{ app.user.userIdentifier }}</span>
+                                <i class="fa-regular fa-circle-user"></i>
+                            </a>
+                        {% else %}
+                            <a href="/login" class="flex aic">
+                                <span>Connexion</span>
+                                <i class="fa-regular fa-circle-user"></i>
+                            </a>
+                        {% endif %}
                     </li>
                 </ul>
             </nav>
         </header>
-         <aside class="container">
-                <nav>
-                    <ul class="flex jcc">
-                        <li class="principal-category" data-category="mariage">
-                            <a href="#" class="flex fdc aic jcb h-100">
-                                <img src="{{ asset('build/images/mariage.svg') }}" alt="Mariage">
-                                <span>Mariage</span>
-                            </a>
-                        </li>
-                        <li class="principal-category" data-category="anniversaire">
-                            <a href="#" class="flex fdc aic h-100">
-                                <img src="{{ asset('build/images/anniversaire.svg') }}" alt="Anniversaire">
-                                <span>Anniversaire</span>
-                            </a>
-                        </li>
-                        <li class="principal-category" data-category="soiree-privee">
-                            <a href="#" class="flex fdc aic h-100">
-                                <img src="{{ asset('build/images/soiree.svg') }}" alt="Soirée privée">
-                                <span>Soirée privée</span>
-                            </a>
-                        </li>
-                        <li class="principal-category" data-category="anniversaire">
-                            <a href="#" class="flex fdc aic h-100">
-                                <img src="{{ asset('build/images/anniversaire.svg') }}" alt="Anniversaire">
-                                <span>Anniversaire</span>
-                            </a>
-                        </li>
-                        <li class="principal-category" data-category="naissance">
-                            <a href="#" class="flex fdc aic h-100">
-                                <img src="{{ asset('build/images/naissance.svg') }}" alt="Naissance">
-                                <span>Naissance</span>
-                            </a>
-                        </li>
-                        <li class="principal-category" data-category="soiree-privee">
-                            <a href="#" class="flex fdc aic h-100">
-                                <img src="{{ asset('build/images/soiree.svg') }}" alt="Soirée privée">
-                                <span>Soirée privée</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </aside>
+         {% block aside %}{% endblock %}
+
         <main class="container">
-           
             {% block body %}{% endblock %}
         </main>
+
         <footer>
             <nav class="container flex jcb">
             <div>
-                <a href="#" class="menu-title">Lorem, ipsum dolor.</a>
+                <a href="#" class="menu-title">Mariage</a>
                 <ul>
                     <li><a href="#">Lorem, ipsum dolor.</a></li>
                     <li><a href="#">Maiores, suscipit quisquam?</a></li>
@@ -173,7 +140,7 @@
                 </ul>
             </div>
             <div>
-                <a href="#" class="menu-title">Lorem, ipsum dolor.</a>
+                <a href="#" class="menu-title">Anniversaire</a>
                 <ul>
                     <li><a href="#">Lorem, ipsum dolor.</a></li>
                     <li><a href="#">Maiores, suscipit quisquam?</a></li>
@@ -185,7 +152,7 @@
                 </ul>
             </div>
             <div>
-                <a href="#" class="menu-title">Lorem, ipsum dolor.</a>
+                <a href="#" class="menu-title">Soirée privée</a>
                 <ul>
                     <li><a href="#">Lorem, ipsum dolor.</a></li>
                     <li><a href="#">Maiores, suscipit quisquam?</a></li>
@@ -197,7 +164,7 @@
                 </ul>
             </div>
             <div>
-                <a href="#" class="menu-title">Lorem, ipsum dolor.</a>
+                <a href="#" class="menu-title">Naissance</a>
                 <ul>
                     <li><a href="#">Lorem, ipsum dolor.</a></li>
                     <li><a href="#">Maiores, suscipit quisquam?</a></li>

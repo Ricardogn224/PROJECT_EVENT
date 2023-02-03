@@ -14,8 +14,16 @@ body {
     background-color: $main-color-white;
 }
 
-h1 a{
+h1, h1 a{
     font-size: 2rem;
+}
+
+h2{
+    font-size: 1.7rem;
+}
+
+h3{
+    font-size: 1.3rem;
 }
 
 ul{
@@ -43,7 +51,52 @@ button{
     cursor: pointer;
 }
 
+table{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid rgba(118, 118, 118, 0.25);
+    thead{
+        background-color: $main-color-default-text;
+        tr th{
+            color: $main-color-white;
+        }
+    }
+    td, th{
+        padding: 10px;
+        text-align: center;
+    }
+}
+
+.btn-default{
+    background: $main-color;
+    color: $main-color-white;
+    padding: 5px 20px;
+    border-radius: 10px;
+    transition: .2s ease-in-out;
+}
+
+.btn-default:hover{
+    background: $main-color-hover-article;
+}
+
+.btn-danger{
+    background: $main-color-hover-article;
+    color: $main-color-white;
+    padding: 5px 20px;
+    border-radius: 10px;
+    transition: .2s ease-in-out;
+}
+
+.btn-danger:hover{
+    background: red;
+}
+
 .search input{
+    border: none;
+    outline: none;
+}
+
+.search input:focus{
     border: none;
     outline: none;
 }
@@ -53,8 +106,15 @@ button{
     box-shadow: none;
 }
 
+input{
+    border: 1px solid rgba(118, 118, 118, 0.5);
+    padding: 5px;
+    border-radius: 5px;
+}
+
 input:focus{
-    border: none;
+    border: 1px solid $main-color-default-text;
+    transition: .2s ease-in-out;
     outline: none;
 }
 
@@ -77,6 +137,10 @@ input{
 
 .jcc{
     justify-content: center;
+}
+
+.jce{
+    justify-content: end;
 }
 
 .jcb{
