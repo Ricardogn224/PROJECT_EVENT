@@ -3,7 +3,8 @@
 {% block title %}Disponibilite index{% endblock %}
 
 {% block body %}
-    <h1>Disponibilite index</h1>
+<div class="disponibilite">
+ <h2>Disponibilite index</h2>
 
     <table class="table">
         <thead>
@@ -21,8 +22,9 @@
                 <td>{{ disponibilite.date ? disponibilite.date|date('Y-m-d') : '' }}</td>
                 <td>{{ disponibilite.statut }}</td>
                 <td>
-                    <a href="{{ path('app_disponibilite_show', {'id': disponibilite.id}) }}">show</a>
-                    <a href="{{ path('app_disponibilite_edit', {'id': disponibilite.id}) }}">edit</a>
+                    <a class="btn-default" href="{{ path('app_disponibilite_show', {'id': disponibilite.id}) }}">Afficher</a>
+                    <a class="btn-default" href="{{ path('app_disponibilite_edit', {'id': disponibilite.id}) }}">Modifier</a>
+                    <a class="btn-danger" href="#">Supprimer</a>
                 </td>
             </tr>
         {% else %}
@@ -32,6 +34,9 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_disponibilite_new') }}">Create new</a>
+    <div class="flex jce">
+        <a class="btn-default" href="{{ path('app_disponibilite_new') }}">Créer une nouvelle disponibilité</a>
+    </div>
+</div>
+   
 {% endblock %}

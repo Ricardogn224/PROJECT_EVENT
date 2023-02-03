@@ -3,8 +3,8 @@
 {% block title %}Demandes index{% endblock %}
 
 {% block body %}
-    <h1>Demandes index</h1>
-
+<div class="demande">
+<h2>Demandes index</h2>
     <table class="table">
         <thead>
             <tr>
@@ -23,8 +23,8 @@
                 <td>{{ demande.prix }}</td>
                 <td>{{ demande.statut }}</td>
                 <td>
-                    <a href="{{ path('app_demandes_show', {'id': demande.id}) }}">show</a>
-                    <a href="{{ path('app_demandes_edit', {'id': demande.id}) }}">edit</a>
+                    <a href="{{ path('app_demandes_show', {'id': demande.id}) }}">Afficher</a>
+                    <a href="{{ path('app_demandes_edit', {'id': demande.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -35,5 +35,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_demandes_new') }}">Create new</a>
+    <a href="{{ path('app_demandes_new') }}">Créer une nouvelle demande</a>
+</div>
+    
 {% endblock %}

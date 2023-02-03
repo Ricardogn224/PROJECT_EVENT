@@ -51,6 +51,22 @@ button{
     cursor: pointer;
 }
 
+table{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid rgba(118, 118, 118, 0.25);
+    thead{
+        background-color: $main-color-default-text;
+        tr th{
+            color: $main-color-white;
+        }
+    }
+    td, th{
+        padding: 10px;
+        text-align: center;
+    }
+}
+
 .btn-default{
     background: $main-color;
     color: $main-color-white;
@@ -61,6 +77,18 @@ button{
 
 .btn-default:hover{
     background: $main-color-hover-article;
+}
+
+.btn-danger{
+    background: $main-color-hover-article;
+    color: $main-color-white;
+    padding: 5px 20px;
+    border-radius: 10px;
+    transition: .2s ease-in-out;
+}
+
+.btn-danger:hover{
+    background: red;
 }
 
 .search input{
@@ -109,6 +137,10 @@ input{
 
 .jcc{
     justify-content: center;
+}
+
+.jce{
+    justify-content: end;
 }
 
 .jcb{
