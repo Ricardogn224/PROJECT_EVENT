@@ -21,12 +21,16 @@
     {% endfor %}
 
     {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        <div class="user-profil">
+            <h2 class="text-center">Espace personnel</h2>
+            <h3>Infos utilisateur:</h3>
+            <ul>
+                <li>Nom: <strong>{{ app.user.nom }}</strong></li>
+                <li>Préom: <strong>{{ app.user.prenom }}</strong></li>
+                <li>Email:  <strong>{{ app.user.email }}</strong></li>
+            </ul>
+            <a class="disconnect" href="/logout">Se déconnecter</a>
         </div>
-        {# {% block user %}
-{{ app.user.userIdentifier }}
-        {% endblock %} #}
     {% else %}
         <div class="container-form-login">
             <form method="post">
@@ -39,10 +43,14 @@
                 <label for="inputPassword">Password:</label>
                 <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
             </div>
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                <div class="flex">
-                    <button class="btn btn-lg btn-default" type="submit">Connecter</button>
-                </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <div class="flex">
+                <button class="btn btn-lg btn-default" type="submit">Connecter</button>
+            </div>
+            <hr />
+            <div>
+                <p>créer un compte <a class="btn-default" href="/register">ICI</a></p>
+            </div>
             </form>
         </div>
     {% endif %}
