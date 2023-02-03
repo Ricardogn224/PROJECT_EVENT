@@ -27,6 +27,10 @@
                 <th>Localisation</th>
                 <td>{{ service.localisation }}</td>
             </tr>
+            <tr>
+                <th>Propriétaire</th>
+                <td>{{ service.user.nom ~ ' ' ~ service.user.prenom }}</td>
+            </tr>
         </tbody>
     </table>
 

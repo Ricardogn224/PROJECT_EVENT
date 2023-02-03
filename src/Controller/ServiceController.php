@@ -5,12 +5,13 @@ namespace App\Controller;
 use App\Entity\Service;
 use App\Form\ServiceType;
 use App\Repository\ServiceRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/service')]
+#[Route('/admin/service')]
 class ServiceController extends AbstractController
 {
     #[Route('/', name: 'app_service_index', methods: ['GET'])]
@@ -22,22 +23,26 @@ class ServiceController extends AbstractController
     }
 
     #[Route('/new', name: 'app_service_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ServiceRepository $serviceRepository): Response
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $service = new Service();
         $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $serviceRepository->save($service, true);
+            $service = $form->getData();
+            $service->setUser($this->getUser());
+
+            $manager->persist($service);
+            $manager->flush();
 
             return $this->redirectToRoute('app_service_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('service/new.html.twig', [
-            'service' => $service,
-            'form' => $form,
+        return $this->render('service/new.html.twig', [
+            'form' => $form->createView()
         ]);
+
     }
 
     #[Route('/{id}', name: 'app_service_show', methods: ['GET'])]
@@ -49,7 +54,7 @@ class ServiceController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_service_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Service $service, ServiceRepository $serviceRepository): Response
+    public function edit(Request $request, Service $service, EntityManagerInterface $manager): Response
     {
         #dd($service);
         $form = $this->createForm(ServiceType::class, $service);
@@ -57,15 +62,20 @@ class ServiceController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $serviceRepository->save($service, true);
+            $service = $form->getData();
+
+            $manager->persist($service);
+            $manager->flush();
+
 
             return $this->redirectToRoute('app_service_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('service/edit.html.twig', [
+        return $this->render('service/edit.html.twig', [
+            'form' => $form->createView(),
             'service' => $service,
-            'form' => $form,
         ]);
+
     }
 
     #[Route('/{id}', name: 'app_service_delete', methods: ['POST'])]
