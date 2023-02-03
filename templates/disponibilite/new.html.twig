@@ -3,9 +3,11 @@
 {% block title %}New Disponibilite{% endblock %}
 
 {% block body %}
-    <h1>Create new Disponibilite</h1>
+<div class="disponibilite">
+ <h2>Create new Disponibilite</h2>
 
     {{ include('disponibilite/_form.html.twig') }}
+</div>
+   
 
-    <a href="{{ path('app_disponibilite_index') }}">back to list</a>
 {% endblock %}
