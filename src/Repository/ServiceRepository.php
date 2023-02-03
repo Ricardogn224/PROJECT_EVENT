@@ -63,4 +63,14 @@ class ServiceRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findWithUser($id)
+        {
+            return $this->createQueryBuilder('s')
+                ->innerJoin('s.user', 'u')
+                ->addSelect('u')
+                ->andWhere('u.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->execute();
+        }
 }

@@ -33,10 +33,17 @@ class Service
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Demandes::class)]
     private Collection $demandes;
 
+    #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'services')]
+    private Collection $evenements;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Caracteristique = null;
+
 
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
+        $this->evenements = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -135,6 +142,45 @@ class Service
                 $demande->setService(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Evenement>
+     */
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
+    }
+
+    public function addEvenement(Evenement $evenement): self
+    {
+
+        $this->evenements[] = $evenement;
+        $evenement->addService($this);
+        return $this;
+
+    }
+
+    public function removeEvenement(Evenement $evenement): self
+    {
+
+        $this->evenements->removeElement($evenement);
+        $evenement->removeService($this);
+
+        return $this;
+
+    }
+
+    public function getCaracteristique(): ?string
+    {
+        return $this->Caracteristique;
+    }
+
+    public function setCaracteristique(?string $Caracteristique): self
+    {
+        $this->Caracteristique = $Caracteristique;
 
         return $this;
     }

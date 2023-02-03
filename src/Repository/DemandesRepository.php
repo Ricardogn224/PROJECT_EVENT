@@ -63,4 +63,17 @@ class DemandesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findWithUser($id)
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.service', 's')
+            ->addSelect('s')
+            ->innerJoin('d.user', 'u')
+            ->addSelect('u')
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->execute();
+    }
 }
