@@ -11,18 +11,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/admin/service')]
-class ServiceController extends AbstractController
+#[Route('/profil/service')]
+class AccountServiceController extends AbstractController
 {
-    #[Route('/', name: 'app_service_index', methods: ['GET'])]
+    #[Route('/', name: 'app_service_account_index', methods: ['GET'])]
     public function index(ServiceRepository $serviceRepository): Response
     {
         return $this->render('service/index.html.twig', [
-            'services' => $serviceRepository->findAll(),
+            'services' => $serviceRepository->findWithUser($this->getUser()->getId()),
         ]);
     }
 
-    #[Route('/new', name: 'app_service_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_service_account_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $service = new Service();
@@ -36,7 +36,7 @@ class ServiceController extends AbstractController
             $manager->persist($service);
             $manager->flush();
 
-            return $this->redirectToRoute('app_service_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_service_account_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('service/new.html.twig', [
@@ -45,7 +45,7 @@ class ServiceController extends AbstractController
 
     }
 
-    #[Route('/{id}', name: 'app_service_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_service_account_show', methods: ['GET'])]
     public function show(Service $service): Response
     {
         return $this->render('service/show.html.twig', [
@@ -53,7 +53,7 @@ class ServiceController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_service_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_service_account_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Service $service, EntityManagerInterface $manager): Response
     {
         $form = $this->createForm(ServiceType::class, $service);
@@ -67,7 +67,7 @@ class ServiceController extends AbstractController
             $manager->flush();
 
 
-            return $this->redirectToRoute('app_service_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_service_account_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('service/edit.html.twig', [
@@ -77,13 +77,13 @@ class ServiceController extends AbstractController
 
     }
 
-    #[Route('/{id}', name: 'app_service_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_service_account_delete', methods: ['POST'])]
     public function delete(Request $request, Service $service, ServiceRepository $serviceRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$service->getId(), $request->request->get('_token'))) {
             $serviceRepository->remove($service, true);
         }
 
-        return $this->redirectToRoute('app_service_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_service_account_index', [], Response::HTTP_SEE_OTHER);
     }
 }

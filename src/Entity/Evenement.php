@@ -18,12 +18,12 @@ class Evenement
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\OneToMany(mappedBy: 'ID_evenement', targetEntity: Service::class)]
-    private Collection $ID_service;
+    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'evenements')]
+    private Collection $services;
 
     public function __construct()
     {
-        $this->ID_service = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -43,38 +43,32 @@ class Evenement
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->getNom();
+    }
+
     /**
      * @return Collection<int, Service>
      */
-    public function getIDService(): Collection
+    public function getServices(): Collection
     {
-        return $this->ID_service;
+        return $this->services;
     }
 
-    public function addIDService(Service $iDService): self
+    public function addService(Service $service): self
     {
-        if (!$this->ID_service->contains($iDService)) {
-            $this->ID_service->add($iDService);
-            $iDService->setIDEvenement($this);
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
         }
 
         return $this;
     }
 
-    public function removeIDService(Service $iDService): self
+    public function removeService(Service $service): self
     {
-        if ($this->ID_service->removeElement($iDService)) {
-            // set the owning side to null (unless already changed)
-            if ($iDService->getIDEvenement() === $this) {
-                $iDService->setIDEvenement(null);
-            }
-        }
+        $this->services->removeElement($service);
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this -> getId();
     }
 }
