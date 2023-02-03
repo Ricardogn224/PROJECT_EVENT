@@ -25,23 +25,11 @@ class Demandes
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ID_demandes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateur $ID_user = null;
-
-    #[ORM\ManyToOne(inversedBy: 'ID_demandes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Service $ID_service = null;
-
-    #[ORM\OneToMany(mappedBy: 'ID_demandes', targetEntity: Discussion::class, orphanRemoval: true)]
-    private Collection $ID_discussion;
-
-    #[ORM\OneToOne(mappedBy: 'ID_demande', cascade: ['persist', 'remove'])]
-    private ?Discussion $discussion = null;
+    #[ORM\ManyToOne(inversedBy: 'demandes')]
+    private ?Service $service = null;
 
     public function __construct()
     {
-        $this->ID_discussion = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,78 +73,19 @@ class Demandes
         return $this;
     }
 
-    public function getIDUser(): ?Utilisateur
-    {
-        return $this->ID_user;
-    }
-
-    public function setIDUser(?Utilisateur $ID_user): self
-    {
-        $this->ID_user = $ID_user;
-
-        return $this;
-    }
-
-    public function getIDService(): ?Service
-    {
-        return $this->ID_service;
-    }
-
-    public function setIDService(?Service $ID_service): self
-    {
-        $this->ID_service = $ID_service;
-
-        return $this;
-    }
-
     public function __toString(): string
     {
-        return $this -> getId();
+        return $this->getId();
     }
 
-    /**
-     * @return Collection<int, Discussion>
-     */
-    public function getIDDiscussion(): Collection
+    public function getService(): ?Service
     {
-        return $this->ID_discussion;
+        return $this->service;
     }
 
-    public function addIDDiscussion(Discussion $iDDiscussion): self
+    public function setService(?Service $service): self
     {
-        if (!$this->ID_discussion->contains($iDDiscussion)) {
-            $this->ID_discussion->add($iDDiscussion);
-            $iDDiscussion->setIDDemandes($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIDDiscussion(Discussion $iDDiscussion): self
-    {
-        if ($this->ID_discussion->removeElement($iDDiscussion)) {
-            // set the owning side to null (unless already changed)
-            if ($iDDiscussion->getIDDemandes() === $this) {
-                $iDDiscussion->setIDDemandes(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getDiscussion(): ?Discussion
-    {
-        return $this->discussion;
-    }
-
-    public function setDiscussion(Discussion $discussion): self
-    {
-        // set the owning side of the relation if necessary
-        if ($discussion->getIDDemande() !== $this) {
-            $discussion->setIDDemande($this);
-        }
-
-        $this->discussion = $discussion;
+        $this->service = $service;
 
         return $this;
     }

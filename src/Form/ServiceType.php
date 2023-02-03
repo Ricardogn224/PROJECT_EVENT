@@ -16,9 +16,6 @@ class ServiceType extends AbstractType
             ->add('description')
             ->add('prix')
             ->add('localisation')
-            ->add('ID_utilisateur')
-            ->add('ID_demande')
-            ->add('ID_evenement')
         ;
     }
 

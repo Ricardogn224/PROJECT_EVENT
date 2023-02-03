@@ -13,7 +13,6 @@ class DiscussionType extends AbstractType
     {
         $builder
             ->add('Date')
-            ->add('ID_demande')
         ;
     }
 
