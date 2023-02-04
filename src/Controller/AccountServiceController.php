@@ -114,7 +114,7 @@ class AccountServiceController extends AbstractController
 
 
         // Configure API key authorization: api-key
-        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
+        $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $_ENV['SENDINBLUE_API_KEY']);
 
         $apiInstance = new TransactionalEmailsApi(
             // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
@@ -136,7 +136,7 @@ class AccountServiceController extends AbstractController
             echo 'Exception when calling TransactionalEmailsApi->sendTransacEmail: ', $e->getMessage(), PHP_EOL;
         }
 
-        $this->addFlash('confirmEmailAdmin', 'Vous allez recevoir une réponse de la part de l\'admin');
+        $this->addFlash('confirmEmailPro', 'L\'administrateur va être notifié de votre requête, vous allez recevoir une réponse de sa part');
         return $this->redirectToRoute('app_service_account_index');
     }
 }

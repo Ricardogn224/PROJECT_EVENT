@@ -76,7 +76,7 @@ class RegistrationController extends AbstractController
             $this->emailSender->sendEmail($to, $subject, $htmlContent);*/
 
             // Configure API key authorization: api-key
-            $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
+            $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $_ENV['SENDINBLUE_API_KEY']);
             // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
             // $config = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
             // Configure API key authorization: partner-key
