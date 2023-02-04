@@ -1,9 +1,13 @@
-.disponibilite{
-    margin-top: 50px;
-    h2, table{
+form #disponibilite{
+    > div{
         margin-bottom: 15px;
     }
-    input{
-        width: 100%;
+
+    #disponibilite_date{
+        display: flex;
+        justify-content: space-between;
+        select{
+            width: 30%;
+        }
     }
 }

@@ -5,7 +5,6 @@
 {% block body %}
 <div class="disponibilite">
  <h2>Disponibilite index</h2>
-
     <table class="table">
         <thead>
             <tr>
@@ -22,9 +21,8 @@
                 <td>{{ disponibilite.date ? disponibilite.date|date('Y-m-d') : '' }}</td>
                 <td>{{ disponibilite.statut }}</td>
                 <td>
-                    <a class="btn-default" href="{{ path('app_disponibilite_show', {'id': disponibilite.id}) }}">Afficher</a>
-                    <a class="btn-default" href="{{ path('app_disponibilite_edit', {'id': disponibilite.id}) }}">Modifier</a>
-                    <a class="btn-danger" href="#">Supprimer</a>
+                    <a class="btn-show" href="{{ path('app_disponibilite_show', {'id': disponibilite.id}) }}">Afficher</a>
+                    <a class="btn-edit" href="{{ path('app_disponibilite_edit', {'id': disponibilite.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
