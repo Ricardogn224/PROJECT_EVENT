@@ -20,6 +20,7 @@ class UserAdminType extends AbstractType
             'expanded' => false,
             'choices' => [
                 'User' => 'ROLE_USER',
+                'Pro' => 'ROLE_PRO',
                 'Admin' => 'ROLE_ADMIN',
             ],
         ])

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demandes index{% endblock %}
+
+{% block body %}
+<div class="demande">
+<h2>Demandes index</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Prix</th>
+                <th>Statut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for demande in demandes %}
+            <tr>
+                <td>{{ demande.id }}</td>
+                <td>{{ demande.date ? demande.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ demande.prix }}</td>
+                <td>{{ demande.statut }}</td>
+                <td>
+                    <a href="{{ path('app_demandes_account_show', {'id': demande.id}) }}">Afficher</a>
+                    <a href="{{ path('app_demandes_account_edit', {'id': demande.id}) }}">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demandes_account_new') }}">Créer une nouvelle demande</a>
+</div>
+    
+{% endblock %}

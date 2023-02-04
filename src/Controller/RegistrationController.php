@@ -54,6 +54,8 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $user->setRoles(array('ROLE_USER'));
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -97,7 +99,7 @@ class RegistrationController extends AbstractController
             );
             $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail(); // \SendinBlue\Client\Model\SendSmtpEmail | Values to send a transactional email
             $sendSmtpEmail['to'] = array(array('email'=>$user->getEmail()));
-            $sendSmtpEmail['sender'] =  array('name' => 'Event Presta', 'email' => 'k.jerrinald@gmail.com');
+            $sendSmtpEmail['sender'] =  array('name' => 'Event Presta', 'email' => 'noreply-event-presta@gmail.com');
             $sendSmtpEmail['htmlContent'] = $this->renderView('registration/confirmation_email.html.twig') . '<a href=' . $signatureComponents->getSignedUrl() . '>Confirm my Email</a>';
             $sendSmtpEmail['subject'] = 'Please Confirm your Email';
             $sendSmtpEmail['params'] = array('name'=>'John', 'surname'=>'Doe');

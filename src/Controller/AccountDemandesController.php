@@ -17,7 +17,7 @@ class AccountDemandesController extends AbstractController
     #[Route('/', name: 'app_demandes_account_index', methods: ['GET'])]
     public function index(DemandesRepository $demandesRepository): Response
     {
-        return $this->render('demandes/index.html.twig', [
+        return $this->render('profile/demandes/index.html.twig', [
             'demandes' => $demandesRepository->findWithUser($this->getUser()->getId()),
         ]);
     }
@@ -38,7 +38,7 @@ class AccountDemandesController extends AbstractController
             return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('demandes/new.html.twig', [
+        return $this->render('profile/demandes/new.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -46,7 +46,7 @@ class AccountDemandesController extends AbstractController
     #[Route('/{id}', name: 'app_demandes_account_show', methods: ['GET'])]
     public function show(Demandes $demande): Response
     {
-        return $this->render('demandes/show.html.twig', [
+        return $this->render('profile/demandes/show.html.twig', [
             'demande' => $demande,
         ]);
     }
@@ -66,7 +66,7 @@ class AccountDemandesController extends AbstractController
             return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('demandes/edit.html.twig', [
+        return $this->render('profile/demandes/edit.html.twig', [
             'form' => $form->createView(),
             'demande' => $demande,
         ]);
