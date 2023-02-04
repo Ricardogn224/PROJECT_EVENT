@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AccreditationProIndex{% endblock %}
+
+{% block body %}
+<h2>Demande pro pour prestations de service </h2>
+{% for accred_pro in accred_pros %}
+    <p>{{ accred_pro.user.nom ~ ' ' ~ accred_pro.user.prenom ~ ' souhaite proposer des prestations de service '}}</p>
+    <a href="{{ path('app_accreditation_accept', {'id': accred_pro.id}) }}">Accepter</a>
+    <a href="{{ path('app_accreditation_refuse', {'id': accred_pro.id}) }}">Refuser</a>
+{% endfor %}
+{% endblock %}

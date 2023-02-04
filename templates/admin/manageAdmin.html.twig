@@ -19,13 +19,12 @@
             <tr>
                 <td>{{ utilisateur.nom }}</td>
                 <td>{{ utilisateur.prenom }}</td>
-                {% for rol in utilisateur.roles %}
-                    {% if rol == "ROLE_ADMIN" %}
-                        <td>OUI</td>
-                    {% else %}
-                        <td>NON</td>
-                    {% endif %}
-                {% endfor %}
+
+                {% if "ROLE_ADMIN" in utilisateur.roles %}
+                    <td>OUI</td>
+                {% else %}
+                    <td>NON</td>
+                {% endif %}
                 <td><a href="{{ path('app_admin_edit', {'id': utilisateur.id}) }}">edit</a></td>
                 
             </tr>

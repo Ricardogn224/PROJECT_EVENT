@@ -49,6 +49,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Disponibilite::class)]
     private Collection $disponibilites;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?AccreditationPro $accreditationPro = null;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
@@ -89,8 +92,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -218,6 +219,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $disponibilite->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAccreditationPro(): ?AccreditationPro
+    {
+        return $this->accreditationPro;
+    }
+
+    public function setAccreditationPro(AccreditationPro $accreditationPro): self
+    {
+        // set the owning side of the relation if necessary
+        if ($accreditationPro->getUser() !== $this) {
+            $accreditationPro->setUser($this);
+        }
+
+        $this->accreditationPro = $accreditationPro;
 
         return $this;
     }
