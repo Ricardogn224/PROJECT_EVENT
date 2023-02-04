@@ -41,8 +41,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     for(const princilalCategorie of princilalCategories){
+       
+        princilalCategorie.addEventListener('click', function(){
 
-        princilalCategorie.addEventListener('click', onSearchDateCategory)
+            for ( let index = 0; index < princilalCategories.length; index++) {
+
+                princilalCategories[index].style.background = 'rgba(118, 118, 118, 0.05)'
+            }
+
+            princilalCategorie.style.background = 'rgba(118, 118, 118, 0.2)'
+
+        })
 
     }
 

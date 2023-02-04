@@ -5,11 +5,11 @@
 {% block body %}
 
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div class="alert alert-danger">{{ "Erreur d'authentification"|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
     {% for message in app.flashes('verifyEmail') %}
-        <div class="alert alert-success">
+        <div class="alert alert-success" data-message={{ message }}>
             {{ message }}
         </div>
     {% endfor %}

@@ -9,15 +9,10 @@ function onDataFilter(){
 }
 
 function onSearchDateCategory(){
-    for (let index = 0; index < this.length; index++) {
-
-        this[index].style.background = 'rgba(118, 118, 118, 0.05)'
-    
-    }
 
     this.style.background = 'rgba(118, 118, 118, 0.2)'
 
     console.log(this.dataset.category)
 }
 
-export default {onDataFilter, onSearchDateCategory}
+export {onDataFilter, onSearchDateCategory}
