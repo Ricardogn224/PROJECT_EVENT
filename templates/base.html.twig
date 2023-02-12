@@ -107,7 +107,10 @@
                         {% if app.user %}
                             <a href="/profil" class="flex aic">
                                 <span>{{ app.user.userIdentifier }}</span>
-                                <i class="fa-regular fa-circle-user"></i>
+                                <div>
+                                    <img style="max-width: 40px; height: 20px;" src="{{ vich_uploader_asset(app.user, 'imageFile') }}">
+                                </div>
+
                             </a>
                         {% else %}
                             <a href="/login" class="flex aic">

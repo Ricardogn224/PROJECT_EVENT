@@ -13,41 +13,12 @@
     
 
     {% if pro == false %}
-        <h3>Vous n'avez pas les droits pour proposer des services envoyer un mail en cliquant sur ce lien pour demander l'aprobation d'un administrateur : <a href="{{ path('app_send_email_pro', {'id': user.id}) }}">Cliquez ici</a></h3>
+        <h3>Vous n'avez pas les droits pour proposer des services envoyer un mail en cliquant sur ce lien pour demander l'aprobation d'un administrateur : <a href="{{ path('app_send_email_pro', {'id': app.user.id}) }}">Cliquez ici</a></h3>
     {% else %}
-        <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Description</th>
-                <th>Prix</th>
-                <th>Localisation</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for service in services %}
-            <tr>
-                <td>{{ service.id }}</td>
-                <td>{{ service.nom }}</td>
-                <td>{{ service.description }}</td>
-                <td>{{ service.prix }}</td>
-                <td>{{ service.localisation }}</td>
-                <td>
-                    <a href="{{ path('app_service_account_show', {'id': service.id}) }}">show</a>
-                    <a href="{{ path('app_service_account_edit', {'id': service.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-        </table>
-
-        <a href="{{ path('app_service_account_new') }}">Create new</a>
+        <ul>
+            <li> <a href="{{ path('app_service_account_index_myServices') }}">Mes services</li>
+            <li> <a href="{{ path('app_service_account_index_proposition') }}">Demandes pour mes services</li>
+        </ul>
     {% endif %}
 
 {% endblock %}
