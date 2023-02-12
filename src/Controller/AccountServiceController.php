@@ -2,25 +2,28 @@
 
 namespace App\Controller;
 
-use App\Entity\AccreditationPro;
 use Exception;
 use App\Entity\User;
+use GuzzleHttp\Client;
 use App\Entity\Service;
+use App\Entity\Demandes;
 use App\Form\ServiceType;
+use App\Entity\AccreditationPro;
 use SendinBlue\Client\Configuration;
 use App\Repository\ServiceRepository;
 use SendinBlue\Client\Api\AccountApi;
+use App\Repository\DemandesRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\Request;
-use SendinBlue\Client\Api\TransactionalEmailsApi;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/profil/service')]
 class AccountServiceController extends AbstractController
 {
+
     #[Route('/', name: 'app_service_account_index', methods: ['GET'])]
     public function index(ServiceRepository $serviceRepository): Response
     {
@@ -30,9 +33,34 @@ class AccountServiceController extends AbstractController
         }
 
         return $this->render('profile/service/index.html.twig', [
-            'services' => $serviceRepository->findWithUser($this->getUser()->getId()),
             'pro' => $pro,
+        ]);
+    }
+
+    #[Route('/mes-services', name: 'app_service_account_index_myServices', methods: ['GET'])]
+    public function indexMyServices(ServiceRepository $serviceRepository): Response
+    {
+        return $this->render('profile/service/indexMyServices.html.twig', [
+            'services' => $serviceRepository->findWithUser($this->getUser()->getId()),
             'user' => $this->getUser(),
+        ]);
+    }
+
+    #[Route('/demandes-pour-mes-services', name: 'app_service_account_index_proposition', methods: ['GET'])]
+    public function indexProposition(DemandesRepository $demandeRepository): Response
+    {
+
+        return $this->render('profile/service/indexProposition.html.twig', [
+            'demandes' => $demandeRepository->findDemandeProposition($this->getUser()->getId()),
+        ]);
+    }
+
+    #[Route('/demandes-pour-mes-services/{id}', name: 'app_service_account_show_proposition', methods: ['GET', 'POST'])]
+    public function showProposition(Demandes $demande): Response
+    {
+
+        return $this->render('profile/service/showProposition.html.twig', [
+            'demande' => $demande
         ]);
     }
 

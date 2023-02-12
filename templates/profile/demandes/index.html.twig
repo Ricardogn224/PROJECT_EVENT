@@ -8,9 +8,10 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Service</th>
                 <th>Date</th>
-                <th>Prix</th>
+                <th>Heure début</th>
+                <th>Heure fin</th>
                 <th>Statut</th>
                 <th>actions</th>
             </tr>
@@ -18,9 +19,10 @@
         <tbody>
         {% for demande in demandes %}
             <tr>
-                <td>{{ demande.id }}</td>
-                <td>{{ demande.date ? demande.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ demande.prix }}</td>
+                <td>{{ demande.service.nom}}</td>
+                <td>{{ demande.planedDate ? demande.planedDate|date('Y-m-d') : '' }}</td>
+                <td>{{ demande.debutTime ? demande.debutTime|date('H:i:s') : '' }}</td>
+                <td>{{ demande.endTime ? demande.endTime|date('H:i:s') : '' }}</td>
                 <td>{{ demande.statut }}</td>
                 <td>
                     <a href="{{ path('app_demandes_account_show', {'id': demande.id}) }}">Afficher</a>

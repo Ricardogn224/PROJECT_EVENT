@@ -16,17 +16,24 @@ class Demandes
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
-
-    #[ORM\Column]
-    private ?float $prix = null;
-
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
     #[ORM\ManyToOne(inversedBy: 'demandes')]
     private ?Service $service = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $planedDate = null;
+
+    #[ORM\ManyToOne(inversedBy: 'demandes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $debut_time = null;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $end_time = null;
 
     public function __construct()
     {
@@ -35,30 +42,6 @@ class Demandes
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getPrix(): ?float
-    {
-        return $this->prix;
-    }
-
-    public function setPrix(float $prix): self
-    {
-        $this->prix = $prix;
-
-        return $this;
     }
 
     public function getStatut(): ?string
@@ -86,6 +69,54 @@ class Demandes
     public function setService(?Service $service): self
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    public function getPlanedDate(): ?\DateTimeInterface
+    {
+        return $this->planedDate;
+    }
+
+    public function setPlanedDate(\DateTimeInterface $planedDate): self
+    {
+        $this->planedDate = $planedDate;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDebutTime(): ?\DateTimeInterface
+    {
+        return $this->debut_time;
+    }
+
+    public function setDebutTime(\DateTimeInterface $debut_time): self
+    {
+        $this->debut_time = $debut_time;
+
+        return $this;
+    }
+
+    public function getEndTime(): ?\DateTimeInterface
+    {
+        return $this->end_time;
+    }
+
+    public function setEndTime(\DateTimeInterface $end_time): self
+    {
+        $this->end_time = $end_time;
 
         return $this;
     }

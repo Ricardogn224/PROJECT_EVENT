@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demandes index{% endblock %}
+
+{% block body %}
+<div class="demande">
+<p>Le client attend une réponse de votre part pour sa demande :</p></br></br>
+
+<button class="btn btn-lg btn-default">{{ button_label|default('Accepter') }}</button>
+<button class="btn btn-lg btn-default">{{ button_label|default('Proposer une autre date') }}</button>
+<button class="btn btn-lg btn-default">{{ button_label|default('Refuser') }}</button>
+</div>
+    
+{% endblock %}
