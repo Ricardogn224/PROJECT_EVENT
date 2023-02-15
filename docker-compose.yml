@@ -1,31 +1,46 @@
 version: '3'
 
 services:
-###> doctrine/doctrine-bundle ###
-
-  adminer:
-    image: adminer
+  db:
+    image: mysql
+    container_name: db_project_event
     restart: always
-    ports:
-      - 8082:8080
-
-  postgres:
-    image: postgres:${POSTGRES_VERSION:-15}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - ./db-data:/var/lib/mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks:
+      - dev
 
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmni_project_event
+    restart: always
+    depends_on:
+      - db
     ports:
-      - 5234:5234
+      - 8083:80
+    environment:
+      PMA_HOST: db
+    networks:
+      - dev
+
+  www:
+    build: docker
+    container_name: www_project_event
+    restart: always
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+    ports:
+      - "8002:80"
+    volumes:
+      - ./docker/vhosts:/etc/apache2/sites-enabled
+      - ./:/var/www/
+    networks:
+      - dev
+
+networks:
+  dev:
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
+  db-data:

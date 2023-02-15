@@ -1,0 +1,10 @@
+docker exec -w /var/www/PROJECT_EVENT www_project_event composer install
+
+sudo docker exec -ti PROJECT_EVENT bash 
+
+
+sudo docker exec -w /var/www/PROJECT_EVENT www_project_event npm run dev
+
+#commande pour lancer les test
+sudo docker exec -w /var/www/PROJECT_EVENT www_project_event php bin/phpunit --testdox
+
