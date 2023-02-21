@@ -3,9 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Service;
+use App\Entity\Evenement;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
 
 class ServiceType extends AbstractType
 {
@@ -16,6 +20,17 @@ class ServiceType extends AbstractType
             ->add('description')
             ->add('prix')
             ->add('localisation')
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Une image représentant votre service',
+            ])
+            ->add('evenements', EntityType::class, [
+                // looks for choices from this entity
+                'class' => Evenement::class,
+                'by_reference' => false,
+                // used to render a select box, check boxes or radios
+                'multiple' => true,
+                'expanded' => true,
+            ])
         ;
     }
 

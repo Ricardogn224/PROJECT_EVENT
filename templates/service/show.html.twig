@@ -28,8 +28,16 @@
                 <td>{{ service.localisation }}</td>
             </tr>
             <tr>
-                <th>Propriétaire</th>
+                <th>Prestataire</th>
                 <td>{{ service.user.nom ~ ' ' ~ service.user.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Evenement(s)</th>
+                <td>
+                    {% for event in service.evenements %}
+                        {{ event.nom ~ ' | ' }}
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>

@@ -54,6 +54,8 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $user->setRoles(array('ROLE_USER'));
+
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -74,7 +76,7 @@ class RegistrationController extends AbstractController
             $this->emailSender->sendEmail($to, $subject, $htmlContent);*/
 
             // Configure API key authorization: api-key
-            $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
+            $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $_ENV['SENDINBLUE_API_KEY']);
             // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
             // $config = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
             // Configure API key authorization: partner-key
@@ -97,7 +99,7 @@ class RegistrationController extends AbstractController
             );
             $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail(); // \SendinBlue\Client\Model\SendSmtpEmail | Values to send a transactional email
             $sendSmtpEmail['to'] = array(array('email'=>$user->getEmail()));
-            $sendSmtpEmail['sender'] =  array('name' => 'Event Presta', 'email' => 'k.jerrinald@gmail.com');
+            $sendSmtpEmail['sender'] =  array('name' => 'Event Presta', 'email' => 'noreply-event-presta@gmail.com');
             $sendSmtpEmail['htmlContent'] = $this->renderView('registration/confirmation_email.html.twig') . '<a href=' . $signatureComponents->getSignedUrl() . '>Confirm my Email</a>';
             $sendSmtpEmail['subject'] = 'Please Confirm your Email';
             $sendSmtpEmail['params'] = array('name'=>'John', 'surname'=>'Doe');

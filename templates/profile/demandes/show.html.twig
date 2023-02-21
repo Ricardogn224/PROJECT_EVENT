@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demandes{% endblock %}
+
+{% block body %}
+    <h1>Demandes</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Date</th>
+                <td>{{ demande.planedDate ? demande.planedDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Heure de début</th>
+                <td>{{ demande.debutTime ? demande.debutTime|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Heure de fin</th>
+                <td>{{ demande.endTime ? demande.endTime|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ demande.statut }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demandes_account_index') }}">back to list</a>
+
+    <a href="{{ path('app_demandes_account_edit', {'id': demande.id}) }}">edit</a>
+
+    <a href="#">Démarrer une conversation avec le prestataire</a>
+
+    {{ include('profile/demandes/_delete_form.html.twig') }}
+{% endblock %}
