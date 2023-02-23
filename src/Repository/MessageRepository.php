@@ -63,4 +63,19 @@ class MessageRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * @return Message[] Returns an array of Message objects
+     */
+    public function findById2mande($value): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.id_demande = :val')
+            ->setParameter('val', $value)
+            ->orderBy('m.date', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

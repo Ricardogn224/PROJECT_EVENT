@@ -20,7 +20,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
@@ -38,10 +38,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $isVerified = false;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    public ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $prenom = null;
+    public ?string $prenom = null;
 
     #[Vich\UploadableField(mapping: 'user_images', fileNameProperty: 'imageName')]
     private ?File $imageFile = null;
