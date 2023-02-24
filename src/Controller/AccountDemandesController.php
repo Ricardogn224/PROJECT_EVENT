@@ -70,7 +70,6 @@ class AccountDemandesController extends AbstractController
             'form' => $form->createView(),
             'demande' => $demande,
         ]);
-
         
     }
 
@@ -81,6 +80,34 @@ class AccountDemandesController extends AbstractController
             $demandesRepository->remove($demande, true);
         }
 
+        return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/nouvelle-date', name: 'app_demandes_account_new_date', methods: ['GET', 'POST'])]
+    public function demandeNewDate(Request $request, Demandes $demande, EntityManagerInterface $manager): Response
+    {
+        return $this->render('profile/demandes/nouvelleDate.html.twig', [
+            'demande' => $demande,
+        ]);
+
+        
+    }
+
+    #[Route('/{id}/accept-nouvelle-date', name: 'app_demandes_account_accept_new_date', methods: ['GET', 'POST'])]
+    public function serviceDemandeAccept(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        $demande->setStatut("accepte");
+        $manager->persist($demande);
+        $manager->flush();
+        return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/refuse-nouvelle-date', name: 'app_demandes_account_refuse_new_date', methods: ['GET', 'POST'])]
+    public function serviceDemandeRefuse(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        $demande->setStatut("annule");
+        $manager->persist($demande);
+        $manager->flush();
         return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
     }
 }

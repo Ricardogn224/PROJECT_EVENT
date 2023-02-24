@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demandes{% endblock %}
+
+{% block body %}
+    <h1>Nouvelle date pour votre demande</h1>
+
+    <div class="demande">
+        <p>Accepter ou refuser la nouvelle date (si vous refusez, votre demande sera annulée et vous devrez refaire une nouvelle demande pour le service) :</p></br></br>
+
+        <a href="{{ path('app_demandes_account_accept_new_date', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Accepter') }}</button></a>
+        <a href="{{ path('app_demandes_account_refuse_new_date', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Refuser') }}</button></a>
+    </div>
+
+{% endblock %}

@@ -9,6 +9,7 @@ use App\Entity\Service;
 use App\Entity\Demandes;
 use App\Form\ServiceType;
 use App\Entity\AccreditationPro;
+use App\Form\DemandesNewDateType;
 use SendinBlue\Client\Configuration;
 use App\Repository\ServiceRepository;
 use SendinBlue\Client\Api\AccountApi;
@@ -62,6 +63,44 @@ class AccountServiceController extends AbstractController
         return $this->render('profile/service/showProposition.html.twig', [
             'demande' => $demande
         ]);
+    }
+
+    #[Route('/demandes-pour-mes-services/{id}/nouvelle-date', name: 'app_service_account_new_date', methods: ['GET', 'POST'])]
+    public function serviceNewDate(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        $form = $this->createForm(DemandesNewDateType::class, $demande);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $demande = $form->getData();
+
+            $manager->persist($demande);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_service_account_index_proposition', [], Response::HTTP_SEE_OTHER);
+        }
+        
+        return $this->render('profile/service/nouvelleDate.html.twig', [
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/demandes-pour-mes-services/{id}/accept-demande', name: 'app_service_account_accept_demande', methods: ['GET', 'POST'])]
+    public function serviceDemandeAccept(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        $demande->setStatut("accepte");
+        $manager->persist($demande);
+        $manager->flush();
+        return $this->redirectToRoute('app_service_account_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/demandes-pour-mes-services/{id}/refuse-demande', name: 'app_service_account_accept_refuse', methods: ['GET', 'POST'])]
+    public function serviceDemandeRefuse(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        $demande->setStatut("refuse");
+        $manager->persist($demande);
+        $manager->flush();
+        return $this->redirectToRoute('app_service_account_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/new', name: 'app_service_account_new', methods: ['GET', 'POST'])]
