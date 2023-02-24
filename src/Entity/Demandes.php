@@ -35,6 +35,9 @@ class Demandes
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $end_time = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $newPlanedDate = null;
+
     public function __construct()
     {
     }
@@ -117,6 +120,18 @@ class Demandes
     public function setEndTime(\DateTimeInterface $end_time): self
     {
         $this->end_time = $end_time;
+
+        return $this;
+    }
+
+    public function getNewPlanedDate(): ?\DateTimeInterface
+    {
+        return $this->newPlanedDate;
+    }
+
+    public function setNewPlanedDate(?\DateTimeInterface $newPlanedDate): self
+    {
+        $this->newPlanedDate = $newPlanedDate;
 
         return $this;
     }
