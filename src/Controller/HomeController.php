@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+
 
 class HomeController extends AbstractController
 {
@@ -27,6 +30,16 @@ class HomeController extends AbstractController
     public function show(Service $service): Response
     {
         return $this->render('home/service/show.html.twig', [
+            'service' => $service,
+        ]);
+    }
+
+    #[Route('/service/{categorie}', name: 'app_home_service_categorie_show', methods: ['GET'])]
+    #[ParamConverter('service', options: ['mapping' => ['categorie' => 'categorie']])]
+    public function categorie_show(Service $service): Response
+    {
+
+        return $this->render('home/index.html.twig', [
             'service' => $service,
         ]);
     }

@@ -14,8 +14,6 @@ class CommentaireType extends AbstractType
         $builder
             ->add('commentaire')
             ->add('note')
-            ->add('service_id')
-            ->add('user_id')
         ;
     }
 
