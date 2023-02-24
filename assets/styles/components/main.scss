@@ -70,6 +70,16 @@ table{
     }
 }
 
+.circle{
+    border-radius: 50%;
+}
+
+
+.profil-picture{
+    width: 25px;
+    height: 25px;
+}
+
 table ~ div ~ form {
     margin-top: 15px;
 }
