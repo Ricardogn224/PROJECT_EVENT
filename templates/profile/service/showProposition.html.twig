@@ -4,11 +4,11 @@
 
 {% block body %}
 <div class="demande">
-<p>Le client attend une réponse de votre part pour sa demande :</p></br></br>
+<p>Le client {{ demande.user.nom}} {{ demande.user.prenom}} attend une réponse de votre part pour sa demande :</p></br></br>
 
-<button class="btn btn-lg btn-default">{{ button_label|default('Accepter') }}</button>
-<button class="btn btn-lg btn-default">{{ button_label|default('Proposer une autre date') }}</button>
-<button class="btn btn-lg btn-default">{{ button_label|default('Refuser') }}</button>
+<a href="{{ path('app_service_account_accept_demande', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Accepter') }}</button></a>
+<a href="{{ path('app_service_account_new_date', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Proposer une autre date') }}</button></a>
+<a href="{{ path('app_service_account_accept_refuse', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Refuser') }}</button></a>
 </div>
     
 {% endblock %}

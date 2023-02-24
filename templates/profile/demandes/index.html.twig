@@ -35,7 +35,20 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table></br>
+
+    {% for demande in demandes %}
+        {% if demande.statut == "en attente" and demande.newPlanedDate is not empty %}
+            <h3>Nouvelle date propositions : </h3>
+        {% endif %}
+        {% set break = true %}
+    {% endfor %}
+
+    {% for demande in demandes %}
+        {% if demande.statut == "en attente" and demande.newPlanedDate is not empty %}
+            <p>Le prestataire vous a proposé une nouvelle date pour votre demande du service {{ demande.service.nom}} : <a href="{{ path('app_demandes_account_new_date', {'id': demande.id}) }}">Cliquez ici pour donner votre réponse</a></p>
+        {% endif %}
+    {% endfor %}
 
     <a href="{{ path('app_demandes_account_new') }}">Créer une nouvelle demande</a>
 </div>
