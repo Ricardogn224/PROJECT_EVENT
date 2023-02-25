@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let btnChoiceEvents = document.querySelectorAll('.btn-choise-event')
     let princilalCategories = document.querySelectorAll('.principal-category')
 
+
     /*************************************************************************************************/
     /****************************************** PROGRAMME ********************************************/
     /*************************************************************************************************/
