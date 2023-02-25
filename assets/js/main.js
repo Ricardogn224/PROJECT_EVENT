@@ -58,5 +58,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     princilalCategories[0].style.background = 'rgba(118, 118, 118, 0.2)'
 
+    document.querySelector('.calendar-link').addEventListener('click', function(){
+
+        document.querySelector('.date-reservaton').showPicker()
+    })
+
 
 });
