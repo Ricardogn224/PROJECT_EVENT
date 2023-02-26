@@ -38,6 +38,12 @@ class Demandes
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $newPlanedDate = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $paiement = null;
+
+    #[ORM\OneToOne(mappedBy: 'demande', cascade: ['persist', 'remove'])]
+    private ?Commande $commande = null;
+
     public function __construct()
     {
     }
@@ -132,6 +138,35 @@ class Demandes
     public function setNewPlanedDate(?\DateTimeInterface $newPlanedDate): self
     {
         $this->newPlanedDate = $newPlanedDate;
+
+        return $this;
+    }
+
+    public function isPaiement(): ?bool
+    {
+        return $this->paiement;
+    }
+
+    public function setPaiement(?bool $paiement): self
+    {
+        $this->paiement = $paiement;
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(Commande $commande): self
+    {
+        // set the owning side of the relation if necessary
+        if ($commande->getDemande() !== $this) {
+            $commande->setDemande($this);
+        }
+
+        $this->commande = $commande;
 
         return $this;
     }
