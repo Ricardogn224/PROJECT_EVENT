@@ -24,7 +24,6 @@
                 <td>{{ demande.statut }}</td>
                 <td>
                     <a href="{{ path('app_demandes_account_show', {'id': demande.id}) }}">Afficher</a>
-                    <a href="{{ path('app_demandes_account_edit', {'id': demande.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
