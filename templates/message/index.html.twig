@@ -18,33 +18,34 @@
             </tr>
         </thead>
         <tbody>
-        {% if messages is iterable %}
+           
+        {% if messages is iterable %} 
             {% for message in messages %}
-                {% for value in message %}
+                
                     
                 
                 <tr>
-                    <td>{{ value.id }}</td>
-                    <td>{{ value.message }}</td>
-                    <td>{{ value.date ? value.date|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ value.demande }}</td>
-                    <td>{{ value.emmeteur }}</td>
-                    <td>{{ value.recepteur }}</td>
+                    <td>{{ message.id }}</td>
+                    <td>{{ message.message }}</td>
+                    <td>{{ message.date ? message.date|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ message.demande }}</td>
+                    <td>{{ message.emmeteur }}</td>
+                    <td>{{ message.recepteur }}</td>
                     <td>
-                        <a href="{{ path('app_message_show', {'id': value.id}) }}">show</a>
-                        <a href="{{ path('app_message_edit', {'id': value.id}) }}">edit</a>
+                        <a href="{{ path('app_message_show', {'id': message.id}) }}">show</a>
+                        <a href="{{ path('app_message_edit', {'id': message.id}) }}">edit</a>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
                     <td colspan="7">no records found</td>
                 </tr>
-                {% endfor %}
+               
             {% endfor %}
         {% endif %}
                 
         </tbody>
     </table>
 
-    <a href="{{ path('app_message_new') }}">Create new</a>
+    
 {% endblock %}
