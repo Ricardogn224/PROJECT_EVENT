@@ -14,7 +14,7 @@ header{
 
             padding: 5px 10px;
             border-radius: 50px;
-            > div{
+            form{
                 position: relative;
                 .filter-list{
                     box-shadow:  0px 1px 8px rgba(118, 118, 118, 0.25);
@@ -39,6 +39,7 @@ header{
                         background: $main-color-hover-article;
                     }
                     ul .btn-choise-event{
+                        cursor: pointer;
                         border: 1px solid $main-color-default-text;
                         border-radius: 5px;
                         width: 25px;

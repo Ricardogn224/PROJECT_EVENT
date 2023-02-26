@@ -3,7 +3,7 @@
 {% block title %}Message index{% endblock %}
 
 {% block body %}
-    <h2>Message index</h2>
+    <h1>Message index</h1>
 
     <table class="table">
         <thead>
@@ -11,29 +11,40 @@
                 <th>Id</th>
                 <th>Message</th>
                 <th>Date</th>
+                <th>Service</th>
+                <th>Emmeteur</th>
+                <th>Destinataire</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for message in messages %}
-            <tr>
-                <td>{{ message.id }}</td>
-                <td>{{ message.message }}</td>
-                <td>{{ message.date ? message.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a class="btn-show" href="{{ path('app_message_show', {'id': message.id}) }}">show</a>
-                    <a class="btn-edit" href="{{ path('app_message_edit', {'id': message.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
+        {% if messages is iterable %}
+            {% for message in messages %}
+                {% for value in message %}
+                    
+                
+                <tr>
+                    <td>{{ value.id }}</td>
+                    <td>{{ value.message }}</td>
+                    <td>{{ value.date ? value.date|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ value.demande }}</td>
+                    <td>{{ value.emmeteur }}</td>
+                    <td>{{ value.recepteur }}</td>
+                    <td>
+                        <a href="{{ path('app_message_show', {'id': value.id}) }}">show</a>
+                        <a href="{{ path('app_message_edit', {'id': value.id}) }}">edit</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+                
         </tbody>
     </table>
 
-    <div class="flex jce">
-        <a class="btn-default" href="{{ path('app_message_new') }}">Create new</a>
-    </div>
+    <a href="{{ path('app_message_new') }}">Create new</a>
 {% endblock %}
