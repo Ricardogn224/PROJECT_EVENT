@@ -276,6 +276,10 @@ class Service
     public function removeOptionService(OptionService $optionService): self
     {
         $this->optionService->removeElement($optionService);
+        $optionService->removeService($this);
+
+        return $this;
+    }
 
     public function getCategorie(): ?string
     {
