@@ -3,9 +3,11 @@
 {% block title %}New Demandes{% endblock %}
 
 {% block body %}
-    <h1>Nouvelle demande</h1>
+    <h2>Nouvelle demande</h2>
+    <div class="demande new-request-profil">
+        {{ include('profile/demandes/_form.html.twig') }}   
+    </div>
 
-    {{ include('profile/demandes/_form.html.twig') }}
 
-    <a href="{{ path('app_demandes_account_index') }}">back to list</a>
+    <a class="text-danger" href="{{ path('app_demandes_account_index') }}">back to list</a>
 {% endblock %}

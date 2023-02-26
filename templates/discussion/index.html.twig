@@ -3,7 +3,7 @@
 {% block title %}Discussion index{% endblock %}
 
 {% block body %}
-    <h1>Discussion index</h1>
+    <h1>Discussions</h1>
 
     <table class="table">
         <thead>
@@ -19,8 +19,8 @@
                 <td>{{ discussion.id }}</td>
                 <td>{{ discussion.Date ? discussion.Date|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('app_discussion_show', {'id': discussion.id}) }}">show</a>
-                    <a href="{{ path('app_discussion_edit', {'id': discussion.id}) }}">edit</a>
+                    <a class="btn-show" href="{{ path('app_discussion_show', {'id': discussion.id}) }}">show</a>
+                    <a class="btn-edit" href="{{ path('app_discussion_edit', {'id': discussion.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +31,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_discussion_new') }}">Create new</a>
+    <a class="btn-default" href="{{ path('app_discussion_new') }}">Créer</a>
 {% endblock %}

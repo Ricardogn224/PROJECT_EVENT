@@ -70,6 +70,15 @@ table{
     }
 }
 
+form {
+    margin-bottom: 15px;
+    > div{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
 .date-reservaton{
     width: 0;
     opacity: 0;
@@ -87,6 +96,10 @@ table{
 
 table ~ div ~ form {
     margin-top: 15px;
+}
+
+a.back-to-list{
+    margin-top: 10px;
 }
 
 .btn-edit, .btn-show{
@@ -136,6 +149,12 @@ table ~ div ~ form {
 .btn-danger:hover{
     background: red;
 }
+
+.text-danger{
+    color: red;
+}
+
+
 
 .search input{
     border: none;
