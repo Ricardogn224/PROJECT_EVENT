@@ -51,8 +51,13 @@ class Service
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+
     #[ORM\ManyToMany(targetEntity: OptionService::class, inversedBy: 'services')]
     private Collection $optionService;
+
+    #[ORM\Column(length: 255)]
+    private ?string $categorie = null;
+
 
 
     public function __construct()
@@ -271,6 +276,16 @@ class Service
     public function removeOptionService(OptionService $optionService): self
     {
         $this->optionService->removeElement($optionService);
+
+    public function getCategorie(): ?string
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(string $categorie): self
+    {
+        $this->categorie = $categorie;
+
 
         return $this;
     }

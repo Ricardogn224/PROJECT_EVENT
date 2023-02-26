@@ -4,7 +4,11 @@
 
 
 function onDataFilter(){
-    console.log(this)
+
+    let element = document.querySelector(`div[data-filter=${event.target.dataset.filter}] ~ input`)
+
+    element.checked = true
+
     this.style.background = '#000000'
 }
 

@@ -20,13 +20,14 @@ class Message
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ID_message')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateur $ID_emmeteur = null;
+    #[ORM\Column]
+    public ?int $id_demande = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateur $ID_destinataire = null;
+    #[ORM\Column]
+    public ?int $id_emmeteur = null;
+
+    #[ORM\Column]
+    public ?int $id_destinataire = null;
 
     public function getId(): ?int
     {
@@ -57,26 +58,38 @@ class Message
         return $this;
     }
 
-    public function getIDEmmeteur(): ?Utilisateur
+    public function getIdDemande(): ?int
     {
-        return $this->ID_emmeteur;
+        return $this->id_demande;
     }
 
-    public function setIDEmmeteur(?Utilisateur $ID_emmeteur): self
+    public function setIdDemande(int $id_demande): self
     {
-        $this->ID_emmeteur = $ID_emmeteur;
+        $this->id_demande = $id_demande;
 
         return $this;
     }
 
-    public function getIDDestinataire(): ?Utilisateur
+    public function getIdEmmeteur(): ?int
     {
-        return $this->ID_destinataire;
+        return $this->id_emmeteur;
     }
 
-    public function setIDDestinataire(?Utilisateur $ID_destinataire): self
+    public function setIdEmmeteur(int $id_emmeteur): self
     {
-        $this->ID_destinataire = $ID_destinataire;
+        $this->id_emmeteur = $id_emmeteur;
+
+        return $this;
+    }
+
+    public function getIdDestinataire(): ?int
+    {
+        return $this->id_destinataire;
+    }
+
+    public function setIdDestinataire(int $id_destinataire): self
+    {
+        $this->id_destinataire = $id_destinataire;
 
         return $this;
     }

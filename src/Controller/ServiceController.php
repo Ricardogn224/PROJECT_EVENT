@@ -33,6 +33,8 @@ class ServiceController extends AbstractController
             $service = $form->getData();
             $service->setUser($this->getUser());
 
+            
+
             $manager->persist($service);
             $manager->flush();
 
@@ -47,7 +49,9 @@ class ServiceController extends AbstractController
 
     #[Route('/{id}', name: 'app_service_show', methods: ['GET'])]
     public function show(Service $service): Response
-    {
+    {   
+       
+
         return $this->render('service/show.html.twig', [
             'service' => $service,
         ]);

@@ -52,6 +52,24 @@ class AccountDemandesController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/conv', name: 'app_demandes_account_conv', methods: ['GET'])]
+    public function conv(Demandes $demande): Response
+    {
+        #je recupère l'id de l'utilisateur connecté
+        $this->getUser()->getId();
+        #je recupère l'id de l'utilisateur qui a posté la demande
+        #dd($demande->getId());
+        #je redirige vers la page pour poster un nouveau message
+        return $this->redirectToRoute('app_message_new', [
+            'id_demande' => $demande->getId(),
+            'id_destinataire' => $demande->getUser()->getId(),
+         
+        ]);
+
+        #dd($demande);
+        
+    }
+
     #[Route('/{id}/edit', name: 'app_demandes_account_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Demandes $demande, EntityManagerInterface $manager): Response
     {
