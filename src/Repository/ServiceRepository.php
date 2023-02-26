@@ -83,4 +83,15 @@ class ServiceRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->execute();
         }
+
+    public function findByEvent($event)
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.evenements', 'e')
+            ->addSelect('e')
+            ->andWhere('e.nom = :nom')
+            ->setParameter('nom', $event)
+            ->getQuery()
+            ->execute();
+    }
 }
