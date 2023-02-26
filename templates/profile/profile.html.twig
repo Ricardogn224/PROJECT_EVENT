@@ -8,13 +8,21 @@
     <div class="user-profil">
     <h2 class="text-center">Espace personnel</h2>
     <ul>
+        <li class="edit-picture-user">
+            <a href="#">
+                <i class="fa-regular fa-pen-to-square"></i>
+                <img class="circle profil-picture" title="{{ app.user.userIdentifier }}" src="{{ vich_uploader_asset(app.user, 'imageFile') }}">
+            </a>
+        </li>
         <li>Nom: <strong>{{ app.user.nom }}</strong></li>
         <li>Préom: <strong>{{ app.user.prenom }}</strong></li>
         <li>Email:  <strong>{{ app.user.email }}</strong></li>
-        <li>Statut:  <strong>get Role()</strong></li>
     </ul>
-    <li> <a href="{{ path('app_service_account_index') }}">Gestion de mes services proposés</a> </li>
-    <li> <a href="{{ path('app_demandes_account_index') }}">Gestion de mes demandes</a> </li>
+    <div class="flex aic gap-15 jcc">
+        <a class="btn-default" href="{{ path('app_service_account_index') }}">Gestion de mes services proposés</a>
+        <a class="btn-default" href="{{ path('app_demandes_account_index') }}">Gestion de mes demandes</a>
+    </div>
+    
     <a class="disconnect" href="/logout">Se déconnecter</a>
 </div>
 

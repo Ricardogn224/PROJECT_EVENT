@@ -3,9 +3,58 @@
 {% block title %}Message index{% endblock %}
 
 {% block body %}
-    <h1>Message index</h1>
+    <h2>Messages</h2>
+    <a href="message/new" class="flex gap-5"><span>Ecrire</span><i class="fa-regular fa-pen-to-square"></i></a>
+    <div class="message-container flex jcsb gap-15">
+        <div class="message-items flex fdc gap-5 w-30">
+            <a href="#" class="message-block active">
+                <div class="msg-date-name flex aic jcsb">
+                    <strong>John Doe</strong>
+                    <span>18/05/2023</span>
+                </div>
+                <div class="msg-title">
+                    Lorem ipsum dolor sit amet.
+                </div>
+            </a>
+            <a href="#" class="message-block">
+                <div class="msg-date-name flex aic jcsb">
+                    <strong>John Doe</strong>
 
-    <table class="table">
+                    <span>18/05/2023</span>
+                </div>
+                <div class="msg-title">
+                    Lorem ipsum dolor sit amet.
+                </div>
+            </a>
+            <a href="#" class="message-block">
+                <div class="msg-date-name flex aic jcsb">
+                    <strong>John Doe</strong>
+                    <span>18/05/2023</span>
+                </div>
+                <div class="msg-title">
+                    Lorem ipsum dolor sit amet.
+                </div>
+            </a>
+        </div>
+        <div class="message-show flex fdc gap-15  w-70">
+            <div class="msg-show-title flex jcsb">
+                <strong>Lorem ipsum dolor sit amet consectetur adipisicing elit.</strong>
+                <div class="flex gap-10">
+                    {# <a href="{{ path('app_message_reply', {'id': message.id}) }}" class="flex gap-5"><span>Répondre</span><i class="fa-solid fa-reply-all"></i></a> #}
+                    <a href="#" class="flex gap-5"><span>Répondre</span><i class="fa-solid fa-reply-all"></i></a>
+                </div>
+            </div>
+            <div class="flex aic jcsb">
+                <strong>Emet-name: John Doe</strong>
+                <span>date: 25/05/2023</span>
+            </div>
+            <div class="msg-show-content">
+                <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis harum officiis quam omnis similique, vitae, eius, et quasi optio error dolore. Exercitationem numquam nihil enim. Quasi dolor accusantium neque iure obcaecati hic itaque! Minus cumque iusto nam suscipit dolor placeat, impedit nostrum! Atque iste labore illo commodi, mollitia deserunt rem.</p>
+            </div>
+        </div>
+    </div>
+
+    {# <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -21,9 +70,6 @@
            
         {% if messages is iterable %} 
             {% for message in messages %}
-                
-                    
-                
                 <tr>
                     <td>{{ message.id }}</td>
                     <td>{{ message.message }}</td>
@@ -45,7 +91,7 @@
         {% endif %}
                 
         </tbody>
-    </table>
+    </table> #}
 
     
 {% endblock %}
