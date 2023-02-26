@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Message;
-use App\Form\Message1Type;
 use App\Form\ReplyType;
+use App\Entity\Demandes;
+use App\Form\Message1Type;
+use App\Repository\UserRepository;
 use App\Repository\MessageRepository;
 use App\Repository\DemandesRepository;
-use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/message')]
 class MessageController extends AbstractController
@@ -43,19 +45,19 @@ class MessageController extends AbstractController
         }else {
             $messages= [];
         }
-        #dd($messages);
             
-        
+        $lastMessage = end($messages);
+
                 #$message[$x]-> demande = $demande->getId();
             
             
             #dd($message[0]);
             #$messages[] = $message;
         
-        
 
         return $this->render('message/index.html.twig', [
             'messages' => $messages,
+            'lastMessage' => $lastMessage,
         ]);
 
         /* $user = $this->getUser();
@@ -96,6 +98,48 @@ class MessageController extends AbstractController
         ]); */
 
     }
+
+    #[Route('/{id}', name: 'app_message_index_detail', methods: ['GET'])]
+    public function indexDetail(MessageRepository $messageRepository, DemandesRepository $demandesRepository, UserRepository $userRepository, Message $message_detail): Response
+    {
+
+         # je recupère les message envoyé par l'utilisateur connecté
+         $messages1 = $messageRepository->findByIdEmmeteur($this->getUser()->getId());
+         # je recupère les message reçu à l'utilisateur connecté
+         $messages2 = $messageRepository->findByIdDestinataire($this->getUser()->getId());
+         # je fusionne les deux tableaux
+         $messages = array_merge($messages1, $messages2);
+         #dd($messages);
+ 
+        
+         if($messages != null){
+             foreach($messages as $message) {
+                 #dd($message);
+                 if($message->id_emmeteur == $this->getUser()->getId() ){
+                     $message-> emmeteur = $userRepository -> findUserById($message->id_emmeteur)-> getNom();
+                     $message-> recepteur = $userRepository -> findUserById($message->id_destinataire)-> getNom();
+                     $demande = $demandesRepository->findDemandeById($message->id_demande);
+                     $message-> demande = $demande -> getService()->getNom();
+                 }
+             }
+         }else {
+             $messages= [];
+         }
+
+        $lastMessage = end($messages);
+
+        return $this->render('message/index.html.twig', [
+            'messages' => $messages,
+            'message_detail' => $message_detail,
+            'lastMessage' => $lastMessage,
+        ]);
+
+
+        /* return $this->render('message/index.html.twig', [
+            'messages' => $messageRepository->findAll(),
+        ]); */
+
+    }
     
 
     #[Route('/new', name: 'app_message_new', methods: ['GET', 'POST'])]
@@ -103,7 +147,6 @@ class MessageController extends AbstractController
     {
         $message = new Message();
 
-        #dd($request);
         $id_emmeteur = $message->id_emmeteur = $this->getUser()->getId();
         $id_destinataire = $message->id_destinataire = $request->query->get('id_destinataire');
         $id_demande = $message->id_demande = $request->query->get('id_demande');
@@ -116,6 +159,7 @@ class MessageController extends AbstractController
             $message->id_emmeteur = $id_emmeteur;
             $message->id_destinataire = $id_destinataire;
             $message->id_demande = $id_demande;
+            $message->setDate(new \DateTime());
             $messageRepository->save($message, true);
 
             return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);

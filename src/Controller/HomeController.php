@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Service;
 use App\Entity\Demandes;
 use App\Form\DemandesType;
-
+use App\Repository\EvenementRepository;
 use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +23,38 @@ class HomeController extends AbstractController
     {
         return $this->render('home/index.html.twig', [
             'services' => $serviceRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/anniversaire', name: 'app_anniversaire')]
+    public function Anniversaire(ServiceRepository $serviceRepository): Response
+    {
+        return $this->render('home/index.html.twig', [
+            'services' => $serviceRepository->findByEvent('Anniversaire'),
+        ]);
+    }
+
+    #[Route('/mariage', name: 'app_mariage')]
+    public function Mariage(ServiceRepository $serviceRepository): Response
+    {
+        return $this->render('home/index.html.twig', [
+            'services' => $serviceRepository->findByEvent('Mariage'),
+        ]);
+    }
+
+    #[Route('/naissance', name: 'app_naissance')]
+    public function Naissance(ServiceRepository $serviceRepository): Response
+    {
+        return $this->render('home/index.html.twig', [
+            'services' => $serviceRepository->findByEvent('Naissance'),
+        ]);
+    }
+
+    #[Route('/soiree-privee', name: 'app_soiree_privee')]
+    public function soireePrivee(ServiceRepository $serviceRepository): Response
+    {
+        return $this->render('home/index.html.twig', [
+            'services' => $serviceRepository->findByEvent('Soiree privee'),
         ]);
     }
 

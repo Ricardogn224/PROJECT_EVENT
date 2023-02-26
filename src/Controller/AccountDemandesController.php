@@ -65,8 +65,6 @@ class AccountDemandesController extends AbstractController
             'id_destinataire' => $demande->getUser()->getId(),
          
         ]);
-
-        #dd($demande);
         
     }
 
