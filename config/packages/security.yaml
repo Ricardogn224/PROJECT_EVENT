@@ -8,6 +8,8 @@ security:
         ROLE_PRO: ROLE_USER
         ROLE_ADMIN: ROLE_PRO
 
+    access_denied_url: /
+
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
