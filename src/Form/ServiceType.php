@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Service;
 use App\Entity\Evenement;
+use App\Entity\OptionService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -20,6 +21,14 @@ class ServiceType extends AbstractType
             ->add('description')
             ->add('prix')
             ->add('localisation')
+            ->add('optionService', EntityType::class, [
+                // looks for choices from this entity
+                'class' => OptionService::class,
+                'by_reference' => false,
+                // used to render a select box, check boxes or radios
+                'multiple' => true,
+                'expanded' => true,
+            ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Une image représentant votre service',
             ])

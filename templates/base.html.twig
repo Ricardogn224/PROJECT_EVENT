@@ -162,7 +162,7 @@
                     <li class="flex">
                         {% if app.user %}
                             <a href="/profil" class="flex aic">
-                                <div>
+                                <div style="display: flex; width: 20px; height: 20px;">
                                     <img class="circle profil-picture" title="{{ app.user.userIdentifier }}" src="{{ vich_uploader_asset(app.user, 'imageFile') }}">
                                 </div>
                                 <span>{{ app.user.userIdentifier }}</span>

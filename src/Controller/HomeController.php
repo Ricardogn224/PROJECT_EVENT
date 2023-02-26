@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+
 
 class HomeController extends AbstractController
 {
@@ -31,33 +34,40 @@ class HomeController extends AbstractController
         ]);
     }
 
+    #[Route('/service/{categorie}', name: 'app_home_service_categorie_show', methods: ['GET'])]
+    #[ParamConverter('service', options: ['mapping' => ['categorie' => 'categorie']])]
+    public function categorie_show(Service $service): Response
+    {
+
+        return $this->render('home/index.html.twig', [
+            'service' => $service,
+        ]);
+    }
+
     #[Route('/service/{id}/demande', name: 'app_home_demande', methods: ['GET', 'POST'])]
     public function demande(Service $service, Request $request, EntityManagerInterface $manager): Response
     {
-        if ($this->getUser() == null) {
-            return $this->redirectToRoute('app_login');
-        }else{
-            $demande = new Demandes();
-            $form = $this->createForm(DemandesType::class, $demande);
-            $form->handleRequest($request);
-    
-            if ($form->isSubmitted() && $form->isValid()) {
-                $demande = $form->getData();
+        
+        $demande = new Demandes();
+        $form = $this->createForm(DemandesType::class, $demande);
+        $form->handleRequest($request);
 
-                $demande->setUser($this->getUser());
-                $demande->setService($service);
-                $demande->setStatut('en attente');
-    
-                $manager->persist($demande);
-                $manager->flush();
-    
-                return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
-            }
-    
-            return $this->render('demandes/new.html.twig', [
-                'form' => $form->createView()
-            ]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $demande = $form->getData();
+
+            $demande->setUser($this->getUser());
+            $demande->setService($service);
+            $demande->setStatut('en attente');
+
+            $manager->persist($demande);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
         }
+
+        return $this->render('demandes/new.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
     // #[Route('/{me}', name: 'app_home')]
     // public function index(): Response

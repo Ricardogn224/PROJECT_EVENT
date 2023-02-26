@@ -85,6 +85,18 @@ class DemandesRepository extends ServiceEntityRepository
             ->andWhere('u.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
+            
             ->execute();
     }
+
+    # je crée une fonction qui me permet de récupérer une demande par son id
+    public function findDemandeById($id)
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    
 }

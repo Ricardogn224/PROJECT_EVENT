@@ -78,4 +78,32 @@ class MessageRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    # je recupère les message envoyé et reçu par l'utilisateur connecté
+    public function findByIdEmmeteur($value): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.id_emmeteur = :val')
+            ->setParameter('val', $value)
+            ->orderBy('m.date', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    
+    # je recupère les message envoyé et reçu par l'utilisateur connecté
+    public function findByIdDestinataire($value): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.id_destinataire = :val')
+            ->setParameter('val', $value)
+            ->orderBy('m.date', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    
 }
