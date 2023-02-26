@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commande;
 use App\Entity\Demandes;
 use App\Form\DemandesType;
 use App\Repository\DemandesRepository;
@@ -128,4 +129,41 @@ class AccountDemandesController extends AbstractController
         $manager->flush();
         return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/paiement', name: 'app_demandes_account_paiement', methods: ['GET', 'POST'])]
+    public function paiement(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        return $this->render('profile/demandes/paiement.html.twig', [
+            'demande' => $demande,
+        ]);
+    }
+
+    #[Route('/{id}/paiement-confirm', name: 'app_demandes_account_confirm_paiement', methods: ['GET', 'POST'])]
+    public function paiementConfirm(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        $commande = new Commande();
+        $commande->setPrixFinal($demande->getService()->getPrix());
+        $commande->setDemande($demande);
+
+        $demande->setPaiement(true);
+
+        $manager->persist($commande);
+        $manager->persist($demande);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/paiement-cancel', name: 'app_demandes_account_cancel_paiement', methods: ['GET', 'POST'])]
+    public function paiementCancel(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        $demande->setStatut("annule");
+
+        $manager->persist($demande);
+        $manager->flush();
+        
+        return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    
 }

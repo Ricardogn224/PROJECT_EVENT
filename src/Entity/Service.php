@@ -51,14 +51,20 @@ class Service
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+
+    #[ORM\ManyToMany(targetEntity: OptionService::class, inversedBy: 'services')]
+    private Collection $optionService;
+
     #[ORM\Column(length: 255)]
     private ?string $categorie = null;
+
 
 
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
         $this->evenements = new ArrayCollection();
+        $this->optionService = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -250,6 +256,27 @@ class Service
         return $this;
     }
 
+    /**
+     * @return Collection<int, OptionService>
+     */
+    public function getOptionService(): Collection
+    {
+        return $this->optionService;
+    }
+
+    public function addOptionService(OptionService $optionService): self
+    {
+        if (!$this->optionService->contains($optionService)) {
+            $this->optionService->add($optionService);
+        }
+
+        return $this;
+    }
+
+    public function removeOptionService(OptionService $optionService): self
+    {
+        $this->optionService->removeElement($optionService);
+
     public function getCategorie(): ?string
     {
         return $this->categorie;
@@ -258,6 +285,7 @@ class Service
     public function setCategorie(string $categorie): self
     {
         $this->categorie = $categorie;
+
 
         return $this;
     }
