@@ -3,9 +3,9 @@
 {% block title %}New Service{% endblock %}
 
 {% block body %}
-    <h1>Create new Service</h1>
+    <h2>Créer un nouveau service</h2>
 
     {{ include('service/_form.html.twig') }}
 
-    <a href="{{ path('app_service_index') }}">back to list</a>
+    <a class="text-danger" href="{{ path('app_service_index') }}">Retourner</a>
 {% endblock %}

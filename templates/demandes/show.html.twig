@@ -3,7 +3,7 @@
 {% block title %}Demandes{% endblock %}
 
 {% block body %}
-    <h1>Demandes</h1>
+    <h2>Demandes</h2>
 
     <table class="table">
         <tbody>
@@ -26,9 +26,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_demandes_index') }}">back to list</a>
+    <a class="text-danger" href="{{ path('app_demandes_index') }}">Retourner</a>
 
-    <a href="{{ path('app_demandes_edit', {'id': demande.id}) }}">edit</a>
+    <a class="btn-default" href="{{ path('app_demandes_edit', {'id': demande.id}) }}">Modifier</a>
 
     {{ include('demandes/_delete_form.html.twig') }}
 {% endblock %}

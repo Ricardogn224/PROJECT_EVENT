@@ -3,9 +3,9 @@
 {% block title %}New Discussion{% endblock %}
 
 {% block body %}
-    <h1>Create new Discussion</h1>
+    <h1>Créer une discussion</h1>
 
     {{ include('discussion/_form.html.twig') }}
 
-    <a href="{{ path('app_discussion_index') }}">back to list</a>
+    <a class="text-danger" href="{{ path('app_discussion_index') }}">Retourner</a>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block title %}Disponibilite{% endblock %}
 
 {% block body %}
-    <h2>Disponibilite</h2>
+    <h2>Disponibilites</h2>
 
     <table class="table">
         <tbody>
@@ -23,8 +23,8 @@
     </table>
 
     <div>
-        <a class="btn-show" href="{{ path('app_disponibilite_index') }}">Retourner</a>
-        <a class="btn-edit" href="{{ path('app_disponibilite_edit', {'id': disponibilite.id}) }}">Modifier</a>
+        <a class="text-danger" href="{{ path('app_disponibilite_index') }}">Retourner</a>
+        <a class="btn-default" href="{{ path('app_disponibilite_edit', {'id': disponibilite.id}) }}">Modifier</a>
     </div>
 
 
