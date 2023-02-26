@@ -38,6 +38,7 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profil, roles: ROLE_USER }
+        - { path: ^/message, roles: ROLE_USER }
         - { path: ^/service/[0-9]+/demande, roles: ROLE_USER }
 
 when@test:

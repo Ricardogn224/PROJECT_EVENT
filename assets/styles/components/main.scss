@@ -147,6 +147,34 @@ table ~ div ~ form {
     outline: none;
 }
 
+.w-30{
+    width: 30%;
+}
+
+.w-40{
+    width: 40%;
+}
+
+.w-60{
+    width: 60%;
+}
+
+.w-70{
+    width: 70%;
+}
+
+.gap-5{
+    gap: 5px;
+}
+
+.gap-10{
+    gap: 10px;
+}
+
+.gap-15{
+    gap: 15px;
+}
+
 #border{
     border: 1px solid $main-color-default-text;
     box-shadow: none;
@@ -201,6 +229,10 @@ input{
 }
 
 .jcb{
+    justify-content: space-between;
+}
+
+.jcsb{
     justify-content: space-between;
 }
 

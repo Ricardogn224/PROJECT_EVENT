@@ -1,0 +1,17 @@
+.message-container{
+    .message-items{
+        color: red;
+        border-right: 1px solid rgba(0, 0, 0, 0.2);
+        padding-right: 10px;
+        .message-block{
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+            padding: 10px
+        }
+        .message-block:hover{
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .message-block.active{
+            background: rgba(0, 0, 0, 0.1);
+        }
+    }
+}
