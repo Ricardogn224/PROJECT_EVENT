@@ -45,8 +45,13 @@ class AccountDemandesController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_demandes_account_show', methods: ['GET'])]
-    public function show(Demandes $demande): Response
+    public function show(Demandes $demande, DemandesRepository $demandesRepository): Response
     {
+        $dm = $demandesRepository->findWithUserOnly($this->getUser()->getId(), $demande->getId());
+        if (empty($dm)) {
+            return $this->redirectToRoute('app_home', []);
+        }
+
         return $this->render('profile/demandes/show.html.twig', [
             'demande' => $demande,
         ]);
