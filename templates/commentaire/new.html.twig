@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Commentaire{% endblock %}
+
+{% block body %}
+    <h1>Ecrire un Commentaire</h1>
+
+    {{ include('commentaire/_form.html.twig') }}
+
+    <a class="text-danger" href="{{ path('app_commentaire_index') }}">Retourner</a>
+{% endblock %}

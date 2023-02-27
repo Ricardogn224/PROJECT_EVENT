@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button  class="btn-default">{{ button_label|default('Valider') }}</button>
+    <a class="btn-danger" href="{{ path('app_disponibilite_index') }}">Annuler</a>
+
+{{ form_end(form) }}

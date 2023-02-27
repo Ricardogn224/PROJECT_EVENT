@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demandes index{% endblock %}
+
+{% block body %}
+<div class="demande">
+<h2>Demandes pour mes services</h2>
+    <table class="table">
+        <thead>
+           <tr>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Paiement</th>
+                <th>Statut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for demande in demandes %}
+            <tr>
+                <td>{{ demande.service.nom}}</td>
+                <td>{{ demande.planedDate ? demande.planedDate|date('Y-m-d') : '' }}</td>
+                <td>{{ demande.paiement ? 'Fait' : '' }}</td>
+                <td>{{ demande.statut }}</td>
+                <td>
+                    <a href="{{ path('app_service_account_show_proposition', {'id': demande.id}) }}">Afficher</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+    
+{% endblock %}

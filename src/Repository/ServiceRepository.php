@@ -63,4 +63,35 @@ class ServiceRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    #une fonction qui permet de trouver le service par la catégorie
+    public function findByCategory($category)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.category = :category')
+            ->setParameter('category', $category)
+            ->getQuery()
+            ->execute();
+    }
+    public function findWithUser($id)
+        {
+            return $this->createQueryBuilder('s')
+                ->innerJoin('s.user', 'u')
+                ->addSelect('u')
+                ->andWhere('u.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->execute();
+        }
+
+    public function findByEvent($event)
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.evenements', 'e')
+            ->addSelect('e')
+            ->andWhere('e.nom = :nom')
+            ->setParameter('nom', $event)
+            ->getQuery()
+            ->execute();
+    }
 }

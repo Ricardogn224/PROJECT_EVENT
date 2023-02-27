@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateur index{% endblock %}
+
+{% block body %}
+    <h1>Gestion admin</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Administrateur</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for utilisateur in utilisateurs %}
+            <tr>
+                <td>{{ utilisateur.nom }}</td>
+                <td>{{ utilisateur.prenom }}</td>
+
+                {% if "ROLE_ADMIN" in utilisateur.roles %}
+                    <td>OUI</td>
+                {% else %}
+                    <td>NON</td>
+                {% endif %}
+                <td><a href="{{ path('app_admin_edit', {'id': utilisateur.id}) }}">edit</a></td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

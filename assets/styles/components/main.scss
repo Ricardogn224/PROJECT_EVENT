@@ -1,0 +1,289 @@
+*, ::after, ::before{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    line-height: 20px;
+    letter-spacing: normal;
+    color: $main-color-default-text;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $main-color-white;
+}
+
+h1, h1 a{
+    font-size: 2rem;
+}
+
+h2{
+    font-size: 1.7rem;
+    margin-bottom: 20px;
+}
+
+h3{
+    font-size: 1.3rem;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+main{
+    padding: 50px 0;
+    min-height: 265px;
+}
+
+svg{
+    font-size: 1.1rem;
+}
+
+button{
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid rgba(118, 118, 118, 0.25);
+    margin-bottom: 20px;
+    thead{
+        background-color: $main-color-default-text;
+        tr th{
+            color: $main-color-white;
+        }
+    }
+    td, th{
+        padding: 10px;
+        text-align: center;
+    }
+}
+
+form {
+    margin-bottom: 15px;
+    > div{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+.date-reservaton{
+    width: 0;
+    opacity: 0;
+    position: absolute;
+}
+.circle{
+    border-radius: 50%;
+}
+
+
+.profil-picture{
+    width: 25px;
+    height: 25px;
+}
+
+table ~ div ~ form {
+    margin-top: 15px;
+}
+
+a.back-to-list{
+    margin-top: 10px;
+}
+
+.btn-edit, .btn-show{
+    color: $main-color-link;
+    border-bottom: 1px solid $main-color-link
+}
+
+.btn-edit:hover, .btn-show:hover{
+    color: $main-color-hover-article;
+    border-bottom: 1px solid $main-color-hover-article
+}
+
+.alert{
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.alert-danger{
+    background: rgba(255, 90, 51, 0.1);
+    color: #FF5A33;
+}
+.alert-success{
+    color: $main-color-success;
+    background: rgba(3, 84, 63, 0.1);
+}
+
+.btn-default{
+    background: $main-color;
+    color: $main-color-white;
+    padding: 5px 20px;
+    border-radius: 10px;
+    transition: .2s ease-in-out;
+}
+
+.btn-default:hover{
+    background: $main-color-hover-article;
+}
+
+.btn-danger{
+    background: $main-color-hover-article;
+    color: $main-color-white;
+    padding: 5px 20px;
+    border-radius: 10px;
+    transition: .2s ease-in-out;
+}
+
+.btn-danger:hover{
+    background: red;
+}
+
+.text-danger{
+    color: red;
+}
+
+
+
+.search input{
+    border: none;
+    outline: none;
+}
+
+.search input:focus{
+    border: none;
+    outline: none;
+}
+
+.w-30{
+    width: 30%;
+}
+
+.w-40{
+    width: 40%;
+}
+
+.w-60{
+    width: 60%;
+}
+
+.w-70{
+    width: 70%;
+}
+
+.gap-5{
+    gap: 5px;
+}
+
+.gap-10{
+    gap: 10px;
+}
+
+.gap-15{
+    gap: 15px;
+}
+
+#border{
+    border: 1px solid $main-color-default-text;
+    box-shadow: none;
+}
+
+form > div{
+    margin-bottom: 15px;
+}
+
+input{
+    border: 1px solid rgba(118, 118, 118, 0.5);
+    padding: 5px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+select{
+    padding: 5px;
+    border: 1px solid rgba(118, 118, 118, 0.5);
+    border-radius: 5px;
+}
+
+input:focus{
+    border: 1px solid $main-color-default-text;
+    transition: .2s ease-in-out;
+    outline: none;
+}
+
+input{
+    caret-color: $main-color-default-text;
+}
+// button{
+
+// }
+
+.close-btn{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.flex{
+    display: flex;
+}
+
+.jcc{
+    justify-content: center;
+}
+
+.jce{
+    justify-content: end;
+}
+
+.jcb{
+    justify-content: space-between;
+}
+
+.jcsb{
+    justify-content: space-between;
+}
+
+.jca{
+    justify-content: space-around;
+}
+
+.aic{
+    align-items: center;
+}
+
+.fdc{
+    flex-direction: column;
+}
+
+.fww{
+    flex-wrap: wrap;
+}
+
+.h-100{
+    height: 100%;
+}
+
+.w-100{
+    width: 100%;
+}
+
+.container{
+    width: 90%;
+    margin: auto;
+}
+
+.text-center{
+    text-align: center;
+}

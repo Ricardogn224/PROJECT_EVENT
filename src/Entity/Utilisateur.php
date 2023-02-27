@@ -27,12 +27,23 @@ class Utilisateur
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\ManyToMany(targetEntity: Service::class, mappedBy: 'id_user')]
-    private Collection $id_service;
+    #[ORM\ManyToMany(targetEntity: Service::class, inversedBy: 'ID_utilisateur')]
+    private Collection $services;
+
+    #[ORM\OneToMany(mappedBy: 'ID_user', targetEntity: Demandes::class, orphanRemoval: true)]
+    private Collection $ID_demandes;
+
+    #[ORM\OneToMany(mappedBy: 'ID_utilisateur', targetEntity: Disponibilite::class)]
+    private Collection $ID_disponibilite;
+
+    
 
     public function __construct()
     {
-        $this->id_service = new ArrayCollection();
+        $this->services = new ArrayCollection();
+        $this->ID_demandes = new ArrayCollection();
+        $this->ID_disponibilite = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -91,27 +102,94 @@ class Utilisateur
     /**
      * @return Collection<int, Service>
      */
-    public function getIdService(): Collection
+    public function getServices(): Collection
     {
-        return $this->id_service;
+        return $this->services;
     }
 
-    public function addIdService(Service $idService): self
+    public function addService(Service $service): self
     {
-        if (!$this->id_service->contains($idService)) {
-            $this->id_service->add($idService);
-            $idService->addIdUser($this);
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
         }
 
         return $this;
     }
 
-    public function removeIdService(Service $idService): self
+    public function removeService(Service $service): self
     {
-        if ($this->id_service->removeElement($idService)) {
-            $idService->removeIdUser($this);
+        $this->services->removeElement($service);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Demandes>
+     */
+    public function getIDDemandes(): Collection
+    {
+        return $this->ID_demandes;
+    }
+
+    public function addIDDemande(Demandes $iDDemande): self
+    {
+        if (!$this->ID_demandes->contains($iDDemande)) {
+            $this->ID_demandes->add($iDDemande);
+            $iDDemande->setIDUser($this);
         }
 
         return $this;
     }
+
+    public function removeIDDemande(Demandes $iDDemande): self
+    {
+        if ($this->ID_demandes->removeElement($iDDemande)) {
+            // set the owning side to null (unless already changed)
+            if ($iDDemande->getIDUser() === $this) {
+                $iDDemande->setIDUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Disponibilite>
+     */
+    public function getIDDisponibilite(): Collection
+    {
+        return $this->ID_disponibilite;
+    }
+
+    public function addIDDisponibilite(Disponibilite $iDDisponibilite): self
+    {
+        if (!$this->ID_disponibilite->contains($iDDisponibilite)) {
+            $this->ID_disponibilite->add($iDDisponibilite);
+            $iDDisponibilite->setIDUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIDDisponibilite(Disponibilite $iDDisponibilite): self
+    {
+        if ($this->ID_disponibilite->removeElement($iDDisponibilite)) {
+            // set the owning side to null (unless already changed)
+            if ($iDDisponibilite->getIDUtilisateur() === $this) {
+                $iDDisponibilite->setIDUtilisateur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this -> getId();
+    }
+
+    
+    
+
+    
 }

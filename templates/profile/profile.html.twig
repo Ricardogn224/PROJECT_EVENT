@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}espace personnel | {{ app.user.userIdentifier }}{% endblock %}
+
+{% block body %}
+
+
+    <div class="user-profil">
+    <h2 class="text-center">Espace personnel</h2>
+    <ul>
+        <li class="edit-picture-user">
+            <a href="{{ path('app_profile_edit_picture_user', {'id': app.user.id}) }}">
+                <i class="fa-regular fa-pen-to-square"></i>
+                <img class="circle profil-picture" title="{{ app.user.userIdentifier }}" src="{{ vich_uploader_asset(app.user, 'imageFile') }}">
+            </a>
+        </li>
+        <li>Nom: <strong>{{ app.user.nom }}</strong></li>
+        <li>Prénom: <strong>{{ app.user.prenom }}</strong></li>
+        <li>Email:  <strong>{{ app.user.email }}</strong></li>
+    </ul>
+    <div class="flex aic gap-15 jcc">
+        <a class="btn-default" href="{{ path('app_service_account_index') }}">Gestion de mes services proposés</a>
+        <a class="btn-default" href="{{ path('app_demandes_account_index') }}">Gestion de mes demandes</a>
+    </div>
+    
+    <a class="disconnect" href="/logout">Se déconnecter</a>
+</div>
+
+{% endblock %}

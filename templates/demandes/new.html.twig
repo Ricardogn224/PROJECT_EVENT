@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Demandes{% endblock %}
+
+{% block body %}
+    <h2>Nouvelle demande</h2>
+
+    {{ include('demandes/_form.html.twig') }}
+
+    <a class="text-danger" href="{{ path('app_demandes_index') }}">Retourner</a>
+{% endblock %}

@@ -1,0 +1,93 @@
+aside {
+    padding-top: 50px;
+    position: relative;
+
+    
+
+    nav {
+        width: 640px;
+        margin: auto;
+        position: relative;
+        display: block;
+        overflow: hidden;
+
+        button {
+            position: absolute;
+            top: 30px;
+            padding: 5px;
+            z-index: 1;
+            border-radius: 50%;
+            transition: .2s ease-in-out;
+            background: rgba(118, 118, 118, 0.2);
+
+        }
+    
+        button:hover {
+            background: rgba(118, 118, 118, 0.5);
+        }
+    
+        button:hover svg {
+            color: white;
+        }
+    
+        button:active {
+            transform: scale(0.9);
+            -webkit-transition: all 0.35s ease-in-out;
+            -moz-transition: all 0.35s ease-in-out;
+            -ms-transition: all 0.35s ease-in-out;
+            transition: all 0.35s ease-in-out;
+        }
+    
+        .prev {
+            left: 0px;
+        }
+    
+        .next {
+            right: 0px;
+        }
+
+        ul {
+            overflow-x: auto;
+            width: 10000px;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            // margin: auto;
+
+            li {
+                background: rgba(118, 118, 118, 0.05);
+                margin-right: 10px;
+                float: left;
+                flex-shrink: 0;
+                border-radius: 10px;
+                width: 120px;
+                position: relative;
+                overflow-x: auto;
+
+                a {
+                    padding: 10px;
+
+                    img {
+                        width: 40px;
+                        margin-bottom: 5px;
+                    }
+
+                    span {
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+
+            li:hover {
+                background: rgba(118, 118, 118, 0.2);
+                transition: .2s ease-in-out;
+            }
+
+            li.marriage {
+                img {
+                    width: 55px;
+                }
+            }
+        }
+    }
+
+}

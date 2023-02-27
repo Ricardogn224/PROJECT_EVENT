@@ -1,0 +1,13 @@
+form #disponibilite{
+    > div{
+        margin-bottom: 15px;
+    }
+
+    #disponibilite_date{
+        display: flex;
+        justify-content: space-between;
+        select{
+            width: 30%;
+        }
+    }
+}

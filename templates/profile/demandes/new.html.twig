@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Demandes{% endblock %}
+
+{% block body %}
+    <h2>Nouvelle demande</h2>
+    <div class="demande new-request-profil">
+        {{ include('profile/demandes/_form.html.twig') }}   
+    </div>
+
+
+    <a class="text-danger" href="{{ path('app_demandes_account_index') }}">back to list</a>
+{% endblock %}
