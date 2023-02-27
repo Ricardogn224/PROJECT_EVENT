@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Favorie;
+use App\Entity\Favori;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Favorie>
+ * @extends ServiceEntityRepository<Favori>
  *
- * @method Favorie|null find($id, $lockMode = null, $lockVersion = null)
- * @method Favorie|null findOneBy(array $criteria, array $orderBy = null)
- * @method Favorie[]    findAll()
- * @method Favorie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Favori|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Favori|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Favori[]    findAll()
+ * @method Favori[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FavorieRepository extends ServiceEntityRepository
+class FavoriRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Favorie::class);
+        parent::__construct($registry, Favori::class);
     }
 
-    public function save(Favorie $entity, bool $flush = false): void
+    public function save(Favori $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class FavorieRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Favorie $entity, bool $flush = false): void
+    public function remove(Favori $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class FavorieRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Favorie[] Returns an array of Favorie objects
+//     * @return Favori[] Returns an array of Favori objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class FavorieRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Favorie
+//    public function findOneBySomeField($value): ?Favori
 //    {
 //        return $this->createQueryBuilder('f')
 //            ->andWhere('f.exampleField = :val')
@@ -64,5 +64,13 @@ class FavorieRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+    public function findByUser_id($value): ?Favori
+        {
+            return $this->createQueryBuilder('f')
+                ->andWhere('f.user_id = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult();
+        }
     
 }
