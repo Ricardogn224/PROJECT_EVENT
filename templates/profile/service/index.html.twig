@@ -3,7 +3,7 @@
 {% block title %}Service index{% endblock %}
 
 {% block body %}
-    <h1>Service index</h1>
+    <h1>Service index</h1> </br>
 
     {% for message in app.flashes('confirmEmailPro') %}
         <div class="alert alert-success">
@@ -13,7 +13,7 @@
     
 
     {% if pro == false %}
-        <h3>Vous n'avez pas les droits pour proposer des services envoyer un mail en cliquant sur ce lien pour demander l'aprobation d'un administrateur : <a href="{{ path('app_send_email_pro', {'id': app.user.id}) }}">Cliquez ici</a></h3>
+        <h3>Vous n'avez pas les droits pour proposer des services. Envoyer un mail en cliquant sur ce lien pour demander l'aprobation d'un administrateur : <a href="{{ path('app_send_email_pro', {'id': app.user.id}) }}">Cliquez ici</a></h3>
     {% else %}
         <ul>
             <li> <a href="{{ path('app_service_account_index_myServices') }}">Mes services</li>

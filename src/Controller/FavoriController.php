@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Favori;
+use App\Entity\Service;
 use App\Form\FavoriType;
 use App\Repository\FavoriRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/favori')]
 class FavoriController extends AbstractController
@@ -44,6 +46,19 @@ class FavoriController extends AbstractController
             'favori' => $favori,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/add/{id}', name: 'app_favori_add', methods: ['GET', 'POST'])]
+    public function add(Request $request, Service $service, EntityManagerInterface $manager): Response
+    {
+        $favori = new Favori();
+        $favori->setService($service);
+        $favori->setUser($this->getUser());
+
+        $manager->persist($favori);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}', name: 'app_favori_show', methods: ['GET'])]

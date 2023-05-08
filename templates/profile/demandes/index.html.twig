@@ -5,6 +5,13 @@
 {% block body %}
 <div class="demande">
 <h2>Demandes index</h2>
+
+    {% for message in app.flashes('confirmDemande') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
     <table class="table">
         <thead>
             <tr>
@@ -20,7 +27,11 @@
             <tr>
                 <td>{{ demande.service.nom}}</td>
                 <td>{{ demande.planedDate ? demande.planedDate|date('Y-m-d') : '' }}</td>
-                <td>{{ demande.paiement ? 'Fait' : '' }}</td>
+                {% if demande.statut == "accepte" and not demande.paiement %}
+                    <td style="color : red;">En attente</td>
+                {% else %}
+                    <td>{{ demande.paiement ? 'Fait' : '' }}</td>
+                {% endif %}
                 <td>{{ demande.statut }}</td>
                 <td>
                     <a href="{{ path('app_demandes_account_show', {'id': demande.id}) }}">Afficher</a>
@@ -34,7 +45,7 @@
         </tbody>
     </table></br>
 
-    {% for demande in demandes %}
+    {#{% for demande in demandes %}
         {% if demande.statut == "en attente" and demande.newPlanedDate is not empty %}
             <h3>Nouvelle date propositions : </h3>
         {% endif %}
@@ -44,6 +55,34 @@
     {% for demande in demandes %}
         {% if demande.statut == "en attente" and demande.newPlanedDate is not empty %}
             <p>Le prestataire vous a proposé une nouvelle date pour votre demande du service {{ demande.service.nom}} : <a href="{{ path('app_demandes_account_new_date', {'id': demande.id}) }}">Cliquez ici pour donner votre réponse</a></p>
+        {% endif %}
+    {% endfor %}#}
+    
+    {% set break = false %}
+    {% for demande in demandes %}
+        {% if demande.statut == "en attente" and not demande.newPlanedDate and demande.propositionNouvelleDate and not break %}
+            <h3>Nouvelle date propositions : </h3>
+            {% set break = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% for demande in demandes %}
+        {% if demande.statut == "en attente" and not demande.newPlanedDate and demande.propositionNouvelleDate %}
+            <p>Le prestataire souhaite que vous proposiez une nouvelle date pour votre demande du service <b>{{ demande.service.nom}}</b> : <a href="{{ path('app_demande_account_new_date', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Proposer une nouvelle date') }}</button></a></p>
+        {% endif %}
+    {% endfor %}
+
+    {% set break = false %}
+    {% for demande in demandes %}
+        {% if demande.statut == "accepte" and not demande.paiement and not break %}
+            <h3>Paiement(s) en attente :</h3>
+            {% set break = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% for demande in demandes %}
+        {% if demande.statut == "accepte" and not demande.paiement %}
+            <p>Votre demande du service {{ demande.service.nom}} a été acceptée : <a href="{{ path('app_demandes_account_paiement', {'id': demande.id}) }}">Procéder au paiement</a></p></br>
         {% endif %}
     {% endfor %}
 

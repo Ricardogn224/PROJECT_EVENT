@@ -7,9 +7,9 @@
     <p class="ranking-order text-center">Classement par ordre de pertinance</p>
     <div class="articles flex jcc fww">
         {% for service in services %}
-            <a href="{{ path('app_home_service_show', {'id': service.id}) }}" class="article-item">
+            <a  class="article-item {% for evenement in service.evenements %} {{ evenement.nom }} {% endfor %}">
                 <div class="image-picture">
-                    <i class="fa-solid fa-heart"></i>
+                    <div class="heartItem"><i class="fa-solid fa-heart"></i></div>
                     <img src="{{ vich_uploader_asset(service, 'imageFile') }}" alt="Article">
                 </div>
                 <div class="flex jcb">
@@ -36,7 +36,7 @@
             <button id="prev" class="prev carousel-button-left"><i class="fa-solid fa-chevron-left"></i></button>
             <button id="next" class="next carousel-button-right"><i class="fa-solid fa-chevron-right"></i></button>
             <ul class="carousel-items">
-                <li class="principal-category marriage carousel-block" data-category="mariage">
+                {#<li class="principal-category marriage carousel-block" data-category="mariage">
                     <a href="{{ path('app_mariage') }}"class="flex fdc aic jcb h-100">
                         <img src="{{ asset('build/images/mariage.svg') }}" alt="Mariage">
                         <span>Mariage</span>
@@ -59,7 +59,15 @@
                         <img src="{{ asset('build/images/naissance.svg') }}" alt="Naissance">
                         <span>Naissance</span>
                     </a>
-                </li>
+                </li>#}
+                {% for evenement in evenements %}
+                    <li class="principal-category marriage carousel-block" data-category={{ evenement.nom }}>
+                        <a class="flex fdc aic jcb h-100">
+                            <img src="{{ vich_uploader_asset(evenement, 'imageFile') }}" alt={{ evenement.nom }}>
+                            <span>{{ evenement.nom }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
             </ul>
         </nav>
     </aside>

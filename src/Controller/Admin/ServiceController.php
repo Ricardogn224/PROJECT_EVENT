@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Service;
 use App\Form\ServiceType;
@@ -50,8 +50,6 @@ class ServiceController extends AbstractController
     #[Route('/{id}', name: 'app_service_show', methods: ['GET'])]
     public function show(Service $service): Response
     {   
-       
-
         return $this->render('service/show.html.twig', [
             'service' => $service,
         ]);

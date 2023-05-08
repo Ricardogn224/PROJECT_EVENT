@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Exception;
 use App\Entity\Service;
 use App\Entity\Demandes;
 use App\Form\DemandesType;
@@ -13,16 +14,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
+use GuzzleHttp\Client;
+use SendinBlue\Client\Configuration;
 
 
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(ServiceRepository $serviceRepository): Response
+    public function index(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
     {
         return $this->render('home/index.html.twig', [
             'services' => $serviceRepository->findAll(),
+            'evenements' => $evenementRepository->findAll(),
         ]);
     }
 
@@ -93,6 +98,36 @@ class HomeController extends AbstractController
 
             $manager->persist($demande);
             $manager->flush();
+
+            $userNom = $this->getUser()->getNom();
+            $userPrenom = $this->getUser()->getPrenom();
+            $serviceNom = $service->getNom();
+            $serviceUserMail = $service->getUser()->getEmail();
+
+            // Configure API key authorization: api-key
+            $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $_ENV['SENDINBLUE_API_KEY']);
+
+            $apiInstance = new TransactionalEmailsApi(
+                // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+                // This is optional, `GuzzleHttp\Client` will be used as default.
+                new Client(['verify' => false]),
+                $config
+            );
+            $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail(); // \SendinBlue\Client\Model\SendSmtpEmail | Values to send a transactional email
+            $sendSmtpEmail['to'] = array(array('email'=>$serviceUserMail));
+            $sendSmtpEmail['sender'] =  array('name' => 'Event Presta', 'email' => 'noreply-event-presta@gmail.com');
+            $sendSmtpEmail['htmlContent'] = 'L\'utilisateur ' . $userNom . ' ' . $userPrenom . ' a effectué une demande pour votre service ' . $serviceNom . '. Consultez votre profil.';
+            $sendSmtpEmail['subject'] = 'Demande pour votre service';
+            $sendSmtpEmail['params'] = array('name'=>'John', 'surname'=>'Doe');
+            $sendSmtpEmail['headers'] = array('X-Mailin-custom'=>'custom_header_1:custom_value_1|custom_header_2:custom_value_2');
+
+            try {
+                $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
+            } catch (Exception $e) {
+                echo 'Exception when calling TransactionalEmailsApi->sendTransacEmail: ', $e->getMessage(), PHP_EOL;
+            }
+
+            $this->addFlash('confirmDemande', 'Le prestataire va être notifié de votre demande, vous allez recevoir une réponse de sa part');
 
             return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
         }

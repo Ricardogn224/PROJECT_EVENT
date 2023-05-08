@@ -1,15 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Demandes{% endblock %}
+    
+{% block title %}Nouvelle date proposition{% endblock %}
 
 {% block body %}
-    <h1>Nouvelle date pour votre demande</h1>
+    <h1>Proposer une nouvelle date :</h1>
+    <p>Si le prestataire n'accepte pas cette nouvelle date, votre demande sera annulée et vous devrez refaire une nouvelle demande pour le service</p></br>
 
-    <div class="demande">
-        <p>Accepter ou refuser la nouvelle date (si vous refusez, votre demande sera annulée et vous devrez refaire une nouvelle demande pour le service) :</p></br></br>
+    <p>Première date proposée : {{ demande.planedDate|date('Y-m-d')}}</p></br>
 
-        <a href="{{ path('app_demandes_account_accept_new_date', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Accepter') }}</button></a>
-        <a href="{{ path('app_demandes_account_refuse_new_date', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Refuser') }}</button></a>
-    </div>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+        <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
 
 {% endblock %}

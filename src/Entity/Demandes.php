@@ -44,6 +44,9 @@ class Demandes
     #[ORM\OneToOne(mappedBy: 'demande', cascade: ['persist', 'remove'])]
     private ?Commande $commande = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $propositionNouvelleDate = null;
+
     public function __construct()
     {
     }
@@ -167,6 +170,18 @@ class Demandes
         }
 
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function isPropositionNouvelleDate(): ?bool
+    {
+        return $this->propositionNouvelleDate;
+    }
+
+    public function setPropositionNouvelleDate(?bool $propositionNouvelleDate): self
+    {
+        $this->propositionNouvelleDate = $propositionNouvelleDate;
 
         return $this;
     }
