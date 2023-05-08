@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Profile;
 
 use App\Entity\Commande;
 use App\Entity\Demandes;
 use App\Form\DemandesType;
+use App\Form\DemandesNewDateType;
 use App\Repository\DemandesRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -105,33 +107,16 @@ class AccountDemandesController extends AbstractController
         return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/{id}/nouvelle-date', name: 'app_demandes_account_new_date', methods: ['GET', 'POST'])]
-    public function demandeNewDate(Request $request, Demandes $demande, EntityManagerInterface $manager): Response
+    /*#[Route('/{id}/nouvelle-date', name: 'app_demandes_account_new_date', methods: ['GET', 'POST'])]
+    public function demandeNewDat(Request $request, Demandes $demande, EntityManagerInterface $manager): Response
     {
         return $this->render('profile/demandes/nouvelleDate.html.twig', [
             'demande' => $demande,
         ]);
 
         
-    }
+    }*/
 
-    #[Route('/{id}/accept-nouvelle-date', name: 'app_demandes_account_accept_new_date', methods: ['GET', 'POST'])]
-    public function serviceDemandeAccept(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
-    {
-        $demande->setStatut("accepte");
-        $manager->persist($demande);
-        $manager->flush();
-        return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    #[Route('/{id}/refuse-nouvelle-date', name: 'app_demandes_account_refuse_new_date', methods: ['GET', 'POST'])]
-    public function serviceDemandeRefuse(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
-    {
-        $demande->setStatut("annule");
-        $manager->persist($demande);
-        $manager->flush();
-        return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
-    }
 
     #[Route('/{id}/paiement', name: 'app_demandes_account_paiement', methods: ['GET', 'POST'])]
     public function paiement(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
@@ -166,6 +151,27 @@ class AccountDemandesController extends AbstractController
         $manager->flush();
         
         return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/nouvelle-date', name: 'app_demande_account_new_date', methods: ['GET', 'POST'])]
+    public function demandeNewDate(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        $form = $this->createForm(DemandesNewDateType::class, $demande);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $demande = $form->getData();
+
+            $manager->persist($demande);
+            $manager->flush();
+
+            return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
+        }
+        
+        return $this->render('profile/demandes/nouvelleDate.html.twig', [
+            'form' => $form,
+            'demande' => $demande
+        ]);
     }
 
     

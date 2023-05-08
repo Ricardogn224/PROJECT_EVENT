@@ -46,7 +46,11 @@ class MessageController extends AbstractController
             $messages= [];
         }
             
-        $lastMessage = end($messages);
+        if($messages != null){
+            $lastMessage = end($messages);
+        }else {
+            $lastMessage = [];
+        }
 
                 #$message[$x]-> demande = $demande->getId();
             

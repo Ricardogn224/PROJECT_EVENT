@@ -56,8 +56,8 @@ class Service
     #[ORM\ManyToMany(targetEntity: OptionService::class, inversedBy: 'services')]
     private Collection $optionService;
 
-    #[ORM\Column(length: 255)]
-    private ?string $categorie = null;
+    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Favori::class)]
+    private Collection $favoris;
 
 
 
@@ -66,6 +66,7 @@ class Service
         $this->demandes = new ArrayCollection();
         $this->evenements = new ArrayCollection();
         $this->optionService = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -282,15 +283,32 @@ class Service
         return $this;
     }
 
-    public function getCategorie(): ?string
+    /**
+     * @return Collection<int, Favori>
+     */
+    public function getFavoris(): Collection
     {
-        return $this->categorie;
+        return $this->favoris;
     }
 
-    public function setCategorie(string $categorie): self
+    public function addFavoris(Favori $favori): self
     {
-        $this->categorie = $categorie;
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->setService($this);
+        }
 
+        return $this;
+    }
+
+    public function removeFavoris(Favori $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            // set the owning side to null (unless already changed)
+            if ($favori->getService() === $this) {
+                $favori->setService(null);
+            }
+        }
 
         return $this;
     }

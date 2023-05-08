@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let btnChoiceEvents = document.querySelectorAll('.btn-choise-event')
     let princilalCategories = document.querySelectorAll('.principal-category')
-
+    let articleItem = document.querySelectorAll('.article-item')
+    let articleFavs = document.querySelectorAll('.heartItem')
 
     /*************************************************************************************************/
     /****************************************** PROGRAMME ********************************************/
@@ -51,17 +52,73 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             princilalCategorie.style.background = 'rgba(118, 118, 118, 0.2)'
+            console.log(princilalCategorie.querySelector('span').textContent)
+            let even = princilalCategorie.querySelector('span').textContent
+            
+            for ( let index = 0; index < articleItem.length; index++) {
+
+                articleItem[index].style.background = 'rgba(118, 118, 118, 0.05)'
+                if (articleItem[index].classList.contains(even)) {
+                    articleItem[index].style.display = 'block'
+                } else {
+                    articleItem[index].style.display = 'none'
+                }
+            }
 
         })
 
     }
 
-    princilalCategories[0].style.background = 'rgba(118, 118, 118, 0.2)';
-
     document.querySelector('.calendar-link').addEventListener('click', function(){
 
         document.querySelector('.date-reservaton').showPicker()
     })
+
+    for(const articleFav of articleFavs){
+       
+        console.log(articleFav)
+        articleFav.addEventListener('click', function(){
+
+            console.log(69776);
+
+        })
+
+    }
+
+    
+
+
+
+
+    /*document.querySelector('.fa-heart').addEventListener('click', function () {
+        
+        console.log(666);
+        fetch("https://jsonplaceholder.typicode.com/posts", {
+            method: 'post',
+            body: post,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            return response.json()
+        }).then((res) => {
+            if (res.status === 201) {
+                console.log("Post successfully created!")
+            }
+        }).catch((error) => {
+            console.log(error)
+        })
+
+    })*/
+
+    /*const evItem = document.querySelectorAll(".container .infinite-carousel .carousel-items principal-categor");
+
+    for (let i = 0; i < evItem.length; i++) {
+        evItem[i].addEventListener("click", function() {
+            console(666);
+        });
+    }*/
 
 
 });
