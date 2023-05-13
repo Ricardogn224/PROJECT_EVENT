@@ -3,27 +3,29 @@
 namespace App\Controller;
 
 use Exception;
+use GuzzleHttp\Client;
 use App\Entity\Service;
 use App\Entity\Demandes;
 use App\Form\DemandesType;
-use App\Repository\EvenementRepository;
+use App\Entity\Favori;
+use App\Repository\FavoriRepository;
+use SendinBlue\Client\Configuration;
 use App\Repository\ServiceRepository;
+use App\Repository\EvenementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use SendinBlue\Client\Api\TransactionalEmailsApi;
-use GuzzleHttp\Client;
-use SendinBlue\Client\Configuration;
 
 
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
+    public function index(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository, FavoriRepository $favoriRepository): Response
     {
         return $this->render('home/index.html.twig', [
             'services' => $serviceRepository->findAll(),

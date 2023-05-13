@@ -16,6 +16,10 @@
     }
     .image-picture {
         position: relative;
+        svg:hover{
+            transition: all 300ms ease-in;
+            transform: scale(1.5);
+        }
         svg{
             position: absolute;
             top: 15px;
@@ -35,4 +39,10 @@
 .article-item:hover p, .article-item:hover div{
     color: $main-color-hover-article;
     transition: .2s ease-in-out;
+}
+
+.showServ{
+    .actFavShow{
+        cursor : pointer
+    }
 }

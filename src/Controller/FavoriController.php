@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/favori')]
 class FavoriController extends AbstractController
@@ -19,13 +20,15 @@ class FavoriController extends AbstractController
     public function index(FavoriRepository $favoriRepository): Response
     {
         #je recupère l'id de l'utilisateur 
-        $user = $this->getUser();
+        $userId = $this->getUser()->getId();
+
+        $favoris = $favoriRepository->findAllByUserId($userId);
 
         #je recupere 
-        $favori = $favoriRepository->findByUser_id($user);
+        //$favori = $favoriRepository->findByUser_id($user);
 
         return $this->render('favori/index.html.twig', [
-            'favoris' => $favori,
+            'favoris' => $favoris,
         ]);
     }
 
@@ -49,16 +52,43 @@ class FavoriController extends AbstractController
     }
 
     #[Route('/add/{id}', name: 'app_favori_add', methods: ['GET', 'POST'])]
-    public function add(Request $request, Service $service, EntityManagerInterface $manager): Response
+    public function add(Request $request, Service $service, EntityManagerInterface $manager, FavoriRepository $favoriRepository): Response
     {
-        $favori = new Favori();
-        $favori->setService($service);
-        $favori->setUser($this->getUser());
+        $resp = "";
 
-        $manager->persist($favori);
-        $manager->flush();
+        if ($this->getUser()) {
+            $userId = $this->getUser()->getId();
 
-        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+            if ($favoriRepository->findByUserId($userId, $service->getId()) == null) {
+
+                $favori = new Favori();
+                $favori->setService($service);
+                $favori->setUser($this->getUser());
+
+                $manager->persist($favori);
+                $manager->flush();
+
+                $resp = "oui";
+            }else {
+                $favori = $favoriRepository->findByUserId($userId, $service->getId());
+                $resp = $favori->getService()->getId();
+
+                $favoriRepository->remove($favori, true);
+                $resp = "already";
+
+                
+            }
+
+        }else {
+            $resp = "login";
+        }
+        
+
+        $arr = [
+            "succeed" => $resp
+        ];
+
+        return new JsonResponse($arr);
     }
 
     #[Route('/{id}', name: 'app_favori_show', methods: ['GET'])]
@@ -95,5 +125,33 @@ class FavoriController extends AbstractController
         }
 
         return $this->redirectToRoute('app_favori_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/isFav/{id}', name: 'app_favori_is_fav', methods: ['GET', 'POST'])]
+    public function isFav(Request $request, Service $service, EntityManagerInterface $manager, FavoriRepository $favoriRepository): Response
+    {
+
+        $resp = "";
+
+        if ($this->getUser()) {
+            #je recupère l'id de l'utilisateur 
+            $userId = $this->getUser()->getId();
+
+            $favori = $favoriRepository->findByUserId($userId, $service->getId());
+
+            if ($favori == null) {
+                $resp = 'noFav';
+            }else{
+                $resp = 'favIn';
+            }
+        }else {
+            $resp = 'noFav';
+        }
+
+        $arr = [
+            "succeed" => $resp
+        ];
+
+        return new JsonResponse($arr);
     }
 }
