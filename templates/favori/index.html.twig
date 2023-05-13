@@ -3,35 +3,31 @@
 {% block title %}Favori index{% endblock %}
 
 {% block body %}
-    <h1>Favori index</h1>
+    <h1>Mes favoris</h1></br></br>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Service_id</th>
-                <th>User_id</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for favori in favoris %}
-            <tr>
-                <td>{{ favori.id }}</td>
-                <td>{{ favori.serviceId }}</td>
-                <td>{{ favori.userId }}</td>
-                <td>
-                    <a href="{{ path('app_favori_show', {'id': favori.id}) }}">show</a>
-                    <a href="{{ path('app_favori_edit', {'id': favori.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_favori_new') }}">Create new</a>
+    <div class="home-page">
+        <div class="articles flex jcc fww">
+            {% for favori in favoris %}
+                <a href="{{ path('app_home_service_show', {'id': favori.service.id}) }}" class="article-item {% for evenement in favori.service.evenements %} {{ evenement.nom }} {% endfor %}">
+                    <div style="display:none;"><p class="idDisplay">{{ favori.service.id }}</p></div>
+                    <div class="image-picture">
+                        <div class="heartItem fav-page"><i class="fa-solid fa-heart"></i></div>
+                        <img src="{{ vich_uploader_asset(favori.service, 'imageFile') }}" alt="Article">
+                    </div>
+                    <div class="flex jcb">
+                        <p>{{ favori.service.nom ~ ', ' ~ favori.service.localisation }}</p>
+                        <div class="flex aic">
+                            <div><i class="fa-solid fa-star"></i></div>
+                            <div class="note">4,88</div>
+                        </div>
+                    </div>
+                    <div>
+                        <p>{{ favori.service.user.nom ~ ' ' ~ favori.service.user.prenom }}</p>
+                        <p>Prochaine dispo. 4 févr.</p>
+                        <p>{{ favori.service.prix ~ ' euros'}}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

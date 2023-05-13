@@ -7,7 +7,8 @@
     <p class="ranking-order text-center">Classement par ordre de pertinance</p>
     <div class="articles flex jcc fww">
         {% for service in services %}
-            <a  class="article-item {% for evenement in service.evenements %} {{ evenement.nom }} {% endfor %}">
+            <a href="{{ path('app_home_service_show', {'id': service.id}) }}" class="article-item {% for evenement in service.evenements %} {{ evenement.nom }} {% endfor %}">
+                 <div style="display:none;"><p class="idDisplay">{{ service.id }}</p></div>
                 <div class="image-picture">
                     <div class="heartItem"><i class="fa-solid fa-heart"></i></div>
                     <img src="{{ vich_uploader_asset(service, 'imageFile') }}" alt="Article">
