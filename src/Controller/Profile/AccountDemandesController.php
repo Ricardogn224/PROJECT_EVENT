@@ -69,7 +69,6 @@ class AccountDemandesController extends AbstractController
         #je redirige vers la page pour poster un nouveau message
         return $this->redirectToRoute('app_message_new', [
             'id_demande' => $demande->getId(),
-            'id_destinataire' => $demande->getUser()->getId(),
          
         ]);
         
@@ -172,6 +171,32 @@ class AccountDemandesController extends AbstractController
             'form' => $form,
             'demande' => $demande
         ]);
+    }
+
+    #[Route('/{id}/add-note', name: 'app_demande_account_add_note', methods: ['GET', 'POST'])]
+    public function addNote(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    {
+        $note = (floatval($request->request->get('note')));
+
+        $demande->setNote($note);
+        $manager->persist($demande);
+        $manager->flush();
+
+        $service = $demande->getService();
+
+        $noteServ = $service->getNoteMoy();
+        if ($noteServ == null) {
+            $service->setNoteMoy($note);
+            $manager->persist($service);
+            $manager->flush();
+        }else {
+            $noteMoyenne = ($note +$noteServ)/2;
+            $service->setNoteMoy($noteMoyenne);
+            $manager->persist($service);
+            $manager->flush();
+        }
+        
+        return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
     }
 
     

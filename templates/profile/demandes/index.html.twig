@@ -26,7 +26,11 @@
         {% for demande in demandes %}
             <tr>
                 <td>{{ demande.service.nom}}</td>
-                <td>{{ demande.planedDate ? demande.planedDate|date('Y-m-d') : '' }}</td>
+                {% if demande.newPlanedDate %}
+                    <td>{{ demande.newPlanedDate|date('Y-m-d') }}</td>
+                {% else %}
+                    <td>{{ demande.planedDate ? demande.planedDate|date('Y-m-d') : '' }}</td>
+                {% endif %}
                 {% if demande.statut == "accepte" and not demande.paiement %}
                     <td style="color : red;">En attente</td>
                 {% else %}
@@ -45,18 +49,26 @@
         </tbody>
     </table></br>
 
-    {#{% for demande in demandes %}
-        {% if demande.statut == "en attente" and demande.newPlanedDate is not empty %}
-            <h3>Nouvelle date propositions : </h3>
-        {% endif %}
-        {% set break = true %}
-    {% endfor %}
 
+    {% set break = false %}
     {% for demande in demandes %}
-        {% if demande.statut == "en attente" and demande.newPlanedDate is not empty %}
-            <p>Le prestataire vous a proposé une nouvelle date pour votre demande du service {{ demande.service.nom}} : <a href="{{ path('app_demandes_account_new_date', {'id': demande.id}) }}">Cliquez ici pour donner votre réponse</a></p>
+        {% if demande.statut == "accepte" and demande.serviceTermine and demande.note is null %}
+
+            <form action="{{ path('app_demande_account_add_note', {'id': demande.id}) }}" method="post" enctype="multipart/form-data">
+                {% if  demande.newPlanedDate %}
+                    <label for="note">La prestation du  {{  demande.newPlanedDate|date('d/m/Y') }} pour le service <b>{{ demande.service.nom}}</b> a été effectué, notez cette prestation (sur 5) :</label>
+                {% else %}
+                    <label for="note">La prestation du  {{ demande.planedDate|date('d/m/Y') }} pour le service <b>{{ demande.service.nom}}</b> a été effectué, notez cette prestation (sur 5) :</label>
+                {% endif %}
+
+                <input type="number" id="note" name="note"
+                    min="0" max="5">
+            
+                <input type="submit" value="Submit">
+            </form></br>
+
         {% endif %}
-    {% endfor %}#}
+    {% endfor %}
     
     {% set break = false %}
     {% for demande in demandes %}
