@@ -59,6 +59,9 @@ class Service
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Favori::class)]
     private Collection $favoris;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $noteMoy = null;
+
 
 
     public function __construct()
@@ -309,6 +312,18 @@ class Service
                 $favori->setService(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNoteMoy(): ?float
+    {
+        return $this->noteMoy;
+    }
+
+    public function setNoteMoy(?float $noteMoy): self
+    {
+        $this->noteMoy = $noteMoy;
 
         return $this;
     }

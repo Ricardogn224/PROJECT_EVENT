@@ -17,7 +17,7 @@
                     <p>{{ service.nom ~ ', ' ~ service.localisation }}</p>
                     <div class="flex aic">
                         <div><i class="fa-solid fa-star"></i></div>
-                        <div class="note">4,88</div>
+                        <div class="note">{{ service.noteMoy ? service.noteMoy|number_format(2, '.') : 'N/A' }}</div>
                     </div>
                 </div>
                 <div>

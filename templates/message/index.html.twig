@@ -4,7 +4,8 @@
 
 {% block body %}
     <h2>Messages</h2>
-    <a href="message/new" class="flex gap-5"><span>Ecrire</span><i class="fa-regular fa-pen-to-square"></i></a>
+    <a href="{{ path('app_message_new') }}" class="flex gap-5"><span>Ecrire</span><i class="fa-regular fa-pen-to-square"></i></a>
+    {% if messages is not empty %} 
     <div class="message-container flex jcsb gap-15">
         <div class="message-items flex fdc gap-5 w-30">
             {% if messages is iterable %} 
@@ -59,6 +60,9 @@
 
 
     </div>
+    {% else %}
+     <h3>Aucun messages pour l'instant</h3>
+    {% endif %}
 
     {# <table class="table">
         <thead>
