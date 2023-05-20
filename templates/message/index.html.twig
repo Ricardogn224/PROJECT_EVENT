@@ -70,38 +70,33 @@
                 <th>Id</th>
                 <th>Message</th>
                 <th>Date</th>
-                <th>Service</th>
-                <th>Emmeteur</th>
-                <th>Destinataire</th>
+                <th>Id_demande</th>
+                <th>Id_emmeteur</th>
+                <th>Id_destinataire</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-           
-        {% if messages is iterable %} 
-            {% for message in messages %}
-                <tr>
-                    <td>{{ message.id }}</td>
-                    <td>{{ message.message }}</td>
-                    <td>{{ message.date ? message.date|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ message.demande }}</td>
-                    <td>{{ message.emmeteur }}</td>
-                    <td>{{ message.recepteur }}</td>
-                    <td>
-                        <a href="{{ path('app_message_show', {'id': message.id}) }}">show</a>
-                        <a href="{{ path('app_message_edit', {'id': message.id}) }}">edit</a>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="7">no records found</td>
-                </tr>
-               
-            {% endfor %}
-        {% endif %}
-                
+        {% for message in messages %}
+            <tr>
+                <td>{{ message.id }}</td>
+                <td>{{ message.message }}</td>
+                <td>{{ message.date ? message.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ message.idDemande }}</td>
+                <td>{{ message.idEmmeteur }}</td>
+                <td>{{ message.idDestinataire }}</td>
+                <td>
+                    <a href="{{ path('app_message_show', {'id': message.id}) }}">show</a>
+                    <a href="{{ path('app_message_edit', {'id': message.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
         </tbody>
-    </table> #}
+    </table>
 
     
 {% endblock %}

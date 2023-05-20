@@ -39,30 +39,31 @@ class ServiceRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Service[] Returns an array of Service objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Service[] Returns an array of Service objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Service
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findOneBySearch($value): ?Service
+    {
+
+        return $this->createQueryBuilder('s')
+
+            ->andWhere('s.description LIKE :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 
     #une fonction qui permet de trouver le service par la catégorie
     public function findByCategory($category)
@@ -74,15 +75,15 @@ class ServiceRepository extends ServiceEntityRepository
             ->execute();
     }
     public function findWithUser($id)
-        {
-            return $this->createQueryBuilder('s')
-                ->innerJoin('s.user', 'u')
-                ->addSelect('u')
-                ->andWhere('u.id = :id')
-                ->setParameter('id', $id)
-                ->getQuery()
-                ->execute();
-        }
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.user', 'u')
+            ->addSelect('u')
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->execute();
+    }
 
     public function findByEvent($event)
     {

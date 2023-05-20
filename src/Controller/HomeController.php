@@ -8,6 +8,8 @@ use App\Entity\Service;
 use App\Entity\Demandes;
 use App\Form\DemandesType;
 use App\Entity\Favori;
+use App\Form\SearchType;
+use App\Model\SearchData;
 use App\Repository\DemandesRepository;
 use App\Repository\FavoriRepository;
 use SendinBlue\Client\Configuration;
@@ -26,9 +28,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository, FavoriRepository $favoriRepository): Response
+    public function index(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository, Request $request): Response
     {
+
+        /* $searchData = new SearchData();
+        $form = $this->createForm(SearchType::class, $searchData);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            dd($request);
+        } */
+
         return $this->render('home/index.html.twig', [
+            /* 'form' => $form->createView(), */
             'services' => $serviceRepository->findAll(),
             'evenements' => $evenementRepository->findAll(),
         ]);
@@ -87,16 +98,7 @@ class HomeController extends AbstractController
     #[Route('/service/{id}/demande', name: 'app_home_demande', methods: ['GET', 'POST'])]
     public function demande(Service $service, Request $request, EntityManagerInterface $manager, DemandesRepository $demandesRepository): Response
     {
-        $demandeEnAttente = $demandesRepository->findDemandeWithService($this->getUser()->getId(), $service->getId());
 
-        if ($demandeEnAttente) {
-            $this->addFlash('demandeAttente', 'Vous avez déjà une demande en attente pour ce service');
-
-            return $this->render('home/service/show.html.twig', [
-                'service' => $service,
-            ]);
-        }
-        
         $demande = new Demandes();
         $form = $this->createForm(DemandesType::class, $demande);
         $form->handleRequest($request);
@@ -126,12 +128,12 @@ class HomeController extends AbstractController
                 $config
             );
             $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail(); // \SendinBlue\Client\Model\SendSmtpEmail | Values to send a transactional email
-            $sendSmtpEmail['to'] = array(array('email'=>$serviceUserMail));
+            $sendSmtpEmail['to'] = array(array('email' => $serviceUserMail));
             $sendSmtpEmail['sender'] =  array('name' => 'Event Presta', 'email' => 'noreply-event-presta@gmail.com');
             $sendSmtpEmail['htmlContent'] = 'L\'utilisateur ' . $userNom . ' ' . $userPrenom . ' a effectué une demande pour votre service ' . $serviceNom . '. Consultez votre profil.';
             $sendSmtpEmail['subject'] = 'Demande pour votre service';
-            $sendSmtpEmail['params'] = array('name'=>'John', 'surname'=>'Doe');
-            $sendSmtpEmail['headers'] = array('X-Mailin-custom'=>'custom_header_1:custom_value_1|custom_header_2:custom_value_2');
+            $sendSmtpEmail['params'] = array('name' => 'John', 'surname' => 'Doe');
+            $sendSmtpEmail['headers'] = array('X-Mailin-custom' => 'custom_header_1:custom_value_1|custom_header_2:custom_value_2');
 
             try {
                 $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
