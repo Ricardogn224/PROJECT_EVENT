@@ -35,6 +35,24 @@ class Demandes
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $end_time = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $newPlanedDate = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $paiement = null;
+
+    #[ORM\OneToOne(mappedBy: 'demande', cascade: ['persist', 'remove'])]
+    private ?Commande $commande = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $propositionNouvelleDate = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $note = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $serviceTermine = null;
+
     public function __construct()
     {
     }
@@ -117,6 +135,83 @@ class Demandes
     public function setEndTime(\DateTimeInterface $end_time): self
     {
         $this->end_time = $end_time;
+
+        return $this;
+    }
+
+    public function getNewPlanedDate(): ?\DateTimeInterface
+    {
+        return $this->newPlanedDate;
+    }
+
+    public function setNewPlanedDate(?\DateTimeInterface $newPlanedDate): self
+    {
+        $this->newPlanedDate = $newPlanedDate;
+
+        return $this;
+    }
+
+    public function isPaiement(): ?bool
+    {
+        return $this->paiement;
+    }
+
+    public function setPaiement(?bool $paiement): self
+    {
+        $this->paiement = $paiement;
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(Commande $commande): self
+    {
+        // set the owning side of the relation if necessary
+        if ($commande->getDemande() !== $this) {
+            $commande->setDemande($this);
+        }
+
+        $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function isPropositionNouvelleDate(): ?bool
+    {
+        return $this->propositionNouvelleDate;
+    }
+
+    public function setPropositionNouvelleDate(?bool $propositionNouvelleDate): self
+    {
+        $this->propositionNouvelleDate = $propositionNouvelleDate;
+
+        return $this;
+    }
+
+    public function getNote(): ?float
+    {
+        return $this->note;
+    }
+
+    public function setNote(?float $note): self
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    public function isServiceTermine(): ?bool
+    {
+        return $this->serviceTermine;
+    }
+
+    public function setServiceTermine(?bool $serviceTermine): self
+    {
+        $this->serviceTermine = $serviceTermine;
 
         return $this;
     }

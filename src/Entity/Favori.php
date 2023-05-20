@@ -13,37 +13,37 @@ class Favori
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $service_id = null;
+    #[ORM\ManyToOne(inversedBy: 'favori')]
+    private ?Service $service = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
+    #[ORM\ManyToOne(inversedBy: 'favoris')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getServiceId(): ?int
+    public function getService(): ?Service
     {
-        return $this->service_id;
+        return $this->service;
     }
 
-    public function setServiceId(int $service_id): self
+    public function setService(?Service $service): self
     {
-        $this->service_id = $service_id;
+        $this->service = $service;
 
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(int $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }

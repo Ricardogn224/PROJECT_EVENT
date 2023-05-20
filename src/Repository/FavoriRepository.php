@@ -64,11 +64,27 @@ class FavoriRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findByUser_id($value): ?Favori
+    public function findAllByUserId($idUs)
         {
             return $this->createQueryBuilder('f')
-                ->andWhere('f.user_id = :val')
-                ->setParameter('val', $value)
+                ->innerJoin('f.user', 'u')
+                ->addSelect('u')
+                ->andWhere('u.id = :idUs')
+                ->setParameter('idUs', $idUs)
+                ->getQuery()
+                ->execute();
+        }
+
+    public function findByUserId($idUs, $idServ): ?Favori
+        {
+            return $this->createQueryBuilder('f')
+                ->innerJoin('f.user', 'u')
+                ->addSelect('u')
+                ->innerJoin('f.service', 's')
+                ->andWhere('u.id = :idUs')
+                ->setParameter('idUs', $idUs)
+                ->andWhere('s.id = :idServ')
+                ->setParameter('idServ', $idServ)
                 ->getQuery()
                 ->getOneOrNullResult();
         }

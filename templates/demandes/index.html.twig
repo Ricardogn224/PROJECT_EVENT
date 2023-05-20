@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="demande">
-<h2>Demandes index</h2>
+<h2>Demandes</h2>
     <table class="table">
         <thead>
             <tr>
@@ -37,7 +37,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_demandes_new') }}">Créer une nouvelle demande</a>
+    <a class="btn-default" href="{{ path('app_demandes_new') }}">Créer une nouvelle demande</a>
 </div>
     
 {% endblock %}

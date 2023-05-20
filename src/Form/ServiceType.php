@@ -4,11 +4,13 @@ namespace App\Form;
 
 use App\Entity\Service;
 use App\Entity\Evenement;
+use App\Entity\OptionService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 
 class ServiceType extends AbstractType
@@ -31,6 +33,12 @@ class ServiceType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
+            /*->add('exDate', DateType::class, [
+                'data' => new \DateTime('+1 day'),
+                'format' => 'dd-MM-yyyy',
+                'widget' => 'choice',
+                "mapped" => false,
+            ])*/
         ;
     }
 

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Service{% endblock %}
+
+{% block body %}
+    <h1>Service</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Nom du service</th>
+                <td>{{ demande.service.nom }}</td>
+            </tr>
+
+            <tr>
+                <th>Prestataire</th>
+                <td>{{ demande.service.user.nom ~ ' ' ~ demande.service.user.prenom }}</td>
+            </tr>
+
+            <tr>
+                <th>Prix Final</th>
+                <td>{{ demande.service.prix }} &euro;</td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_demandes_account_confirm_paiement', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Confirmer le paiement') }}</button></a>
+    <a href="{{ path('app_demandes_account_cancel_paiement', {'id': demande.id}) }}"><button class="btn btn-lg btn-default">{{ button_label|default('Annuler le paiement et la demande') }}</button></a>
+    <a href="{{ path('app_demandes_account_show', {'id': demande.id}) }}">Retour</a>
+
+{% endblock %}

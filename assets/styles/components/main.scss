@@ -70,8 +70,36 @@ table{
     }
 }
 
+form {
+    margin-bottom: 15px;
+    > div{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+.date-reservaton{
+    width: 0;
+    opacity: 0;
+    position: absolute;
+}
+.circle{
+    border-radius: 50%;
+}
+
+
+.profil-picture{
+    width: 25px;
+    height: 25px;
+}
+
 table ~ div ~ form {
     margin-top: 15px;
+}
+
+a.back-to-list{
+    margin-top: 10px;
 }
 
 .btn-edit, .btn-show{
@@ -122,6 +150,12 @@ table ~ div ~ form {
     background: red;
 }
 
+.text-danger{
+    color: red;
+}
+
+
+
 .search input{
     border: none;
     outline: none;
@@ -130,6 +164,34 @@ table ~ div ~ form {
 .search input:focus{
     border: none;
     outline: none;
+}
+
+.w-30{
+    width: 30%;
+}
+
+.w-40{
+    width: 40%;
+}
+
+.w-60{
+    width: 60%;
+}
+
+.w-70{
+    width: 70%;
+}
+
+.gap-5{
+    gap: 5px;
+}
+
+.gap-10{
+    gap: 10px;
+}
+
+.gap-15{
+    gap: 15px;
 }
 
 #border{
@@ -186,6 +248,10 @@ input{
 }
 
 .jcb{
+    justify-content: space-between;
+}
+
+.jcsb{
     justify-content: space-between;
 }
 

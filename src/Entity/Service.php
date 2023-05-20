@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ServiceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\OptionService;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ServiceRepository;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
@@ -51,14 +52,24 @@ class Service
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $categorie = null;
+
+    #[ORM\ManyToMany(targetEntity: OptionService::class, inversedBy: 'services')]
+    private Collection $optionService;
+
+    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Favori::class)]
+    private Collection $favoris;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $noteMoy = null;
+
 
 
     public function __construct()
     {
         $this->demandes = new ArrayCollection();
         $this->evenements = new ArrayCollection();
+        $this->optionService = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -250,14 +261,69 @@ class Service
         return $this;
     }
 
-    public function getCategorie(): ?string
+    /**
+     * @return Collection<int, OptionService>
+     */
+    public function getOptionService(): Collection
     {
-        return $this->categorie;
+        return $this->optionService;
     }
 
-    public function setCategorie(string $categorie): self
+    public function addOptionService(OptionService $optionService): self
     {
-        $this->categorie = $categorie;
+        if (!$this->optionService->contains($optionService)) {
+            $this->optionService->add($optionService);
+        }
+
+        return $this;
+    }
+
+    public function removeOptionService(OptionService $optionService): self
+    {
+        $this->optionService->removeElement($optionService);
+        $optionService->removeService($this);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favori>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavoris(Favori $favori): self
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoris(Favori $favori): self
+    {
+        if ($this->favoris->removeElement($favori)) {
+            // set the owning side to null (unless already changed)
+            if ($favori->getService() === $this) {
+                $favori->setService(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNoteMoy(): ?float
+    {
+        return $this->noteMoy;
+    }
+
+    public function setNoteMoy(?float $noteMoy): self
+    {
+        $this->noteMoy = $noteMoy;
 
         return $this;
     }

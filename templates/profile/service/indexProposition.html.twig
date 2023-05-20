@@ -7,11 +7,10 @@
 <h2>Demandes pour mes services</h2>
     <table class="table">
         <thead>
-            <tr>
+           <tr>
                 <th>Service</th>
                 <th>Date</th>
-                <th>Heure début</th>
-                <th>Heure fin</th>
+                <th>Paiement</th>
                 <th>Statut</th>
                 <th>actions</th>
             </tr>
@@ -21,8 +20,7 @@
             <tr>
                 <td>{{ demande.service.nom}}</td>
                 <td>{{ demande.planedDate ? demande.planedDate|date('Y-m-d') : '' }}</td>
-                <td>{{ demande.debutTime ? demande.debutTime|date('H:i:s') : '' }}</td>
-                <td>{{ demande.endTime ? demande.endTime|date('H:i:s') : '' }}</td>
+                <td>{{ demande.paiement ? 'Fait' : '' }}</td>
                 <td>{{ demande.statut }}</td>
                 <td>
                     <a href="{{ path('app_service_account_show_proposition', {'id': demande.id}) }}">Afficher</a>
@@ -35,6 +33,19 @@
         {% endfor %}
         </tbody>
     </table>
+
+    {% for demande in demandes %}
+        {% if demande.statut == "en attente" and demande.newPlanedDate is not empty and demande.propositionNouvelleDate %}
+            <h3>Nouvelles propositions de date : </h3>
+        {% endif %}
+        {% set break = true %}
+    {% endfor %}
+
+    {% for demande in demandes %}
+        {% if demande.statut == "en attente" and demande.newPlanedDate is not empty and demande.propositionNouvelleDate %}
+            <p>Le client {{ demande.user.nom}} {{ demande.user.prenom}} vous a proposé une nouvelle date pour la demande du service <b> {{ demande.service.nom}} </b> : <a href="{{ path('app_service_account_new_date_confirm', {'id': demande.id}) }}">Cliquez ici pour donner votre réponse</a></p>
+        {% endif %}
+    {% endfor %}
 </div>
     
 {% endblock %}

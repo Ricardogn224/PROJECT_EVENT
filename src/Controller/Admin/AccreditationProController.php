@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use Exception;
 use App\Entity\User;
@@ -27,9 +27,9 @@ class AccreditationProController extends AbstractController
     }
 
     #[Route('/{id}/accredidation-accept', name: 'app_accreditation_accept')]
-    public function accredidationAccept(Request $request, User $user, AccreditationPro $accredPro, EntityManagerInterface $manager): Response
+    public function accredidationAccept(Request $request, AccreditationPro $accredPro, EntityManagerInterface $manager): Response
     {
-        $accredPro->setEnAttente(true);
+        $accredPro->setEnAttente(false);
         $accredPro->setEstAccepte(true);
         
         $user = $accredPro->getUser();
@@ -69,7 +69,7 @@ class AccreditationProController extends AbstractController
     }
 
     #[Route('/{id}/accredidation-refuse', name: 'app_accreditation_refuse')]
-    public function accredidationRefuse(Request $request, User $user, AccreditationPro $accredPro, EntityManagerInterface $manager): Response
+    public function accredidationRefuse(Request $request, AccreditationPro $accredPro, EntityManagerInterface $manager): Response
     {
         $accredPro->setEnAttente(true);
         $accredPro->setEstAccepte(false);
