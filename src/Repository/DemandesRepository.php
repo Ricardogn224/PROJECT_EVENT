@@ -102,6 +102,25 @@ class DemandesRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    public function findDemandeWithService($id_user, $id_serv)
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.service', 's')
+            ->addSelect('s')
+            ->innerJoin('d.user', 'u')
+            ->addSelect('u')
+            ->andWhere('u.id = :id_user')
+            ->setParameter('id_user', $id_user)
+            ->andWhere('s.id = :id_serv')
+            ->setParameter('id_serv', $id_serv)
+            ->andWhere('d.statut = :statut OR d.paiement = :paiement')
+            ->setParameter('statut', 'en attente')
+            ->setParameter('paiement', 'en attente')
+            ->getQuery()
+            
+            ->execute();
+    }
+
     # je crée une fonction qui me permet de récupérer une demande par son id
     public function findDemandeById($id)
     {

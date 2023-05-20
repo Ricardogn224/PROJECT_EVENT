@@ -175,6 +175,20 @@ class AccountServiceController extends AbstractController
 
     }
 
+    #[Route('/{id}/avertir-note', name: 'app_service_avertir_note', methods: ['GET', 'POST'])]
+    public function avertirNote(Request $request, Demandes $demande, EntityManagerInterface $manager): Response
+    {
+        $demande->setServiceTermine(true);
+
+        $manager->persist($demande);
+        $manager->flush();
+
+        return $this->render('profile/service/showProposition.html.twig', [
+            'demande' => $demande
+        ]);
+
+    }
+
     #[Route('/{id}', name: 'app_service_account_delete', methods: ['POST'])]
     public function delete(Request $request, Service $service, ServiceRepository $serviceRepository): Response
     {

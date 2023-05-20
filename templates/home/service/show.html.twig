@@ -3,7 +3,12 @@
 {% block title %}Service{% endblock %}
 
 {% block body %}
-    <h1>Service</h1>
+    <h1>Service</h1></br>
+
+    {% for message in app.flashes('demandeAttente') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
     <div class="showServ">
         <table class="table">
             <tbody>

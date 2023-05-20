@@ -10,6 +10,7 @@ use App\Form\DemandesType;
 use App\Entity\Favori;
 use App\Form\SearchType;
 use App\Model\SearchData;
+use App\Repository\DemandesRepository;
 use App\Repository\FavoriRepository;
 use SendinBlue\Client\Configuration;
 use App\Repository\ServiceRepository;
@@ -95,7 +96,7 @@ class HomeController extends AbstractController
     }
 
     #[Route('/service/{id}/demande', name: 'app_home_demande', methods: ['GET', 'POST'])]
-    public function demande(Service $service, Request $request, EntityManagerInterface $manager): Response
+    public function demande(Service $service, Request $request, EntityManagerInterface $manager, DemandesRepository $demandesRepository): Response
     {
 
         $demande = new Demandes();

@@ -3,9 +3,68 @@
 {% block title %}Message index{% endblock %}
 
 {% block body %}
-    <h1>Message index</h1>
+    <h2>Messages</h2>
+    <a href="{{ path('app_message_new') }}" class="flex gap-5"><span>Ecrire</span><i class="fa-regular fa-pen-to-square"></i></a>
+    {% if messages is not empty %} 
+    <div class="message-container flex jcsb gap-15">
+        <div class="message-items flex fdc gap-5 w-30">
+            {% if messages is iterable %} 
+                {% for message in messages %}
+                    {% if message.emmeteur == lastMessage.emmeteur %}
+                    <a href="{{ path('app_message_index_detail', {'id': message.id}) }}" class="message-block active">
+                    {% else %}
+                    <a href="{{ path('app_message_index_detail', {'id': message.id}) }}" class="message-block">
+                    {% endif %}
+                        <div class="msg-date-name flex aic jcsb">
+                            <strong>{{ message.recepteur }}</strong>
+                            <span>{{ message.date ? message.date|date('Y-m-d H:i:s') : '' }}</span>
+                        </div>
+                        <div class="msg-title">
+                            {{ message.message|length > 20 ? message.message|slice(0, 20) ~ '...' :  message.message}}
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="message-show flex fdc gap-15  w-70">
+            {% if message_detail is defined%}
+                <div class="msg-show-title flex jcsb">
+                <div class="flex gap-10">
+                        <a href="{{ path('app_message_reply', {'id': message_detail.id_destinataire}) }}" class="flex gap-5"><span>Répondre</span><i class="fa-solid fa-reply-all"></i></a>
+                    </div>
+                </div>
+                <div class="flex aic jcsb">
+                    <strong>Emetteur: {{ message_detail.recepteur }}</strong>
+                    <span>date: {{ message_detail.date ? message_detail.date|date('Y-m-d H:i:s') : '' }}</span>
+                </div>
+                <div class="msg-show-content">
+                    <p>{{ message_detail.message }}</p>
+                </div>
+            {% else %}
 
-    <table class="table">
+            <div class="msg-show-title flex jcsb">
+                <div class="flex gap-10">
+                    {# <a href="{{ path('app_message_reply', {'id': message.id}) }}" class="flex gap-5"><span>Répondre</span><i class="fa-solid fa-reply-all"></i></a> #}
+                    <a href="{{ path('app_message_reply', {'id': lastMessage.id_destinataire}) }}" class="flex gap-5"><span>Répondre</span><i class="fa-solid fa-reply-all"></i></a>
+                </div>
+                </div>
+                <div class="flex aic jcsb">
+                    <strong>Emetteur: {{ lastMessage.recepteur }}</strong>
+                    <span>date: {{ lastMessage.date ? lastMessage.date|date('Y-m-d H:i:s') : '' }}</span>
+                </div>
+                <div class="msg-show-content">
+                    <p>{{ lastMessage.message }}</p>
+                </div>
+            </div>
+        {% endif %}
+
+
+    </div>
+    {% else %}
+     <h3>Aucun messages pour l'instant</h3>
+    {% endif %}
+
+    {# <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
