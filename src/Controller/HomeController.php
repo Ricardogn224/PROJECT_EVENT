@@ -8,6 +8,7 @@ use App\Entity\Service;
 use App\Entity\Demandes;
 use App\Form\DemandesType;
 use App\Entity\Favori;
+use App\Repository\DemandesRepository;
 use App\Repository\FavoriRepository;
 use SendinBlue\Client\Configuration;
 use App\Repository\ServiceRepository;
@@ -84,8 +85,17 @@ class HomeController extends AbstractController
     }
 
     #[Route('/service/{id}/demande', name: 'app_home_demande', methods: ['GET', 'POST'])]
-    public function demande(Service $service, Request $request, EntityManagerInterface $manager): Response
+    public function demande(Service $service, Request $request, EntityManagerInterface $manager, DemandesRepository $demandesRepository): Response
     {
+        $demandeEnAttente = $demandesRepository->findDemandeWithService($this->getUser()->getId(), $service->getId());
+
+        if ($demandeEnAttente) {
+            $this->addFlash('demandeAttente', 'Vous avez déjà une demande en attente pour ce service');
+
+            return $this->render('home/service/show.html.twig', [
+                'service' => $service,
+            ]);
+        }
         
         $demande = new Demandes();
         $form = $this->createForm(DemandesType::class, $demande);
