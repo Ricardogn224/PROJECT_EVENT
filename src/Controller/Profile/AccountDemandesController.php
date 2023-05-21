@@ -7,6 +7,7 @@ use App\Entity\Demandes;
 use App\Form\DemandesType;
 use App\Form\DemandesNewDateType;
 use App\Repository\DemandesRepository;
+use App\Repository\DisponibiliteRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -153,7 +154,7 @@ class AccountDemandesController extends AbstractController
     }
 
     #[Route('/{id}/nouvelle-date', name: 'app_demande_account_new_date', methods: ['GET', 'POST'])]
-    public function demandeNewDate(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    public function demandeNewDate(Demandes $demande, Request $request, EntityManagerInterface $manager, DisponibiliteRepository $disponibiliteRepository): Response
     {
         $form = $this->createForm(DemandesNewDateType::class, $demande);
         $form->handleRequest($request);
@@ -161,7 +162,15 @@ class AccountDemandesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $demande = $form->getData();
 
+            $disponibilite = $disponibiliteRepository->findDateLibre($demande->getService()->getId(), $demande->getPlanedDate());
+            $disponibilite->setLibre(true);
+
+            $disponibilite2 = $disponibiliteRepository->findDateLibre($demande->getService()->getId(), $form->get("newPlanedDate")->getData());
+            $disponibilite2->setLibre(false);
+
             $manager->persist($demande);
+            $manager->persist($disponibilite);
+            $manager->persist($disponibilite2);
             $manager->flush();
 
             return $this->redirectToRoute('app_demandes_account_index', [], Response::HTTP_SEE_OTHER);
@@ -169,7 +178,8 @@ class AccountDemandesController extends AbstractController
         
         return $this->render('profile/demandes/nouvelleDate.html.twig', [
             'form' => $form,
-            'demande' => $demande
+            'demande' => $demande,
+            'serviceDispos' => $demande->getService()->getDisponibilites(),
         ]);
     }
 

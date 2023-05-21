@@ -19,6 +19,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let showService = document.querySelector('.showServ')
 
+    let chooseDate = document.querySelector('.choose-date')
+
+    /*let addDispo = document.querySelector('.add-dispo')
+
+    let addDateElement = document.querySelector('.add-dispo .add-date')
+    let clonedAddDate = addDateElement.cloneNode(true);*/
+
+
     /*************************************************************************************************/
     /****************************************** PROGRAMME ********************************************/
     /*************************************************************************************************/
@@ -82,7 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.querySelector('.calendar-link').addEventListener('click', function(){
-
         document.querySelector('.date-reservaton').showPicker()
     })
 
@@ -199,6 +206,38 @@ document.addEventListener("DOMContentLoaded", function () {
         })
     }
 
+
+
+    chooseDate.addEventListener('click', function(event){
+        
+        if (event.target.classList.contains('date-chosen')) {
+            let liDates = event.target.closest('.dispo-list').querySelectorAll('li')
+            for(const liDate of liDates){
+                liDate.style.background = 'white'
+                liDate.querySelector('a').textContent = "Choisir"
+                liDate.querySelector('a').classList.remove("chosen")
+                liDate.querySelector('a').classList.add("notChosen")
+            }
+
+            let liSelec = event.target.closest('li')
+            liSelec.style.background = 'lightGrey'
+            liSelec.querySelector('a').textContent = "Choisi"
+            liSelec.querySelector('a').classList.remove("notChosen")
+            liSelec.querySelector('a').classList.add("chosen")
+
+            let inputPlanedDate
+
+            if (liSelec.classList.contains('new-date')) {
+                inputPlanedDate = document.querySelector('input.new-planed-date')
+            }else{
+                inputPlanedDate = document.querySelector('input.planed-date')
+            }
+
+            inputPlanedDate.value = event.target.closest('li').querySelector('.hidden-date').textContent
+            console.log(inputPlanedDate.value)
+        }
+
+    })
     
 
 

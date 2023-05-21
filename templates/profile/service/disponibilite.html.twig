@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Service{% endblock %}
+
+{% block body %}
+    <h1>Mes disponibilités</h1></br>
+
+    <p style="font-weight: bold;">Vos disponibilités pour ce service : </p>
+    <ul class ="dispo-list">
+    {% for serviceDispo in serviceDispos %}
+        {% if serviceDispo.libre %}
+            <li>{{ serviceDispo.date|date("d/m/Y", "Europe/Paris") }} <a href="{{ path('app_service_account_remove_disponibilite', {'id': serviceDispo.id}) }}">Retirer</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul></br>
+    
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+        <button class="btn">{{ button_label|default('Ajouter') }}</button>
+    {{ form_end(form) }}
+{% endblock %}

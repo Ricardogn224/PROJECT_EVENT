@@ -15,7 +15,10 @@ class DemandesNewDateType extends AbstractType
         $builder
             ->add('newPlanedDate', DateType::class, [
                 'data' => new \DateTime('+1 day'),
-                'format' => 'dd-MM-yyyy',
+                'widget' => 'single_text',
+                'label' => 'Ajouter une date',
+                'label_attr' => ['class' => 'new-planed-date'],
+                'attr' => ['class' => 'new-planed-date'],
             ])
         ;
     }

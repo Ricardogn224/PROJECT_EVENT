@@ -39,6 +39,19 @@ class DisponibiliteRepository extends ServiceEntityRepository
         }
     }
 
+    public function findDateLibre($id_serv, $date_dispo): ?Disponibilite
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.service', 's')
+            ->addSelect('s')
+            ->andWhere('s.id = :id_serv')
+            ->setParameter('id_serv', $id_serv)
+            ->andWhere('d.date = :date_dispo')
+            ->setParameter('date_dispo', $date_dispo)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Disponibilite[] Returns an array of Disponibilite objects
 //     */

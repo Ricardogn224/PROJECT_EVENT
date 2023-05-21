@@ -7,11 +7,22 @@
     <h1>Proposer une nouvelle date :</h1>
     <p>Si le prestataire n'accepte pas cette nouvelle date, votre demande sera annulée et vous devrez refaire une nouvelle demande pour le service</p></br>
 
-    <p>Première date proposée : {{ demande.planedDate|date('Y-m-d')}}</p></br>
+    <p>Première date proposée : {{ demande.planedDate|date('d-m-Y')}}</p></br>
+
+    <h3>Liste des dates disponibles :</h3>
+    <div class="choose-date">
+    <ul class ="dispo-list">
+    {% for serviceDispo in serviceDispos %}
+        {% if serviceDispo.libre %}
+        <li class="new-date"><strong>{{ serviceDispo.date|date("d-m-Y", "Europe/Paris") }}</strong><p class="hidden-date">{{ serviceDispo.date|date("Y-m-d", "Europe/Paris") }}</p> <a class="date-chosen notChosen">Choisir</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+    </div>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-        <button class="btn">{{ button_label|default('Save') }}</button>
+        <button class="btn">{{ button_label|default('Enregistrer') }}</button>
     {{ form_end(form) }}
 
 {% endblock %}

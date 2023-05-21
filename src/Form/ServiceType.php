@@ -10,7 +10,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 
 class ServiceType extends AbstractType
@@ -33,12 +32,6 @@ class ServiceType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
             ])
-            /*->add('exDate', DateType::class, [
-                'data' => new \DateTime('+1 day'),
-                'format' => 'dd-MM-yyyy',
-                'widget' => 'choice',
-                "mapped" => false,
-            ])*/
         ;
     }
 

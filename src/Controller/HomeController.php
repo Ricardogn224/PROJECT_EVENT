@@ -6,11 +6,13 @@ use Exception;
 use GuzzleHttp\Client;
 use App\Entity\Service;
 use App\Entity\Demandes;
+use App\Entity\Disponibilite;
 use App\Form\DemandesType;
 use App\Entity\Favori;
 use App\Form\SearchType;
 use App\Model\SearchData;
 use App\Repository\DemandesRepository;
+use App\Repository\DisponibiliteRepository;
 use App\Repository\FavoriRepository;
 use SendinBlue\Client\Configuration;
 use App\Repository\ServiceRepository;
@@ -96,8 +98,17 @@ class HomeController extends AbstractController
     }
 
     #[Route('/service/{id}/demande', name: 'app_home_demande', methods: ['GET', 'POST'])]
-    public function demande(Service $service, Request $request, EntityManagerInterface $manager, DemandesRepository $demandesRepository): Response
+    public function demande(Service $service, Request $request, EntityManagerInterface $manager, DemandesRepository $demandesRepository, DisponibiliteRepository $disponibiliteRepository): Response
     {
+        $demandeEnAttente = $demandesRepository->findDemandeWithService($this->getUser()->getId(), $service->getId());
+
+        if ($demandeEnAttente) {
+            $this->addFlash('demandeAttente', 'Vous avez déjà une demande en attente pour ce service');
+
+            return $this->render('home/service/show.html.twig', [
+                'service' => $service,
+            ]);
+        }
 
         $demande = new Demandes();
         $form = $this->createForm(DemandesType::class, $demande);
@@ -110,7 +121,11 @@ class HomeController extends AbstractController
             $demande->setService($service);
             $demande->setStatut('en attente');
 
+            $disponibilite = $disponibiliteRepository->findDateLibre($service->getId(), $form->get("planedDate")->getData());
+            $disponibilite->setLibre(false);
+
             $manager->persist($demande);
+            $manager->persist($disponibilite);
             $manager->flush();
 
             $userNom = $this->getUser()->getNom();
@@ -147,7 +162,8 @@ class HomeController extends AbstractController
         }
 
         return $this->render('demandes/new.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'serviceDispos' => $service->getDisponibilites(),
         ]);
     }
     // #[Route('/{me}', name: 'app_home')]
