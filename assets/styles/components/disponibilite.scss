@@ -11,3 +11,39 @@ form #disponibilite{
         }
     }
 }
+
+.dispo-list{
+    list-style-type: disc;
+    padding-left: 25px;
+    .notChosen{
+        cursor: pointer;
+        color: rgb(35, 97, 183);
+    }
+    .notChosen:hover{
+        color: rgb(89, 151, 238);
+    }
+    .chosen{
+        cursor: unset;
+        color: rgb(14, 27, 45);
+    }
+    .chosen:hover{
+        color: rgb(14, 27, 45);
+    }
+    li a{
+        color: red;
+    }
+    li a:hover{
+        color: rgb(130, 3, 3);
+    }
+    li .hidden-date{
+        display: none;
+    }
+}
+
+.planed-date, .new-planed-date{ 
+    display: none;
+}
+
+.add-dispo, .choose-date{
+    width: 20%;
+}

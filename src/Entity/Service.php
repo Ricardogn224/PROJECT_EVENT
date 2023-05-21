@@ -62,6 +62,9 @@ class Service
     #[ORM\Column(nullable: true)]
     private ?float $noteMoy = null;
 
+    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Disponibilite::class)]
+    private Collection $disponibilites;
+
 
 
     public function __construct()
@@ -70,6 +73,7 @@ class Service
         $this->evenements = new ArrayCollection();
         $this->optionService = new ArrayCollection();
         $this->favoris = new ArrayCollection();
+        $this->disponibilites = new ArrayCollection();
     }
     
     public function getId(): ?int
@@ -324,6 +328,36 @@ class Service
     public function setNoteMoy(?float $noteMoy): self
     {
         $this->noteMoy = $noteMoy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Disponibilite>
+     */
+    public function getDisponibilites(): Collection
+    {
+        return $this->disponibilites;
+    }
+
+    public function addDisponibilite(Disponibilite $disponibilite): self
+    {
+        if (!$this->disponibilites->contains($disponibilite)) {
+            $this->disponibilites->add($disponibilite);
+            $disponibilite->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDisponibilite(Disponibilite $disponibilite): self
+    {
+        if ($this->disponibilites->removeElement($disponibilite)) {
+            // set the owning side to null (unless already changed)
+            if ($disponibilite->getService() === $this) {
+                $disponibilite->setService(null);
+            }
+        }
 
         return $this;
     }

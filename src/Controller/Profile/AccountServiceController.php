@@ -9,11 +9,15 @@ use App\Entity\Service;
 use App\Entity\Demandes;
 use App\Form\ServiceType;
 use App\Entity\AccreditationPro;
+use App\Entity\Disponibilite;
 use App\Form\DemandesNewDateType;
+use App\Form\DiscussionType;
+use App\Form\DisponibiliteType;
 use SendinBlue\Client\Configuration;
 use App\Repository\ServiceRepository;
 use SendinBlue\Client\Api\AccountApi;
 use App\Repository\DemandesRepository;
+use App\Repository\DisponibiliteRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,7 +107,7 @@ class AccountServiceController extends AbstractController
     
 
     #[Route('/demandes-pour-mes-services/{id}/accept-demande', name: 'app_service_account_accept_new_date', methods: ['GET', 'POST'])]
-    public function serviceDemandeAccept(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    public function serviceDemandeAccept(Demandes $demande, Request $request, EntityManagerInterface $manager, DisponibiliteRepository $disponibiliteRepository): Response
     {
         $demande->setStatut("accepte");
         $manager->persist($demande);
@@ -112,10 +116,23 @@ class AccountServiceController extends AbstractController
     }
 
     #[Route('/demandes-pour-mes-services/{id}/refuse-demande', name: 'app_service_account_refuse_new_date', methods: ['GET', 'POST'])]
-    public function serviceDemandeRefuse(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    public function serviceDemandeRefuse(Demandes $demande, Request $request, EntityManagerInterface $manager, DisponibiliteRepository $disponibiliteRepository): Response
     {
         $demande->setStatut("refuse");
         $manager->persist($demande);
+
+        if ($demande->getNewPlanedDate() === null) {
+            $disponibilite = $disponibiliteRepository->findDateLibre($demande->getService()->getId(), $demande->getPlanedDate());
+            $disponibilite->setLibre(true);
+            $manager->persist($disponibilite);
+        }else {
+            $disponibilite = $disponibiliteRepository->findDateLibre($demande->getService()->getId(), $demande->getNewPlanedDate());
+            $disponibilite->setLibre(true);
+            $manager->persist($disponibilite);
+        }
+
+        
+
         $manager->flush();
         return $this->redirectToRoute('app_service_account_index_proposition', [], Response::HTTP_SEE_OTHER);
     }
@@ -143,12 +160,45 @@ class AccountServiceController extends AbstractController
 
     }
 
-    #[Route('/{id}', name: 'app_service_account_show', methods: ['GET'])]
+    #[Route('/mes-services/{id}', name: 'app_service_account_show', methods: ['GET'])]
     public function show(Service $service): Response
     {
         return $this->render('profile/service/show.html.twig', [
             'service' => $service,
         ]);
+    }
+
+    #[Route('/mes-services/{id}/disponibilite', name: 'app_service_account_disponibilite',methods: ['GET', 'POST'])]
+    public function disponibilite(Service $service, Request $request, EntityManagerInterface $manager): Response
+    {
+        $disponibilite = new Disponibilite();
+        $form = $this->createForm(DisponibiliteType::class, $disponibilite);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $disponibilite = $form->getData();
+            $disponibilite->setService($service);
+            $disponibilite->setLibre(true);
+
+            $manager->persist($disponibilite);
+            $manager->flush();
+
+            return $this->redirect($request->getUri());
+        }
+
+        return $this->render('profile/service/disponibilite.html.twig', [
+            'form' => $form->createView(),
+            'serviceDispos' => $service->getDisponibilites(),
+        ]);
+    }
+
+    #[Route('/mes-services/disponibilite/{id}', name: 'app_service_account_remove_disponibilite',methods: ['GET', 'POST'])]
+    public function removeDisponibilite(Request $request, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
+    {
+
+        $disponibiliteRepository->remove($disponibilite, true);
+
+        return $this->redirectToRoute('app_service_account_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/edit', name: 'app_service_account_edit', methods: ['GET', 'POST'])]
