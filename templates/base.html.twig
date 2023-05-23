@@ -18,9 +18,11 @@
             <nav class="container navbar flex jcb aic">
                 <h1><a href="/">Lucie</a></h1>
                 <div class="search flex aic">
-                    <i class="fa fa-search"></i>
-                    <input type="text" name="" id="" placeholder="Filtrez vos recherches ici">
-                    <form>
+                    <form action="{{ path('app_search_info') }}" method="post" enctype="multipart/form-data">
+                        <i class="fa fa-search"></i>
+                        <input type="text" name="" id="" placeholder="Filtrez vos recherches ici">
+                    </form>
+                    <form >
                         <img src="{{ asset('build/images/settings.svg') }}" alt="filtre" class="btn-filter">
                         <div class="filter-list">
                             <div>
@@ -29,7 +31,7 @@
                             </div>
                             <hr />
                             <div>
-                                <label>Fouchette de prix</label>
+                                <label>Fourchette de prix</label>
                                 <div class="flex jcb container-price-filter">
                                     <input type="number" name="" id="" placeholder="Minimum">
                                     <hr />

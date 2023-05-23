@@ -30,7 +30,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository, Request $request): Response
+    public function index(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository, Request $request, DisponibiliteRepository $disponibiliteRepository): Response
     {
 
         /* $searchData = new SearchData();
@@ -44,6 +44,7 @@ class HomeController extends AbstractController
             /* 'form' => $form->createView(), */
             'services' => $serviceRepository->findAll(),
             'evenements' => $evenementRepository->findAll(),
+            'disponibilites' => $disponibiliteRepository->findFirstDispo(),
         ]);
     }
 
@@ -163,7 +164,7 @@ class HomeController extends AbstractController
 
         return $this->render('demandes/new.html.twig', [
             'form' => $form->createView(),
-            'serviceDispos' => $service->getDisponibilites(),
+            'serviceDispos' => $disponibiliteRepository->findDispoById($service->getId()),
         ]);
     }
     // #[Route('/{me}', name: 'app_home')]

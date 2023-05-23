@@ -179,7 +179,7 @@ class AccountDemandesController extends AbstractController
         return $this->render('profile/demandes/nouvelleDate.html.twig', [
             'form' => $form,
             'demande' => $demande,
-            'serviceDispos' => $demande->getService()->getDisponibilites(),
+            'serviceDispos' => $disponibiliteRepository->findDispoById($demande->getService()->getId()),
         ]);
     }
 
