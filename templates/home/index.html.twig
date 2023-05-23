@@ -22,7 +22,13 @@
                 </div>
                 <div>
                     <p>{{ service.user.nom ~ ' ' ~ service.user.prenom }}</p>
-                    <p>Prochaine dispo. 4 févr.</p>
+                    {% set break = false %}
+                    {% for disponibilite in disponibilites %}
+                        {% if disponibilite.service.id  == service.id and not break %}
+                            <p>Prochaine dispo. {{ disponibilite.date|date('d/m') }}</p>
+                            {% set break = true %}
+                        {% endif %}
+                    {% endfor %}
                     <p>{{ service.prix ~ ' euros'}}</p>
                 </div>
             </a>

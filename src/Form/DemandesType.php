@@ -19,7 +19,7 @@ class DemandesType extends AbstractType
     {
         $builder
             ->add('planedDate', DateType::class, [
-                'data' => new \DateTime('+1 day'),
+                'required' => true,
                 'widget' => 'single_text',
                 'label' => 'Ajouter une date',
                 'label_attr' => ['class' => 'planed-date'],
