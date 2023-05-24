@@ -96,4 +96,15 @@ class ServiceRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    public function findBySearch($data_search)
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.user', 'u')
+            ->addSelect('u')
+            ->andWhere('s.nom LIKE :term OR s.description LIKE :term OR s.localisation LIKE :term  OR u.nom LIKE :term OR u.prenom LIKE :term')
+            ->setParameter('term', '%' . $data_search . '%')
+            ->getQuery()
+            ->execute();
+    }
+
 }

@@ -29,6 +29,11 @@ class Message
     #[ORM\Column]
     public ?int $id_destinataire = null;
 
+    public function __construct()
+    {
+        $this->date = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

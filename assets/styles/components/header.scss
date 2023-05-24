@@ -14,74 +14,78 @@ header{
 
             padding: 5px 10px;
             border-radius: 50px;
-            form{
-                position: relative;
-                .filter-list{
-                    box-shadow:  0px 1px 8px rgba(118, 118, 118, 0.25);
-                    position: absolute;
-                    background: $main-color-white;
-                    border-radius: 10px;
-                    top: 40px;
-                    left: 0;
-                    width: 400px;
-                    height: 500px;
-                    overflow-y: auto;
-                    display: none;
-                    .btn-valid-filter{
-                        background: $main-color;
-                        color: $main-color-white;
-                        padding: 10px;
-                        border-radius: 10px;
-                        width: 100px;
-                        transition: .2s ease-in-out;
-                    }
-                    .btn-valid-filter:hover{
-                        background: $main-color-hover-article;
-                    }
-                    ul .btn-choise-event{
-                        cursor: pointer;
-                        border: 1px solid $main-color-default-text;
-                        border-radius: 5px;
-                        width: 25px;
-                        height: 15px;
-                        margin-right: 10px;
-                    }
-                    .container-price-filter{
-                        margin-bottom: 10px;
-                    }
-                    input{
-                        border: 1px solid rgba(118, 118, 118, 0.5);
-                        border-radius: 10px;
-                        padding: 5px;
-                        width: 40%;
-                        height: 50px;
-
-                    }
-                    label ~ div{
-                        margin-top: 10px;
-                    }
-                    > div{
-                        padding: 10px;
-                        .close-btn-filter{
-                            margin-right: 10px;
-                        }
-                    }
-                    hr{
-                        background: none;
-                        border: 1px solid rgba(118, 118, 118, 0.25);
-                    }
-                    .flex hr{
-                        transform: rotate(90deg);
-                        margin: 5px 0;
-                    }
-                }
-            }
             > input{
                 margin: 0 10px;
             }
             input{
                 width: 100%;
 
+            }
+        }
+        form{
+            position: relative;
+            .filter-list{
+                box-shadow:  0px 1px 8px rgba(118, 118, 118, 0.25);
+                position: absolute;
+                background: $main-color-white;
+                border-radius: 10px;
+                top: 40px;
+                left: 0;
+                width: 400px;
+                height: 500px;
+                overflow-y: auto;
+                display: none;
+                .btn-valid-filter{
+                    background: $main-color;
+                    color: $main-color-white;
+                    padding: 10px;
+                    border-radius: 10px;
+                    width: 100px;
+                    transition: .2s ease-in-out;
+                }
+                .btn-valid-filter:hover{
+                    background: $main-color-hover-article;
+                }
+                ul .btn-choise-event{
+                    cursor: pointer;
+                    border: 1px solid $main-color-default-text;
+                    border-radius: 5px;
+                    width: 25px;
+                    height: 15px;
+                    margin-right: 10px;
+                }
+                .container-price-filter{
+                    margin-bottom: 10px;
+                }
+                input{
+                    border: 1px solid rgba(118, 118, 118, 0.5);
+                    border-radius: 10px;
+                    padding: 5px;
+                    width: 40%;
+                    height: 50px;
+
+                }
+                input.slider{
+                    width: 90%;
+
+                }
+                label ~ div{
+                    margin-top: 10px;
+                }
+                > div{
+                    padding: 10px;
+                    .close-btn-filter{
+                        margin-right: 10px;
+                    }
+                }
+                hr{
+                    background: none;
+                    border: 1px solid rgba(118, 118, 118, 0.25);
+                }
+                .flex hr{
+                    transform: rotate(90deg);
+                    margin: 5px 0;
+                }
             }
         }
         h1{

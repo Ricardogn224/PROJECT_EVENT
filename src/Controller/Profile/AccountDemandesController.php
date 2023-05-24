@@ -70,6 +70,7 @@ class AccountDemandesController extends AbstractController
         #je redirige vers la page pour poster un nouveau message
         return $this->redirectToRoute('app_message_new', [
             'id_demande' => $demande->getId(),
+            'id_destinataire' => $demande->getService()->getUser()->getId(),
          
         ]);
         
