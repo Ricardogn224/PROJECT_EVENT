@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             for ( let index = 0; index < articleItem.length; index++) {
 
                 articleItem[index].style.background = 'rgba(118, 118, 118, 0.05)'
+                console.log(even)
                 if (articleItem[index].classList.contains(even)) {
                     articleItem[index].style.display = 'block'
                 } else {
@@ -239,6 +240,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     })
     
+    let urlGetEvent = '/get-event';
+
+    fetch(urlGetEvent, {
+    method: 'GET',
+    headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    },
+    })
+    .then((response) => {
+        console.log(response);
+        return response.json();
+    })
+    .then((data) => {
+        console.log(data);
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 
 
 });

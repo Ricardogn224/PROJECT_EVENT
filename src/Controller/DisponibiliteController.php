@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Disponibilite;
 use App\Form\DisponibiliteType;
 use App\Repository\DisponibiliteRepository;
+use App\Repository\EvenementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,15 +15,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class DisponibiliteController extends AbstractController
 {
     #[Route('/', name: 'app_disponibilite_index', methods: ['GET'])]
-    public function index(DisponibiliteRepository $disponibiliteRepository): Response
+    public function index(DisponibiliteRepository $disponibiliteRepository, EvenementRepository $evenementRepository ): Response
     {
         return $this->render('disponibilite/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'disponibilites' => $disponibiliteRepository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'app_disponibilite_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, DisponibiliteRepository $disponibiliteRepository): Response
+    public function new(Request $request, DisponibiliteRepository $disponibiliteRepository, EvenementRepository $evenementRepository): Response
     {
         $disponibilite = new Disponibilite();
         $form = $this->createForm(DisponibiliteType::class, $disponibilite);
@@ -35,21 +37,23 @@ class DisponibiliteController extends AbstractController
         }
 
         return $this->renderForm('disponibilite/new.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'disponibilite' => $disponibilite,
             'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_disponibilite_show', methods: ['GET'])]
-    public function show(Disponibilite $disponibilite): Response
+    public function show(Disponibilite $disponibilite, EvenementRepository $evenementRepository): Response
     {
         return $this->render('disponibilite/show.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'disponibilite' => $disponibilite,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_disponibilite_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
+    public function edit(Request $request, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository, EvenementRepository $evenementRepository): Response
     {
         $form = $this->createForm(DisponibiliteType::class, $disponibilite);
         $form->handleRequest($request);
@@ -61,6 +65,7 @@ class DisponibiliteController extends AbstractController
         }
 
         return $this->renderForm('disponibilite/edit.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'disponibilite' => $disponibilite,
             'form' => $form,
         ]);

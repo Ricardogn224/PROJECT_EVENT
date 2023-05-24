@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\OptionService;
 use App\Form\OptionsServiceType;
+use App\Repository\EvenementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,15 +15,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class OptionServiceController extends AbstractController
 {
     #[Route('/', name: 'app_option_service_index')]
-    public function index(): Response
+    public function index( EvenementRepository $evenementRepository): Response
     {
         return $this->render('option_service/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'controller_name' => 'OptionServiceController',
         ]);
     }
 
     #[Route('/new', name: 'app_option_service_new')]
-    public function new(Request $request, EntityManagerInterface $manager): Response
+    public function new(Request $request, EntityManagerInterface $manager,  EvenementRepository $evenementRepository): Response
     {
         $optionService = new OptionService();
         $form = $this->createForm(OptionsServiceType::class, $optionService);
@@ -38,6 +40,7 @@ class OptionServiceController extends AbstractController
         }
 
         return $this->render('option_service/new.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'form' => $form->createView()
         ]);
     }
