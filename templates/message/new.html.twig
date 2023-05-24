@@ -5,6 +5,10 @@
 {% block body %}
     <h1>Create new Message</h1>
 
+    {% for message in app.flashes('messageErrorr') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
     {{ include('message/_form.html.twig') }}
 
     <a href="{{ path('app_message_index') }}">back to list</a>

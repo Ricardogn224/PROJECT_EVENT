@@ -20,12 +20,27 @@ class MainController extends AbstractController
         ]);
     }
 
-    #[Route('/', name: 'app_search_info')]
+    #[Route('/search', name: 'app_search_info')]
     public function search_info(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository, Request $request, DisponibiliteRepository $disponibiliteRepository): Response
     {
+        $searchData = $request->request->get('searchData');
+
+        $arraySearch = explode(" ", $searchData);
+
+        $array_id = [];
+
+        foreach ($arraySearch as $key => $value) {
+            $wordEntity = $serviceRepository->findBySearch($value);
+            foreach ($wordEntity as $wEntity) {
+                $array_id[] = $wEntity->getId();
+            }
+        }
+
+        $arr_unique_id = array_unique($array_id);
+
         return $this->render('home/index.html.twig', [
             /* 'form' => $form->createView(), */
-            'services' => $serviceRepository->findAll(),
+            'services' => $serviceRepository->findBy(array('id' => $arr_unique_id)),
             'evenements' => $evenementRepository->findAll(),
             'disponibilites' => $disponibiliteRepository->findFirstDispo(),
         ]);

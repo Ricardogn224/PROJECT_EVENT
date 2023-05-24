@@ -85,8 +85,7 @@ class MessageRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->andWhere('m.id_emmeteur = :val')
             ->setParameter('val', $value)
-            ->orderBy('m.date', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('m.date', 'DESC')
             ->getQuery()
             ->getResult()
         ;
@@ -98,8 +97,7 @@ class MessageRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->andWhere('m.id_destinataire = :val')
             ->setParameter('val', $value)
-            ->orderBy('m.date', 'ASC')
-            ->setMaxResults(10)
+            ->orderBy('m.date', 'DESC')
             ->getQuery()
             ->getResult()
         ;

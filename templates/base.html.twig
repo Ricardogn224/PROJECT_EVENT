@@ -20,9 +20,10 @@
                 <div class="search flex aic">
                     <form action="{{ path('app_search_info') }}" method="post" enctype="multipart/form-data">
                         <i class="fa fa-search"></i>
-                        <input type="text" name="" id="" placeholder="Filtrez vos recherches ici">
+                        <input type="text" name="searchData" id="" placeholder="Filtrez vos recherches ici">
                     </form>
-                    <form >
+                </div>
+                <form >
                         <img src="{{ asset('build/images/settings.svg') }}" alt="filtre" class="btn-filter">
                         <div class="filter-list">
                             <div>
@@ -128,6 +129,9 @@
                                         </li>
                                     </ul>
                                 </div>
+                                <div class="slidecontainer">
+                                    <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
+                                </div>
                             </div>
                             <hr />
                             <div>
@@ -140,7 +144,6 @@
                         </div>
                         
                     </form>
-                </div>
                 <ul class="flex jcb">
                     <li class="flex">
                         <a href="/favori" class="flex aic">
