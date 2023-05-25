@@ -45,13 +45,7 @@
                                 <label for="">Type d’évènement </label>
                                 <div>
                                     <ul class="flex jcb fww">
-                                    {% for evenement in evenements %}
-                                        <li class="flex aic">
-                                          {# <div class="btn-choise-event" data-filter="mariage"></div> #}
-                                          <input type="checkbox" name="{{ evenement.nom }}" value="{{ evenement.nom }}"  id="{{ evenement.nom }}" >
-                                          <label for="">{{ evenement.nom }}</label>
-                                        </li>
-                                    {% endfor %}
+                                    
                                     </ul>
                                 </div>
                             </div>
@@ -59,7 +53,7 @@
                             <div>
                                 <label for="">Note du service</label>
                                 <div>
-                                    <input type="number" min="1" max="5" value="" class="slider" id="myRange">
+                                    <input type="number" min="1" max="5" name="note" id="myRange">
                                 </div>
                             </div>
                             <hr />

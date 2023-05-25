@@ -140,4 +140,14 @@ class ServiceRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    #trouver les services supérieur ou égale à cette note
+    public function findByNote($note)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.noteMoy >= :note ')
+            ->setParameter('note', $note)
+            ->getQuery()
+            ->execute();
+    }
+
 }
