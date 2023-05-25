@@ -6,6 +6,7 @@ use Exception;
 use App\Entity\Message;
 use App\Form\Message2Type;
 use App\Repository\DemandesRepository;
+use App\Repository\EvenementRepository;
 use App\Repository\MessageRepository;
 use GuzzleHttp\Client;
 use App\Repository\UserRepository;
@@ -22,7 +23,7 @@ use SendinBlue\Client\Api\TransactionalEmailsApi;
 class MessageController extends AbstractController
 {
     #[Route('/', name: 'app_message_index', methods: ['GET'])]
-    public function index(MessageRepository $messageRepository, UserRepository $userRepository, DemandesRepository $demandesRepository): Response
+    public function index(MessageRepository $messageRepository, UserRepository $userRepository, DemandesRepository $demandesRepository, EvenementRepository $evenementRepository): Response
     {
         $user = $this->getUser();
         #je recupère l'id de l'utilisateur connecté
@@ -61,12 +62,13 @@ class MessageController extends AbstractController
 
        
         return $this->render('message/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'messages' => $messages,
         ]);
     }
 
     #[Route('/new', name: 'app_message_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, MessageRepository $messageRepository, UserRepository $userRepository): Response
+    public function new(Request $request, MessageRepository $messageRepository, UserRepository $userRepository, EvenementRepository $evenementRepository): Response
     {
         $id_demande = $request->query->get('id_demande');
         $destinataire = $request->query->get('id_destinataire');
@@ -127,13 +129,14 @@ class MessageController extends AbstractController
         }
 
         return $this->renderForm('message/new.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'message' => $message,
             'form' => $form,
         ]);
     }
 
     #[Route('/{id}', name: 'app_message_show', methods: ['GET'])]
-    public function show(Message $message, UserRepository $userRepository, DemandesRepository $demandesRepository ): Response
+    public function show(Message $message, UserRepository $userRepository, DemandesRepository $demandesRepository, EvenementRepository $evenementRepository): Response
     {
         if ($message->id_emmeteur == $this->getUser()->getId() or $message->id_destinataire== $this->getUser()->getId()) {
 
@@ -149,6 +152,7 @@ class MessageController extends AbstractController
             $message-> demande = $demande -> getService() -> getNom();
 
             return $this->render('message/show.html.twig', [
+                'evenements' => $evenementRepository->findAll(),
                 'message' => $message,
             ]);
         }else {
@@ -158,7 +162,7 @@ class MessageController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_message_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Message $message, MessageRepository $messageRepository): Response
+    public function edit(Request $request, Message $message, MessageRepository $messageRepository, EvenementRepository $evenementRepository): Response
     {
         $form = $this->createForm(Message2Type::class, $message);
         $form->handleRequest($request);
@@ -170,6 +174,7 @@ class MessageController extends AbstractController
         }
 
         return $this->renderForm('message/edit.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'message' => $message,
             'form' => $form,
         ]);
@@ -187,7 +192,7 @@ class MessageController extends AbstractController
 
     # route for reply message 
     #[Route('/reply/{id}', name: 'app_message_reply', methods: ['GET', 'POST'])]
-    public function reply(Request $request, Message $message, MessageRepository $messageRepository): Response
+    public function reply(Request $request, Message $message, MessageRepository $messageRepository, EvenementRepository $evenementRepository): Response
     {
         $message->setIdDestinataire($message->getIdEmmeteur());
         $message->setIdEmmeteur($this->getUser()->getId());
@@ -210,6 +215,7 @@ class MessageController extends AbstractController
         }
 
         return $this->renderForm('message/new.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'message' => $reply,
             'form' => $form,
         ]);

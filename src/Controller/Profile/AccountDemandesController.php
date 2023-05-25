@@ -2,12 +2,14 @@
 
 namespace App\Controller\Profile;
 
+use App\Controller\Admin\EvenementController;
 use App\Entity\Commande;
 use App\Entity\Demandes;
 use App\Form\DemandesType;
 use App\Form\DemandesNewDateType;
 use App\Repository\DemandesRepository;
 use App\Repository\DisponibiliteRepository;
+use App\Repository\EvenementRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,15 +21,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AccountDemandesController extends AbstractController
 {
     #[Route('/', name: 'app_demandes_account_index', methods: ['GET'])]
-    public function index(DemandesRepository $demandesRepository): Response
+    public function index(DemandesRepository $demandesRepository, EvenementRepository $evenementRepository): Response
     {
         return $this->render('profile/demandes/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'demandes' => $demandesRepository->findWithUser($this->getUser()->getId()),
         ]);
     }
 
     #[Route('/new', name: 'app_demandes_account_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $manager): Response
+    public function new(Request $request, EntityManagerInterface $manager, EvenementRepository $evenementRepository): Response
     {
         $demande = new Demandes();
         $form = $this->createForm(DemandesType::class, $demande);
@@ -43,12 +46,13 @@ class AccountDemandesController extends AbstractController
         }
 
         return $this->render('profile/demandes/new.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/{id}', name: 'app_demandes_account_show', methods: ['GET'])]
-    public function show(Demandes $demande, DemandesRepository $demandesRepository): Response
+    public function show(Demandes $demande, DemandesRepository $demandesRepository, EvenementRepository $evenementRepository): Response
     {
         $dm = $demandesRepository->findWithUserOnly($this->getUser()->getId(), $demande->getId());
         if (empty($dm)) {
@@ -56,12 +60,13 @@ class AccountDemandesController extends AbstractController
         }
 
         return $this->render('profile/demandes/show.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'demande' => $demande,
         ]);
     }
 
     #[Route('/{id}/conv', name: 'app_demandes_account_conv', methods: ['GET'])]
-    public function conv(Demandes $demande): Response
+    public function conv(Demandes $demande, EvenementRepository $evenementRepository): Response
     {
         #je recupère l'id de l'utilisateur connecté
         $this->getUser()->getId();
@@ -69,6 +74,7 @@ class AccountDemandesController extends AbstractController
         #dd($demande->getId());
         #je redirige vers la page pour poster un nouveau message
         return $this->redirectToRoute('app_message_new', [
+            'evenements' => $evenementRepository->findAll(),
             'id_demande' => $demande->getId(),
             'id_destinataire' => $demande->getService()->getUser()->getId(),
          
@@ -77,7 +83,7 @@ class AccountDemandesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_demandes_account_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Demandes $demande, EntityManagerInterface $manager): Response
+    public function edit(Request $request, Demandes $demande, EntityManagerInterface $manager, EvenementRepository $evenementRepository): Response
     {
         $form = $this->createForm(DemandesType::class, $demande);
         $form->handleRequest($request);
@@ -92,6 +98,7 @@ class AccountDemandesController extends AbstractController
         }
 
         return $this->render('profile/demandes/edit.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'form' => $form->createView(),
             'demande' => $demande,
         ]);
@@ -120,9 +127,10 @@ class AccountDemandesController extends AbstractController
 
 
     #[Route('/{id}/paiement', name: 'app_demandes_account_paiement', methods: ['GET', 'POST'])]
-    public function paiement(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    public function paiement(Demandes $demande, Request $request, EntityManagerInterface $manager, EvenementRepository $evenementRepository): Response
     {
         return $this->render('profile/demandes/paiement.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'demande' => $demande,
         ]);
     }
@@ -155,7 +163,7 @@ class AccountDemandesController extends AbstractController
     }
 
     #[Route('/{id}/nouvelle-date', name: 'app_demande_account_new_date', methods: ['GET', 'POST'])]
-    public function demandeNewDate(Demandes $demande, Request $request, EntityManagerInterface $manager, DisponibiliteRepository $disponibiliteRepository): Response
+    public function demandeNewDate(Demandes $demande, Request $request, EntityManagerInterface $manager, DisponibiliteRepository $disponibiliteRepository,EvenementRepository $evenementRepository): Response
     {
         $form = $this->createForm(DemandesNewDateType::class, $demande);
         $form->handleRequest($request);
@@ -178,6 +186,7 @@ class AccountDemandesController extends AbstractController
         }
         
         return $this->render('profile/demandes/nouvelleDate.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'form' => $form,
             'demande' => $demande,
             'serviceDispos' => $disponibiliteRepository->findDispoById($demande->getService()->getId()),

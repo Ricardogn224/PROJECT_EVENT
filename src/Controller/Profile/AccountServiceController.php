@@ -18,6 +18,7 @@ use App\Repository\ServiceRepository;
 use SendinBlue\Client\Api\AccountApi;
 use App\Repository\DemandesRepository;
 use App\Repository\DisponibiliteRepository;
+use App\Repository\EvenementRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,7 @@ class AccountServiceController extends AbstractController
 {
 
     #[Route('/', name: 'app_service_account_index', methods: ['GET'])]
-    public function index(ServiceRepository $serviceRepository): Response
+    public function index(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
     {
         $pro = false;
         if ($this->isGranted('ROLE_PRO') || $this->isGranted('ROLE_ADMIN')) {
@@ -40,32 +41,36 @@ class AccountServiceController extends AbstractController
 
         return $this->render('profile/service/index.html.twig', [
             'pro' => $pro,
+            'evenements' => $evenementRepository->findAll(),
         ]);
     }
 
     #[Route('/mes-services', name: 'app_service_account_index_myServices', methods: ['GET'])]
-    public function indexMyServices(ServiceRepository $serviceRepository): Response
+    public function indexMyServices(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
     {
         return $this->render('profile/service/indexMyServices.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'services' => $serviceRepository->findWithUser($this->getUser()->getId()),
             'user' => $this->getUser(),
         ]);
     }
 
     #[Route('/demandes-pour-mes-services', name: 'app_service_account_index_proposition', methods: ['GET'])]
-    public function indexProposition(DemandesRepository $demandeRepository): Response
+    public function indexProposition(DemandesRepository $demandeRepository, EvenementRepository $evenementRepository): Response
     {
 
         return $this->render('profile/service/indexProposition.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'demandes' => $demandeRepository->findDemandeProposition($this->getUser()->getId()),
         ]);
     }
 
     #[Route('/demandes-pour-mes-services/{id}', name: 'app_service_account_show_proposition', methods: ['GET', 'POST'])]
-    public function showProposition(Demandes $demande): Response
+    public function showProposition(Demandes $demande,EvenementRepository $evenementRepository): Response
     {
 
         return $this->render('profile/service/showProposition.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'demande' => $demande
         ]);
     }
@@ -97,9 +102,10 @@ class AccountServiceController extends AbstractController
     }
 
     #[Route('/demandes-pour-mes-services/{id}/nouvelle-date-confirm', name: 'app_service_account_new_date_confirm', methods: ['GET', 'POST'])]
-    public function serviceNewDateConfirm(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    public function serviceNewDateConfirm(Demandes $demande, Request $request, EntityManagerInterface $manager, EvenementRepository $evenementRepository): Response
     {
         return $this->render('profile/service/nouvelleDate.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'demande' => $demande
         ]);
     }
