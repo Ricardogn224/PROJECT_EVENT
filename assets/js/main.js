@@ -66,11 +66,13 @@ document.addEventListener("DOMContentLoaded", function () {
             let even = princilalCategorie.querySelector('span').textContent
             
             for ( let index = 0; index < articleItem.length; index++) {
-
                 articleItem[index].style.background = 'rgba(118, 118, 118, 0.05)'
-                if (articleItem[index].classList.contains(even)) {
+                console.log(even.trim())
+                if (articleItem[index].classList.contains(even.trim())) {
+                    console.log('oui')
                     articleItem[index].style.display = 'block'
                 } else {
+                    console.log('non')
                     articleItem[index].style.display = 'none'
                 }
             }
@@ -153,7 +155,24 @@ document.addEventListener("DOMContentLoaded", function () {
     if (showService) {
         let actionFav = showService.querySelector('.actFavShow')
 
-        let idIsFav = showService.querySelector('.table tr.showServId td').textContent
+        // let idIsFav = showService.querySelector('.table tr.showServId td').textContent
+        let idIsFav = showService.querySelector('.showServId').textContent
+        let heartIcon = document.createElement('i')
+
+        let heartIconRed = document.createElement('i')
+
+        heartIcon.classList.add('fa-solid', 'fa-heart')
+
+        heartIconRed.classList.add('fa-solid', 'fa-heart', 'heartIconRed')
+
+        // let colorHeartIconRed = document.querySelector('.heartIconRed')
+
+        // heartIconRed.style.color = 'red'
+
+        // heartIconRed.querySelector('path').style.color = "red"
+
+        console.log(heartIconRed)
+
         let urlIsFav = '/favori/isFav/' + idIsFav
         
         fetch(urlIsFav, {
@@ -165,9 +184,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }).then((response) => {
             return response.json().then((data) => {
                 if (data["succeed"] === 'favIn') {
-                    actionFav.textContent = "Retirer des favoris"
+                    // actionFav.textContent = "Retirer des favoris"
+                    // heartIcon.querySelector('path').style.color = "red"
+
+                    actionFav.innerHTML = ""
+                    actionFav.appendChild(heartIconRed)
+
                 }else if(data["succeed"] === 'noFav'){
-                    actionFav.textContent = "Ajouter aux favoris"
+                    // actionFav.textContent = html(heartIcon)
+                    actionFav.innerHTML = ""
+                    
+                    actionFav.appendChild(heartIcon)
+                    console.log(actionFav.querySelector('a'))
                 }
                 
         }).catch((error) => {
@@ -179,7 +207,8 @@ document.addEventListener("DOMContentLoaded", function () {
         actionFav.addEventListener('click', function(){
 
 
-            let idFav = this.closest('.showServ').querySelector('.table tr.showServId td').textContent
+            // let idFav = this.closest('.showServ').querySelector('.table tr.showServId td').textContent
+            let idFav = this.closest('.showServ').querySelector('.showServId').textContent
     
             let urlAddFav = '/favori/add/' + idFav
     
@@ -192,9 +221,19 @@ document.addEventListener("DOMContentLoaded", function () {
             }).then((response) => {
                 return response.json().then((data) => {
                     if (data["succeed"] === 'oui') {
-                        actionFav.textContent = "Retirer des favoris"
+                        // actionFav.textContent = "Retirer des favoris"
+
+                    //     heartIcon.querySelector('path').style.color = "red"
+
+                    actionFav.innerHTML = ""
+
+                    actionFav.appendChild(heartIconRed)
+                    
                     }else if (data["succeed"] === 'already') {
-                        actionFav.textContent = "Ajouter aux favoris"
+                        // actionFav.textContent = "Ajouter aux favoris"
+                    actionFav.innerHTML = ""
+
+                        actionFav.appendChild(heartIcon)
                     }else if (data["succeed"] === 'login') {
                         window.location.href = window.location.protocol + "//" + window.location.host + "/login"
                     }
