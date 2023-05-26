@@ -1,81 +1,148 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}
+  Accueil
+        
+      
+    
+  
+{% endblock %}
 
 {% block body %}
-<div class="home-page">
-    <p class="ranking-order text-center">Classement par ordre de pertinance</p>
+  <div class="home-page">
+    <p class="ranking-order text-center">
+      Classement par ordre de pertinance
+                            
+                      
+                
+          
+    </p>
     <div class="articles flex jcc fww">
-        {% for service in services %}
-            <a href="{{ path('app_home_service_show', {'id': service.id}) }}" class="article-item {% for evenement in service.evenements %} {{ evenement.nom }} {% endfor %}">
-                 <div style="display:none;"><p class="idDisplay">{{ service.id }}</p></div>
-                <div class="image-picture">
-                    <div class="heartItem"><i class="fa-solid fa-heart"></i></div>
-                    <img src="{{ vich_uploader_asset(service, 'imageFile') }}" alt="Article">
-                </div>
-                <div class="flex jcb">
-                    <p>{{ service.nom ~ ', ' ~ service.localisation }}</p>
-                    <div class="flex aic">
-                        <div><i class="fa-solid fa-star"></i></div>
-                        <div class="note">{{ service.noteMoy ? service.noteMoy|number_format(2, '.') : 'N/A' }}</div>
-                    </div>
-                </div>
+      {% for service in services %}
+        <a href="{{ path('app_home_service_show', {'id': service.id}) }}" class="article-item {% for evenement in service.evenements %} {{ evenement.nom }} {% endfor %}" />
+          <div style="display:none;">
+            <p class="idDisplay">
+              {{ service.id }}
+            </p>
+          </div>
+          <div class="image-picture">
+            <div class="heartItem">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+            <img src="{{ vich_uploader_asset(service, 'imageFile') }}" alt="Article"></div>
+            <div class="flex jcb">
+              <p>
+                {{ service.nom ~ ', ' ~ service.localisation }}
+              </p>
+              <div class="flex aic">
                 <div>
-                    <p>{{ service.user.nom ~ ' ' ~ service.user.prenom }}</p>
-                    {% set break = false %}
-                    {% for disponibilite in disponibilites %}
-                        {% if disponibilite.service.id  == service.id and not break %}
-                            <p>Prochaine dispo. {{ disponibilite.date|date('d/m') }}</p>
-                            {% set break = true %}
-                        {% endif %}
-                    {% endfor %}
-                    <p>{{ service.prix ~ ' euros'}}</p>
+                  <i class="fa-solid fa-star"></i>
                 </div>
-            </a>
+                <div class="note">
+                  {{ service.noteMoy ? service.noteMoy|number_format(2, '.') : 'N/A' }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <p>
+                {{ service.user.nom ~ ' ' ~ service.user.prenom }}
+              </p>
+              {% set break = false %}
+              {% for disponibilite in disponibilites %}
+                {% if disponibilite.service.id  == service.id and not break %}
+                  <p>
+                    Prochaine dispo. 
+                                                                                                    
+                                                                                
+                                                            
+                                        
+                    {{ disponibilite.date|date('d/m') }}
+                  </p>
+                  {% set break = true %}
+                {% endif %}
+              {% endfor %}
+              <p>
+                {{ service.prix ~ ' euros' }}
+              </p>
+            </div>
+          </a>
         {% endfor %}
+      </div>
     </div>
-</div>
-{% endblock %}
+  {% endblock %}
 
-{% block aside %}
+  {% block aside %}
     <aside class="container">
-        <nav class="infinite-carousel">
-            <button id="prev" class="prev carousel-button-left"><i class="fa-solid fa-chevron-left"></i></button>
-            <button id="next" class="next carousel-button-right"><i class="fa-solid fa-chevron-right"></i></button>
-            <ul class="carousel-items">
-                {#<li class="principal-category marriage carousel-block" data-category="mariage">
-                    <a href="{{ path('app_mariage') }}"class="flex fdc aic jcb h-100">
-                        <img src="{{ asset('build/images/mariage.svg') }}" alt="Mariage">
-                        <span>Mariage</span>
-                    </a>
-                </li>
-                <li class="principal-category carousel-block" data-category="anniversaire">
-                    <a href="{{ path('app_anniversaire') }}" class="flex fdc aic h-100">
-                        <img src="{{ asset('build/images/anniversaire.svg') }}" alt="Anniversaire">
-                        <span>Anniversaire</span>
-                    </a>
-                </li>
-                <li class="principal-category carousel-block" data-category="soiree-privee">
-                    <a href="{{ path('app_soiree_privee') }}" class="flex fdc aic h-100">
-                        <img src="{{ asset('build/images/soiree.svg') }}" alt="Soirée privée">
-                        <span>Soirée privée</span>
-                    </a>
-                </li>
-                <li class="principal-category carousel-block" data-category="naissance">
-                    <a href="{{ path('app_naissance') }}" class="flex fdc aic h-100">
-                        <img src="{{ asset('build/images/naissance.svg') }}" alt="Naissance">
-                        <span>Naissance</span>
-                    </a>
-                </li>#}
+      <nav class="infinite-carousel">
+        <button id="prev" class="prev carousel-button-left">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button id="next" class="next carousel-button-right">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <ul class="carousel-items">
+          {#<li class="principal-category marriage carousel-block" data-category="mariage">
+                                                                      <a href="{{ path('app_mariage') }}"class="flex fdc aic jcb h-100">
+                                                                          <img src="{{ asset('build/images/mariage.svg') }}" alt="Mariage">
+                                                                          <span>Mariage</span>
+                                                                      </a>
+                                                                  </li>
+                                                                  <li class="principal-category carousel-block" data-category="anniversaire">
+                                                                      <a href="{{ path('app_anniversaire') }}" class="flex fdc aic h-100">
+                                                                          <img src="{{ asset('build/images/anniversaire.svg') }}" alt="Anniversaire">
+                                                                          <span>Anniversaire</span>
+                                                                      </a>
+                                                                  </li>
+                                                                  <li class="principal-category carousel-block" data-category="soiree-privee">
+                                                                      <a href="{{ path('app_soiree_privee') }}" class="flex fdc aic h-100">
+                                                                          <img src="{{ asset('build/images/soiree.svg') }}" alt="Soirée privée">
+                                                                          <span>Soirée privée</span>
+                                                                      </a>
+                                                                  </li>
+                                                                  <li class="principal-category carousel-block" data-category="naissance">
+                                                                      <a href="{{ path('app_naissance') }}" class="flex fdc aic h-100">
+                                                                          <img src="{{ asset('build/images/naissance.svg') }}" alt="Naissance">
+                                                                          <span>Naissance</span>
+                                                                      </a>
+                                                                  </li>#}
+          {# <li class="principal-category carousel-block" data-category="naissance">
+            <a href="{{ path('app_naissance') }}" class="flex fdc aic h-100">
+              <img src="{{ asset('build/images/naissance.svg') }}" alt="Naissance">
+                <span>
+                  Naissance
+                                  
+                </span>
+              </a>
+            </li>
+            <li class="principal-category carousel-block" data-category="naissance">
+              <a href="{{ path('app_naissance') }}" class="flex fdc aic h-100">
+                <img src="{{ asset('build/images/naissance.svg') }}" alt="Naissance">
+                  <span>
+                    Naissance
+                                      
+                  </span>
+                </a>
+              </li>
+              <li class="principal-category carousel-block" data-category="naissance">
+                <a href="{{ path('app_naissance') }}" class="flex fdc aic h-100">
+                  <img src="{{ asset('build/images/naissance.svg') }}" alt="Naissance">
+                    <span>
+                      Naissance
+                                          
+                    </span>
+                  </a>
+                </li> #}
                 {% for evenement in evenements %}
-                    <li class="principal-category marriage carousel-block" data-category={{ evenement.nom }}>
-                        <a class="flex fdc aic jcb h-100">
-                            <img src="{{ vich_uploader_asset(evenement, 'imageFile') }}" alt={{ evenement.nom }}>
-                            <span>{{ evenement.nom }}</span>
-                        </a>
+                  <li class="principal-category marriage carousel-block" data-category={{ evenement.nom }}>
+                    <a class="flex fdc aic jcb h-100">
+                      <img src="{{ vich_uploader_asset(evenement, 'imageFile') }}" alt={{ evenement.nom }}>
+                        <span>
+                          {{ evenement.nom }}
+                        </span>
+                      </a>
                     </li>
-                {% endfor %}
-            </ul>
-        </nav>
-    </aside>
-{% endblock %}
+                  {% endfor %}
+                </ul>
+              </nav>
+            </aside>
+          {% endblock %}        

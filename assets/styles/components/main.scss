@@ -44,7 +44,7 @@ main{
 }
 
 svg{
-    font-size: 1.1rem;
+    font-size: 25px;
 }
 
 button{
@@ -194,6 +194,22 @@ a.back-to-list{
     gap: 15px;
 }
 
+.gap-20{
+    gap: 15px;
+}
+
+.gap-25{
+    gap: 15px;
+}
+
+.gap-30{
+    gap: 15px;
+}
+
+.gap-35{
+    gap: 15px;
+}
+
 #border{
     border: 1px solid $main-color-default-text;
     box-shadow: none;
@@ -229,6 +245,10 @@ input{
 
 // }
 
+.p-relative{
+    position: relative;
+}
+
 .close-btn{
     position: absolute;
     top: 10px;
@@ -261,6 +281,10 @@ input{
 
 .aic{
     align-items: center;
+}
+
+.aie{
+    align-items: end;
 }
 
 .fdc{

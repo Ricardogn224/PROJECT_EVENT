@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+  <head>
+    <meta charset="UTF-8">
+    <title>
+      {% block title %}
+        Welcome!
+      {% endblock %}
+    </title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+  <link rel="shortcut icon" href={{ asset('build/images/favicon.svg') }}>
+    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+    {% block stylesheets %}
+      {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        <header>
-            <nav class="container navbar flex jcb aic">
-                <h1><a href="/">Lucie</a></h1>
-                <div class="search flex aic">
-                    <form action="{{ path('app_search_info') }}" method="post" enctype="multipart/form-data">
-                        <i class="fa fa-search"></i>
-                        <input type="text" name="searchData" id="" placeholder="Filtrez vos recherches ici">
-                    </form>
+    {% block javascripts %}
+      {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      <nav class="container navbar flex jcb aic">
+        <h1>
+          <a href="/">
+            Lucie
+          </a>
+        </h1>
+        <div class="flex aic gap-10 w-100">
+          <div class="search flex aic">
+            <form action="{{ path('app_search_info') }}" class="flex aic w-100" method="post" enctype="multipart/form-data">
+              <i class="fa fa-search"></i>
+              <input class="w-100" type="text" name="searchData" id="" placeholder="Filtrez vos recherches ici">
+            </form>
+          </div>
+          <form>
+            <img src="{{ asset('build/images/settings.svg') }}" alt="filtre" class="btn-filter">
+            <div class="filter-list">
+              <div>
+                <button class="close-btn-filter">
+                  <i class="fa-regular fa-circle-xmark"></i>
+                </button>
+                <span>
+                  Filtres
+                </span>
+              </div>
+              <hr/>
+              <div>
+                <label>
+                  Fourchette de prix
+                </label>
+                <div class="flex jcb container-price-filter">
+                  <input type="number" name="" id="" placeholder="Minimum">
+                  <hr/>
+                  <input type="number" name="" id="" placeholder="Maximum">
                 </div>
                 <form form action="{{ path('app_filter_info') }}" method="post" enctype="multipart/form-data">
                         <img src="{{ asset('build/images/settings.svg') }}" alt="filtre" class="btn-filter">
@@ -71,97 +102,225 @@
                             <span>Favori</span>
                         </a>
                     </li>
-                    <li class="flex">
-                        <a href="/profil/demandes" class="flex aic calendar-link">
-                            <i class="fa-regular fa-calendar-days"></i>
-                            <input type="date" class="date-reservaton" name="" id="">
-                            <span>Demandes</span>
-                        </a>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="anniversaire"></div>
+                      <input type="checkbox" name="anniversaire" id="" hidden>
+                      <label for="">
+                        Anniversaire
+                      </label>
                     </li>
-                    <li class="flex">
-                        <a href="/message" class="flex aic">
-                            <i class="fa-regular fa-comment-dots"></i>
-                            <span>Messages</span>
-                        </a>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="bapteme_Barrmivah"></div>
+                      <input type="checkbox" name="bapteme_Barrmivah" id="" hidden>
+                      <label for="">
+                        Baptème / Barrmivah
+                      </label>
                     </li>
-                    <li class="flex">
-                        {% if app.user %}
-                            <a href="/profil" class="flex aic">
-                                <div style="display: flex; width: 20px; height: 20px;">
-                                    <img class="circle profil-picture" title="{{ app.user.userIdentifier }}" src="{{ vich_uploader_asset(app.user, 'imageFile') }}">
-                                </div>
-                                <span>{{ app.user.userIdentifier }}</span>
-
-                            </a>
-                        {% else %}
-                            <a href="/login" class="flex aic">
-                                <span>Connexion</span>
-                                <i class="fa-regular fa-circle-user"></i>
-                            </a>
-                        {% endif %}
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="soiree_privee"></div>
+                      <input type="checkbox" name="soiree_privee" id="" hidden>
+                      <label for="">
+                        Soirée privée
+                      </label>
                     </li>
-                </ul>
-            </nav>
-        </header>
-         {% block aside %}{% endblock %}
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="soiree_entreprise"></div>
+                      <input type="checkbox" name="soiree_entreprise" id="" hidden>
+                      <label for="">
+                        Soirée d’entreprise
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <hr/>
+              <div>
+                <label for="">
+                  Service
+                </label>
+                <div>
+                  <ul class="flex jcb fww">
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="salle"></div>
+                      <input type="checkbox" name="salle" id="" hidden>
+                      <label for="">
+                        Salle
+                      </label>
+                    </li>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="traiteur"></div>
+                      <input type="checkbox" name="traiteur" id="" hidden>
+                      <label for="">
+                        Traiteur
+                      </label>
+                    </li>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="wedding_planer"></div>
+                      <input type="checkbox" name="wedding_planer" id="" hidden>
+                      <label for="">
+                        Wedding Planer
+                      </label>
+                    </li>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="dj"></div>
+                      <input type="checkbox" name="dj" id="" hidden>
+                      <label for="">
+                        DJ
+                      </label>
+                    </li>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="orchestre"></div>
+                      <input type="checkbox" name="orchestre" id="" hidden>
+                      <label for="">
+                        Orchestre
+                      </label>
+                    </li>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="decorateur"></div>
+                      <input type="checkbox" name="decorateur" id="" hidden>
+                      <label for="">
+                        Décorateur
+                      </label>
+                    </li>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="fleuriste"></div>
+                      <input type="checkbox" name="fleuriste" id="" hidden>
+                      <label for="">
+                        Fleuriste
+                      </label>
+                    </li>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="photo_vidéo"></div>
+                      <input type="checkbox" name="photo_vidéo" id="" hidden>
+                      <label for="">
+                        Photo/ Vidéo
+                      </label>
+                    </li>
+                    <li class="flex aic">
+                      <div class="btn-choise-event" data-filter="maquillage"></div>
+                      <input type="checkbox" name="maquillage" id="" hidden>
+                      <label for="">
+                        Maquillage 
+                      </label>
+                    </li>
+                  </ul>
+                </div>
+                <div class="slidecontainer">
+                  <input type="range" min="1" max="5" value="1" class="slider" id="myRange">
+                </div>
+              </div>
+              <hr/>
+              <div>
+                <label for="">
+                  Option de réservation 
+                </label>
+              </div>
+              <hr/>
+              <div class="text-center">
+                <button class="btn-valid-filter">
+                  Valider
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <ul class="flex jcb">
+          <li class="flex">
+            <a href="/favori" class="flex aic">
+              <i class="fa-regular fa-heart"></i>
+              <span>
+                Favori
+              </span>
+            </a>
+          </li>
+          <li class="flex">
+            <a href="/profil/demandes" class="flex aic calendar-link">
+              <i class="fa-regular fa-calendar-days"></i>
+              <input type="date" class="date-reservaton" name="" id="">
+              <span>
+                Demandes
+              </span>
+            </a>
+          </li>
+          <li class="flex">
+            <a href="/message" class="flex aic p-relative">
+              <i class="fa-regular fa-comment-dots"></i>
+              <span>
+                Messages
+              </span>
+            <div class="user-message">11</div>
+            </a>
+          </li>
+          <li class="flex">
+            {% if app.user %}
+              <a href="/profil" class="flex aic">
+                <div style="display: flex; width: 20px; height: 20px;">
+                  <img class="circle profil-picture" title="{{ app.user.userIdentifier }}" src="{{ vich_uploader_asset(app.user, 'imageFile') }}">
+                </div>
+                <span>
+                  {{ app.user.userIdentifier }}
+                </span>
 
-        <main class="container">
-          
-            {% block body %}{% endblock %}
-        </main>
+              </a>
+            {% else %}
+              <a href="/login" class="flex aic">
+                <span>
+                  Connexion
+                </span>
+                <i class="fa-regular fa-circle-user"></i>
+              </a>
+            {% endif %}
+          </li>
+        </ul>
+      </nav>
+    </header>
+    {% block aside %}{% endblock %}
 
-        <footer>
-            <nav class="container flex jcb">
-            <div>
-                <a href="#" class="menu-title">Mariage</a>
-                <ul>
-                    <li><a href="#">Lorem, ipsum dolor.</a></li>
-                    <li><a href="#">Maiores, suscipit quisquam?</a></li>
-                    <li><a href="#">Quasi, omnis numquam?</a></li>
-                    <li><a href="#">Expedita, est modi?</a></li>
-                    <li><a href="#">Nostrum, dicta sapiente!</a></li>
-                    <li><a href="#">Harum, sed nulla?</a></li>
-                    <li><a href="#">Molestias, assumenda accusamus!</a></li>
-                </ul>
-            </div>
-            <div>
-                <a href="#" class="menu-title">Anniversaire</a>
-                <ul>
-                    <li><a href="#">Lorem, ipsum dolor.</a></li>
-                    <li><a href="#">Maiores, suscipit quisquam?</a></li>
-                    <li><a href="#">Quasi, omnis numquam?</a></li>
-                    <li><a href="#">Expedita, est modi?</a></li>
-                    <li><a href="#">Nostrum, dicta sapiente!</a></li>
-                    <li><a href="#">Harum, sed nulla?</a></li>
-                    <li><a href="#">Molestias, assumenda accusamus!</a></li>
-                </ul>
-            </div>
-            <div>
-                <a href="#" class="menu-title">Soirée privée</a>
-                <ul>
-                    <li><a href="#">Lorem, ipsum dolor.</a></li>
-                    <li><a href="#">Maiores, suscipit quisquam?</a></li>
-                    <li><a href="#">Quasi, omnis numquam?</a></li>
-                    <li><a href="#">Expedita, est modi?</a></li>
-                    <li><a href="#">Nostrum, dicta sapiente!</a></li>
-                    <li><a href="#">Harum, sed nulla?</a></li>
-                    <li><a href="#">Molestias, assumenda accusamus!</a></li>
-                </ul>
-            </div>
-            <div>
-                <a href="#" class="menu-title">Naissance</a>
-                <ul>
-                    <li><a href="#">Lorem, ipsum dolor.</a></li>
-                    <li><a href="#">Maiores, suscipit quisquam?</a></li>
-                    <li><a href="#">Quasi, omnis numquam?</a></li>
-                    <li><a href="#">Expedita, est modi?</a></li>
-                    <li><a href="#">Nostrum, dicta sapiente!</a></li>
-                    <li><a href="#">Harum, sed nulla?</a></li>
-                    <li><a href="#">Molestias, assumenda accusamus!</a></li>
-                </ul>
-            </div>
-                
-            </nav>
-        </footer>
-    </body>
+    <main class="container">
+
+      {% block body %}{% endblock %}
+    </main>
+
+    <footer>
+      <nav class="container flex jcb">
+        <div>
+          <a href="#" class="menu-title">
+            Mariage
+          </a>
+          <ul>
+            
+          </ul>
+        </div>
+        <div>
+          <a href="#" class="menu-title">
+            Anniversaire
+          </a>
+          <ul>
+            
+          </ul>
+        </div>
+        <div>
+          <a href="#" class="menu-title">
+            Soirée privée
+          </a>
+          <ul>
+
+          </ul>
+        </div>
+        <div>
+          <a href="#" class="menu-title">
+            Contact
+          </a>
+          <ul>
+            <li><a href="#">Tel: +33 6 87 54 12 02</a></li>
+            <li><a href="#">Fax: +33 1 85 04 00 02</a></li>
+            <li><a href="#">Adresse: 7 rue gracieuse, Paris 75009</a></li>
+            <li><a href="#">Email: contact@eventpresta.com</a></li>
+            <li><a href="#">Aide ?</a></li>
+            <li><a href="#">Règle de confidentialité</a></li>
+          </ul>
+        </div>
+      </nav>
+    </footer>
+  </body>
 </html>
