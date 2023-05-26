@@ -75,6 +75,19 @@ class DemandesRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    public function findWithUserOnly($id_us, $id_dem)
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.user', 'u')
+            ->addSelect('u')
+            ->andWhere('d.id = :id_dem')
+            ->setParameter('id_dem', $id_dem)
+            ->andWhere('u.id = :id_us')
+            ->setParameter('id_us', $id_us)
+            ->getQuery()
+            ->execute();
+    }
+
     public function findDemandeProposition($id)
     {
         return $this->createQueryBuilder('d')
@@ -84,6 +97,25 @@ class DemandesRepository extends ServiceEntityRepository
             ->addSelect('u')
             ->andWhere('u.id = :id')
             ->setParameter('id', $id)
+            ->getQuery()
+            
+            ->execute();
+    }
+
+    public function findDemandeWithService($id_user, $id_serv)
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.service', 's')
+            ->addSelect('s')
+            ->innerJoin('d.user', 'u')
+            ->addSelect('u')
+            ->andWhere('u.id = :id_user')
+            ->setParameter('id_user', $id_user)
+            ->andWhere('s.id = :id_serv')
+            ->setParameter('id_serv', $id_serv)
+            ->andWhere('d.statut = :statut OR d.paiement = :paiement')
+            ->setParameter('statut', 'en attente')
+            ->setParameter('paiement', 'en attente')
             ->getQuery()
             
             ->execute();

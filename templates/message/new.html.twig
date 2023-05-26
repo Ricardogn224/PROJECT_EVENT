@@ -3,9 +3,13 @@
 {% block title %}New Message{% endblock %}
 
 {% block body %}
-    <h2>Créer un nouveau message</h2>
+    <h1>Create new Message</h1>
+
+    {% for message in app.flashes('messageErrorr') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
 
     {{ include('message/_form.html.twig') }}
 
-    <a class="text-danger" href="{{ path('app_message_index') }}">Retourner</a>
+    <a href="{{ path('app_message_index') }}">back to list</a>
 {% endblock %}

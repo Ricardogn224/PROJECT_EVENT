@@ -6,6 +6,7 @@ use App\Entity\Evenement;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class EvenementType extends AbstractType
 {
@@ -13,6 +14,9 @@ class EvenementType extends AbstractType
     {
         $builder
             ->add('nom')
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Une image représentant l\'évènement',
+            ])
         ;
     }
 

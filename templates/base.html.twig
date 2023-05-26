@@ -18,9 +18,12 @@
             <nav class="container navbar flex jcb aic">
                 <h1><a href="/">Lucie</a></h1>
                 <div class="search flex aic">
-                    <i class="fa fa-search"></i>
-                    <input type="text" name="" id="" placeholder="Filtrez vos recherches ici">
-                    <form>
+                    <form action="{{ path('app_search_info') }}" method="post" enctype="multipart/form-data">
+                        <i class="fa fa-search"></i>
+                        <input type="text" name="searchData" id="" placeholder="Filtrez vos recherches ici">
+                    </form>
+                </div>
+                <form form action="{{ path('app_filter_info') }}" method="post" enctype="multipart/form-data">
                         <img src="{{ asset('build/images/settings.svg') }}" alt="filtre" class="btn-filter">
                         <div class="filter-list">
                             <div>
@@ -29,116 +32,38 @@
                             </div>
                             <hr />
                             <div>
-                                <label>Fouchette de prix</label>
+                                <label>Fourchette de prix</label>
                                 <div class="flex jcb container-price-filter">
-                                    <input type="number" name="" id="" placeholder="Minimum">
+                                    <input type="number" name="minPrice" id="" placeholder="Minimum">
                                     <hr />
-                                    <input type="number" name="" id="" placeholder="Maximum">
+                                    <input type="number" name="maxPrice" id="" placeholder="Maximum">
                                 </div>
-                                <label for="">Date de l’événement et nombre de jours </label>
-                                <div class="flex jcb">
-                                    <input type="text" name="" id="" placeholder="JJ/MM/AAAA">
-                                    <hr />
-                                    <input type="number" name="" id="" placeholder="0">
-                                </div>
+                                
                             </div>
                             <hr />
                             <div>
                                 <label for="">Type d’évènement </label>
                                 <div>
                                     <ul class="flex jcb fww">
-                                        <li class="flex aic">
-                                          <div class="btn-choise-event" data-filter="mariage"></div>
-                                          <input type="checkbox" name="mariage" id="" hidden>
-                                          <label for="">Mariage</label>
-                                        </li>
-                                        <li class="flex aic">
-                                          <div class="btn-choise-event" data-filter="anniversaire"></div>
-                                          <input type="checkbox" name="anniversaire" id="" hidden>
-                                          <label for="">Anniversaire</label>
-                                        </li>
-                                        <li class="flex aic">
-                                          <div class="btn-choise-event" data-filter="bapteme_Barrmivah"></div>
-                                          <input type="checkbox" name="bapteme_Barrmivah" id="" hidden>
-                                          <label for="">Baptème / Barrmivah</label>
-                                        </li>
-                                        <li class="flex aic">
-                                          <div class="btn-choise-event" data-filter="soiree_privee"></div>
-                                          <input type="checkbox" name="soiree_privee" id="" hidden>
-                                          <label for="">Soirée privée</label>
-                                        </li>
-                                        <li class="flex aic">
-                                          <div class="btn-choise-event" data-filter="soiree_entreprise"></div>
-                                          <input type="checkbox" name="soiree_entreprise" id="" hidden>
-                                          <label for="">Soirée d’entreprise</label>
-                                        </li>
+                                    
                                     </ul>
                                 </div>
                             </div>
                             <hr />
                             <div>
-                                <label for="">Service</label>
+                                <label for="">Note du service</label>
                                 <div>
-                                    <ul class="flex jcb fww">
-                                        <li class="flex aic">
-                                            <div class="btn-choise-event" data-filter="salle"></div>
-                                            <input type="checkbox" name="salle" id="" hidden>
-                                            <label for="">Salle</label></li>
-                                        <li class="flex aic">
-                                            <div class="btn-choise-event" data-filter="traiteur"></div>
-                                            <input type="checkbox" name="traiteur" id="" hidden>
-                                            <label for="">Traiteur</label>
-                                        </li>
-                                        <li class="flex aic">
-                                            <div class="btn-choise-event" data-filter="wedding_planer"></div>
-                                            <input type="checkbox" name="wedding_planer" id="" hidden>
-                                            <label for="">Wedding Planer</label>
-                                        </li>
-                                        <li class="flex aic">
-                                            <div class="btn-choise-event" data-filter="dj"></div>
-                                            <input type="checkbox" name="dj" id="" hidden>
-                                            <label for="">DJ</label>
-                                        </li>
-                                        <li class="flex aic">
-                                            <div class="btn-choise-event" data-filter="orchestre"></div>
-                                            <input type="checkbox" name="orchestre" id="" hidden>
-                                            <label for="">Orchestre</label>
-                                        </li>
-                                        <li class="flex aic">
-                                            <div class="btn-choise-event" data-filter="decorateur"></div>
-                                            <input type="checkbox" name="decorateur" id="" hidden>
-                                            <label for="">Décorateur</label>
-                                        </li>
-                                        <li class="flex aic">
-                                            <div class="btn-choise-event" data-filter="fleuriste"></div>
-                                            <input type="checkbox" name="fleuriste" id="" hidden>
-                                            <label for="">Fleuriste</label>
-                                        </li>
-                                        <li class="flex aic">
-                                            <div class="btn-choise-event" data-filter="photo_vidéo"></div>
-                                            <input type="checkbox" name="photo_vidéo" id="" hidden>
-                                            <label for="">Photo/ Vidéo</label>
-                                        </li>
-                                        <li class="flex aic">
-                                            <div class="btn-choise-event" data-filter="maquillage"></div>
-                                            <input type="checkbox" name="maquillage" id="" hidden>
-                                            <label for="">Maquillage </label>
-                                        </li>
-                                    </ul>
+                                    <input type="number" min="1" max="5" name="note" id="myRange">
                                 </div>
                             </div>
                             <hr />
-                            <div>
-                                <label for="">Option de réservation </label>
-                            </div>
-                            <hr />
+                        
                             <div class="text-center">
                                 <button class="btn-valid-filter">Valider</button>
                             </div>
                         </div>
                         
                     </form>
-                </div>
                 <ul class="flex jcb">
                     <li class="flex">
                         <a href="/favori" class="flex aic">
@@ -150,7 +75,7 @@
                         <a href="/profil/demandes" class="flex aic calendar-link">
                             <i class="fa-regular fa-calendar-days"></i>
                             <input type="date" class="date-reservaton" name="" id="">
-                            <span>Réservations</span>
+                            <span>Demandes</span>
                         </a>
                     </li>
                     <li class="flex">
@@ -181,6 +106,7 @@
          {% block aside %}{% endblock %}
 
         <main class="container">
+          
             {% block body %}{% endblock %}
         </main>
 

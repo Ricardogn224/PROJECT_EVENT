@@ -39,6 +39,46 @@ class DisponibiliteRepository extends ServiceEntityRepository
         }
     }
 
+    public function findDateLibre($id_serv, $date_dispo): ?Disponibilite
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.service', 's')
+            ->addSelect('s')
+            ->andWhere('s.id = :id_serv')
+            ->setParameter('id_serv', $id_serv)
+            ->andWhere('d.date = :date_dispo')
+            ->setParameter('date_dispo', $date_dispo)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findFirstDispo(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.service', 's')
+            ->addSelect('s')
+            ->addOrderBy('s.id', 'ASC')
+            ->addOrderBy('d.date', 'ASC')
+            ->andWhere('d.libre = :libre')
+            ->setParameter('libre', true)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findDispoById($id_serv): array
+    {
+        return $this->createQueryBuilder('d')
+            ->innerJoin('d.service', 's')
+            ->addSelect('s')
+            ->addOrderBy('d.date', 'ASC')
+            ->andWhere('s.id = :id')
+            ->setParameter('id', $id_serv)
+            ->andWhere('d.libre = :libre')
+            ->setParameter('libre', true)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Disponibilite[] Returns an array of Disponibilite objects
 //     */

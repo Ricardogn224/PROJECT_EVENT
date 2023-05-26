@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Profile;
 
 use App\Entity\User;
 use App\Form\EditUserPictureType;
+use App\Repository\EvenementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class ProfileController extends AbstractController
 {
     #[Route('/', name: 'app_profile')]
-    public function profil(AuthenticationUtils $authenticationUtils): Response
+    public function profil(AuthenticationUtils $authenticationUtils, EvenementRepository $evenementRepository): Response
     {
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
@@ -26,11 +27,11 @@ class ProfileController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('profile/profile.html.twig', ['last_username' => $lastUsername]);
+        return $this->render('profile/profile.html.twig', ['last_username' => $lastUsername , 'evenements' => $evenementRepository->findAll(),]);
     }
 
     #[Route('/{id}/edit-picture-user', name: 'app_profile_edit_picture_user', methods: ['GET', 'POST'])]
-    public function profilEditPicture(User $user, Request $request, EntityManagerInterface $manager): Response
+    public function profilEditPicture(User $user, Request $request, EntityManagerInterface $manager,EvenementRepository $evenementRepository ): Response
     {
         $form = $this->createForm(EditUserPictureType::class, $user);
         $form->handleRequest($request);
@@ -45,6 +46,7 @@ class ProfileController extends AbstractController
         }
 
         return $this->render('profile/editPictureUser.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'form' => $form->createView()
         ]);
     }

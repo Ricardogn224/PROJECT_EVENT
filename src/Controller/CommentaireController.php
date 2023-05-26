@@ -21,6 +21,7 @@ class CommentaireController extends AbstractController
         # je recupère les commentaire envoyé par l'utilisateur connecté
         $commentaires = $commentaireRepository->findByIdUser($this->getUser()->getId());
         return $this->render('commentaire/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'commentaires' => $commentaires,
         ]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Profile;
 
 use Exception;
 use App\Entity\User;
@@ -9,11 +9,17 @@ use App\Entity\Service;
 use App\Entity\Demandes;
 use App\Form\ServiceType;
 use App\Entity\AccreditationPro;
+use App\Entity\Disponibilite;
 use App\Form\DemandesNewDateType;
+use App\Form\DiscussionType;
+use App\Form\DisponibiliteType;
 use SendinBlue\Client\Configuration;
 use App\Repository\ServiceRepository;
 use SendinBlue\Client\Api\AccountApi;
 use App\Repository\DemandesRepository;
+use App\Repository\DisponibiliteRepository;
+use App\Repository\EvenementRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +32,7 @@ class AccountServiceController extends AbstractController
 {
 
     #[Route('/', name: 'app_service_account_index', methods: ['GET'])]
-    public function index(ServiceRepository $serviceRepository): Response
+    public function index(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
     {
         $pro = false;
         if ($this->isGranted('ROLE_PRO') || $this->isGranted('ROLE_ADMIN')) {
@@ -35,32 +41,36 @@ class AccountServiceController extends AbstractController
 
         return $this->render('profile/service/index.html.twig', [
             'pro' => $pro,
+            'evenements' => $evenementRepository->findAll(),
         ]);
     }
 
     #[Route('/mes-services', name: 'app_service_account_index_myServices', methods: ['GET'])]
-    public function indexMyServices(ServiceRepository $serviceRepository): Response
+    public function indexMyServices(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
     {
         return $this->render('profile/service/indexMyServices.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'services' => $serviceRepository->findWithUser($this->getUser()->getId()),
             'user' => $this->getUser(),
         ]);
     }
 
     #[Route('/demandes-pour-mes-services', name: 'app_service_account_index_proposition', methods: ['GET'])]
-    public function indexProposition(DemandesRepository $demandeRepository): Response
+    public function indexProposition(DemandesRepository $demandeRepository, EvenementRepository $evenementRepository): Response
     {
 
         return $this->render('profile/service/indexProposition.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'demandes' => $demandeRepository->findDemandeProposition($this->getUser()->getId()),
         ]);
     }
 
     #[Route('/demandes-pour-mes-services/{id}', name: 'app_service_account_show_proposition', methods: ['GET', 'POST'])]
-    public function showProposition(Demandes $demande): Response
+    public function showProposition(Demandes $demande,EvenementRepository $evenementRepository): Response
     {
 
         return $this->render('profile/service/showProposition.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'demande' => $demande
         ]);
     }
@@ -68,7 +78,13 @@ class AccountServiceController extends AbstractController
     #[Route('/demandes-pour-mes-services/{id}/nouvelle-date', name: 'app_service_account_new_date', methods: ['GET', 'POST'])]
     public function serviceNewDate(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
     {
-        $form = $this->createForm(DemandesNewDateType::class, $demande);
+
+        $demande->setPropositionNouvelleDate(true);
+        $manager->persist($demande);
+        $manager->flush();
+
+        return $this->redirectToRoute('app_service_account_index_proposition', [], Response::HTTP_SEE_OTHER);
+        /*$form = $this->createForm(DemandesNewDateType::class, $demande);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -82,25 +98,49 @@ class AccountServiceController extends AbstractController
         
         return $this->render('profile/service/nouvelleDate.html.twig', [
             'form' => $form
+        ]);*/
+    }
+
+    #[Route('/demandes-pour-mes-services/{id}/nouvelle-date-confirm', name: 'app_service_account_new_date_confirm', methods: ['GET', 'POST'])]
+    public function serviceNewDateConfirm(Demandes $demande, Request $request, EntityManagerInterface $manager, EvenementRepository $evenementRepository): Response
+    {
+        return $this->render('profile/service/nouvelleDate.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
+            'demande' => $demande
         ]);
     }
 
-    #[Route('/demandes-pour-mes-services/{id}/accept-demande', name: 'app_service_account_accept_demande', methods: ['GET', 'POST'])]
-    public function serviceDemandeAccept(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    
+
+    #[Route('/demandes-pour-mes-services/{id}/accept-demande', name: 'app_service_account_accept_new_date', methods: ['GET', 'POST'])]
+    public function serviceDemandeAccept(Demandes $demande, Request $request, EntityManagerInterface $manager, DisponibiliteRepository $disponibiliteRepository): Response
     {
         $demande->setStatut("accepte");
         $manager->persist($demande);
         $manager->flush();
-        return $this->redirectToRoute('app_service_account_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_service_account_index_proposition', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/demandes-pour-mes-services/{id}/refuse-demande', name: 'app_service_account_accept_refuse', methods: ['GET', 'POST'])]
-    public function serviceDemandeRefuse(Demandes $demande, Request $request, EntityManagerInterface $manager): Response
+    #[Route('/demandes-pour-mes-services/{id}/refuse-demande', name: 'app_service_account_refuse_new_date', methods: ['GET', 'POST'])]
+    public function serviceDemandeRefuse(Demandes $demande, Request $request, EntityManagerInterface $manager, DisponibiliteRepository $disponibiliteRepository): Response
     {
         $demande->setStatut("refuse");
         $manager->persist($demande);
+
+        if ($demande->getNewPlanedDate() === null) {
+            $disponibilite = $disponibiliteRepository->findDateLibre($demande->getService()->getId(), $demande->getPlanedDate());
+            $disponibilite->setLibre(true);
+            $manager->persist($disponibilite);
+        }else {
+            $disponibilite = $disponibiliteRepository->findDateLibre($demande->getService()->getId(), $demande->getNewPlanedDate());
+            $disponibilite->setLibre(true);
+            $manager->persist($disponibilite);
+        }
+
+        
+
         $manager->flush();
-        return $this->redirectToRoute('app_service_account_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_service_account_index_proposition', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/new', name: 'app_service_account_new', methods: ['GET', 'POST'])]
@@ -126,12 +166,45 @@ class AccountServiceController extends AbstractController
 
     }
 
-    #[Route('/{id}', name: 'app_service_account_show', methods: ['GET'])]
+    #[Route('/mes-services/{id}', name: 'app_service_account_show', methods: ['GET'])]
     public function show(Service $service): Response
     {
         return $this->render('profile/service/show.html.twig', [
             'service' => $service,
         ]);
+    }
+
+    #[Route('/mes-services/{id}/disponibilite', name: 'app_service_account_disponibilite',methods: ['GET', 'POST'])]
+    public function disponibilite(Service $service, Request $request, EntityManagerInterface $manager): Response
+    {
+        $disponibilite = new Disponibilite();
+        $form = $this->createForm(DisponibiliteType::class, $disponibilite);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $disponibilite = $form->getData();
+            $disponibilite->setService($service);
+            $disponibilite->setLibre(true);
+
+            $manager->persist($disponibilite);
+            $manager->flush();
+
+            return $this->redirect($request->getUri());
+        }
+
+        return $this->render('profile/service/disponibilite.html.twig', [
+            'form' => $form->createView(),
+            'serviceDispos' => $service->getDisponibilites(),
+        ]);
+    }
+
+    #[Route('/mes-services/disponibilite/{id}', name: 'app_service_account_remove_disponibilite',methods: ['GET', 'POST'])]
+    public function removeDisponibilite(Request $request, Disponibilite $disponibilite, DisponibiliteRepository $disponibiliteRepository): Response
+    {
+
+        $disponibiliteRepository->remove($disponibilite, true);
+
+        return $this->redirectToRoute('app_service_account_index', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/{id}/edit', name: 'app_service_account_edit', methods: ['GET', 'POST'])]
@@ -158,6 +231,20 @@ class AccountServiceController extends AbstractController
 
     }
 
+    #[Route('/{id}/avertir-note', name: 'app_service_avertir_note', methods: ['GET', 'POST'])]
+    public function avertirNote(Request $request, Demandes $demande, EntityManagerInterface $manager): Response
+    {
+        $demande->setServiceTermine(true);
+
+        $manager->persist($demande);
+        $manager->flush();
+
+        return $this->render('profile/service/showProposition.html.twig', [
+            'demande' => $demande
+        ]);
+
+    }
+
     #[Route('/{id}', name: 'app_service_account_delete', methods: ['POST'])]
     public function delete(Request $request, Service $service, ServiceRepository $serviceRepository): Response
     {
@@ -169,8 +256,25 @@ class AccountServiceController extends AbstractController
     }
 
     #[Route('/{id}/send-email-pro', name: 'app_send_email_pro')]
-    public function sendEmailPro(Request $request, User $user,  EntityManagerInterface $manager): Response
+    public function sendEmailPro(Request $request, User $user,  EntityManagerInterface $manager, UserRepository $userRepository): Response
     {
+        $adminEmail = "";
+        $breakLoop = false;
+        $userEm = $userRepository->findAll();
+        foreach($userEm as $key =>$userItem) {
+            if (!$breakLoop) {
+                $usRole = $userItem->getRoles()[0];
+                if ($usRole ===  "ROLE_ADMIN") {
+                    $adminEmail = $userItem->getEmail();
+                    $breakLoop = true;
+                }
+            }
+        }
+
+        if ($adminEmail === "") {
+            $adminEmail = 'jerrinald95190@live.fr';
+        }
+
         $accred_pro = new AccreditationPro();
         $accred_pro->setEnAttente(true);
         $accred_pro->setEstAccepte(false);
@@ -190,7 +294,7 @@ class AccountServiceController extends AbstractController
             $config
         );
         $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail(); // \SendinBlue\Client\Model\SendSmtpEmail | Values to send a transactional email
-        $sendSmtpEmail['to'] = array(array('email'=>'jerrinald95190@live.fr'));
+        $sendSmtpEmail['to'] = array(array('email'=>$adminEmail));
         $sendSmtpEmail['sender'] =  array('name' => 'Event Presta', 'email' => 'noreply-event-presta@gmail.com');
         $sendSmtpEmail['htmlContent'] = 'L\'utilisateur ' . $user->getNom() . ' ' . $user->getPrenom() . ' souhaite proposer ses services. Confirmez sur l\'interface administrateur.';
         $sendSmtpEmail['subject'] = 'Demande pour prestation de services';

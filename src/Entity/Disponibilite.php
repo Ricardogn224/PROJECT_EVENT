@@ -17,11 +17,11 @@ class Disponibilite
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $statut = null;
-
     #[ORM\ManyToOne(inversedBy: 'disponibilites')]
-    private ?User $user = null;
+    private ?Service $service = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $libre = null;
 
     public function getId(): ?int
     {
@@ -40,26 +40,33 @@ class Disponibilite
         return $this;
     }
 
-    public function getStatut(): ?string
+    public function getService(): ?Service
     {
-        return $this->statut;
+        return $this->service;
     }
 
-    public function setStatut(string $statut): self
+    public function setService(?Service $service): self
     {
-        $this->statut = $statut;
+        $this->service = $service;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function __toString(): string
     {
-        return $this->user;
+        $result = $this->getDate()->format('Y-m-d');
+        
+        return $result;
     }
 
-    public function setUser(?User $user): self
+    public function isLibre(): ?bool
     {
-        $this->user = $user;
+        return $this->libre;
+    }
+
+    public function setLibre(?bool $libre): self
+    {
+        $this->libre = $libre;
 
         return $this;
     }
