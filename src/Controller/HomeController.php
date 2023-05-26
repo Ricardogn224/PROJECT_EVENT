@@ -49,57 +49,63 @@ class HomeController extends AbstractController
     }
 
     #[Route('/anniversaire', name: 'app_anniversaire')]
-    public function Anniversaire(ServiceRepository $serviceRepository): Response
+    public function Anniversaire(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
     {
         return $this->render('home/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'services' => $serviceRepository->findByEvent('Anniversaire'),
         ]);
     }
 
     #[Route('/mariage', name: 'app_mariage')]
-    public function Mariage(ServiceRepository $serviceRepository): Response
+    public function Mariage(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
     {
         return $this->render('home/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'services' => $serviceRepository->findByEvent('Mariage'),
         ]);
     }
 
     #[Route('/naissance', name: 'app_naissance')]
-    public function Naissance(ServiceRepository $serviceRepository): Response
+    public function Naissance(ServiceRepository $serviceRepository , EvenementRepository $evenementRepository): Response
     {
         return $this->render('home/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'services' => $serviceRepository->findByEvent('Naissance'),
         ]);
     }
 
     #[Route('/soiree-privee', name: 'app_soiree_privee')]
-    public function soireePrivee(ServiceRepository $serviceRepository): Response
+    public function soireePrivee(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
     {
         return $this->render('home/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'services' => $serviceRepository->findByEvent('Soiree privee'),
         ]);
     }
 
     #[Route('/service/{id}', name: 'app_home_service_show', methods: ['GET'])]
-    public function show(Service $service): Response
+    public function show(Service $service, EvenementRepository $evenementRepository): Response
     {
         return $this->render('home/service/show.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'service' => $service,
         ]);
     }
 
     #[Route('/service/{categorie}', name: 'app_home_service_categorie_show', methods: ['GET'])]
     #[ParamConverter('service', options: ['mapping' => ['categorie' => 'categorie']])]
-    public function categorie_show(Service $service): Response
+    public function categorie_show(Service $service, EvenementRepository $evenementRepository): Response
     {
 
         return $this->render('home/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'service' => $service,
         ]);
     }
 
     #[Route('/service/{id}/demande', name: 'app_home_demande', methods: ['GET', 'POST'])]
-    public function demande(Service $service, Request $request, EntityManagerInterface $manager, DemandesRepository $demandesRepository, DisponibiliteRepository $disponibiliteRepository): Response
+    public function demande(Service $service, Request $request, EntityManagerInterface $manager, DemandesRepository $demandesRepository, DisponibiliteRepository $disponibiliteRepository , EvenementRepository $evenementRepository): Response
     {
         $demandeEnAttente = $demandesRepository->findDemandeWithService($this->getUser()->getId(), $service->getId());
 
@@ -107,6 +113,7 @@ class HomeController extends AbstractController
             $this->addFlash('demandeAttente', 'Vous avez déjà une demande en attente pour ce service');
 
             return $this->render('home/service/show.html.twig', [
+                'evenements' => $evenementRepository->findAll(),
                 'service' => $service,
             ]);
         }
@@ -163,6 +170,7 @@ class HomeController extends AbstractController
         }
 
         return $this->render('demandes/new.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'form' => $form->createView(),
             'serviceDispos' => $disponibiliteRepository->findDispoById($service->getId()),
         ]);

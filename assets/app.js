@@ -14,3 +14,4 @@ require('@fortawesome/fontawesome-free/js/all.js');
 // start the Stimulus application
 import './bootstrap';
 import './js/main';
+import './js/test';

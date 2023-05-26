@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Favori;
 use App\Entity\Service;
 use App\Form\FavoriType;
+use App\Repository\EvenementRepository;
 use App\Repository\FavoriRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class FavoriController extends AbstractController
 {
     #[Route('/', name: 'app_favori_index', methods: ['GET'])]
-    public function index(FavoriRepository $favoriRepository): Response
+    public function index(FavoriRepository $favoriRepository, EvenementRepository $evenementRepository): Response
     {
         #je recupère l'id de l'utilisateur 
         $userId = $this->getUser()->getId();
@@ -28,12 +29,13 @@ class FavoriController extends AbstractController
         //$favori = $favoriRepository->findByUser_id($user);
 
         return $this->render('favori/index.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'favoris' => $favoris,
         ]);
     }
 
     #[Route('/new', name: 'app_favori_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, FavoriRepository $favoriRepository): Response
+    public function new(Request $request, FavoriRepository $favoriRepository, EvenementRepository $evenementRepository): Response
     {
         $favori = new Favori();
         $form = $this->createForm(FavoriType::class, $favori);
@@ -46,6 +48,7 @@ class FavoriController extends AbstractController
         }
 
         return $this->renderForm('favori/new.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'favori' => $favori,
             'form' => $form,
         ]);
@@ -92,15 +95,16 @@ class FavoriController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_favori_show', methods: ['GET'])]
-    public function show(Favori $favori): Response
+    public function show(Favori $favori, EvenementRepository $evenementRepository): Response
     {
         return $this->render('favori/show.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'favori' => $favori,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'app_favori_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Favori $favori, FavoriRepository $favoriRepository): Response
+    public function edit(Request $request, Favori $favori, FavoriRepository $favoriRepository, EvenementRepository $evenementRepository): Response
     {
         $form = $this->createForm(FavoriType::class, $favori);
         $form->handleRequest($request);
@@ -112,6 +116,7 @@ class FavoriController extends AbstractController
         }
 
         return $this->renderForm('favori/edit.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
             'favori' => $favori,
             'form' => $form,
         ]);

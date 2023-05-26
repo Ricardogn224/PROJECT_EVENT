@@ -107,4 +107,47 @@ class ServiceRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    #trouver le prix entre les deux
+    public function findByPriceSuperieur($minP)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.prix > :term ')
+            ->setParameter('term', $minP)
+            ->getQuery()
+            ->execute();
+    }
+
+    #trouver le prix entre les deux
+    public function findByPriceInferieur($maxP)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.prix <= :term ')
+            ->setParameter('term', $maxP)
+            ->getQuery()
+            ->execute();
+    }
+
+    #trouver le prix entre les deux
+    public function findByBetweenPrice($minPrice, $maxPrice)
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.user', 'u')
+            ->addSelect('u')
+            ->andWhere('s.prix >= :min AND s.prix <= :max')
+            ->setParameter('min', $minPrice)
+            ->setParameter('max', $maxPrice)
+            ->getQuery()
+            ->execute();
+    }
+
+    #trouver les services supérieur ou égale à cette note
+    public function findByNote($note)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.noteMoy >= :note ')
+            ->setParameter('note', $note)
+            ->getQuery()
+            ->execute();
+    }
+
 }
