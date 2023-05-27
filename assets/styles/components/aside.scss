@@ -51,12 +51,16 @@ aside {
             width: 10000px;
             -webkit-overflow-scrolling: touch;
             position: relative;
+            gap: 10px;
+            width: auto;
+            display: flex;
+            justify-content: center;
             // margin: auto;
 
             li {
                 background: rgba(118, 118, 118, 0.05);
                 cursor: pointer;
-                margin-right: 10px;
+                // margin-right: 10px;
                 float: left;
                 flex-shrink: 0;
                 border-radius: 10px;
@@ -89,6 +93,18 @@ aside {
                 }
             }
         }
+        ul::-webkit-scrollbar {
+            height: 15px;
+        }
+        // ul::-webkit-scrollbar-track {
+        //     border-radius: 10px;
+        //     background: rgb(0, 0, 0, 0.1);
+        // }
+        // ul::-webkit-scrollbar-thumb {
+        //     border-radius: 10px;
+        //     background: $main-color-hover-article;
+        // }
+        
     }
 
 }
