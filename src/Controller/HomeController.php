@@ -48,42 +48,6 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/anniversaire', name: 'app_anniversaire')]
-    public function Anniversaire(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
-    {
-        return $this->render('home/index.html.twig', [
-            'evenements' => $evenementRepository->findAll(),
-            'services' => $serviceRepository->findByEvent('Anniversaire'),
-        ]);
-    }
-
-    #[Route('/mariage', name: 'app_mariage')]
-    public function Mariage(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
-    {
-        return $this->render('home/index.html.twig', [
-            'evenements' => $evenementRepository->findAll(),
-            'services' => $serviceRepository->findByEvent('Mariage'),
-        ]);
-    }
-
-    #[Route('/naissance', name: 'app_naissance')]
-    public function Naissance(ServiceRepository $serviceRepository , EvenementRepository $evenementRepository): Response
-    {
-        return $this->render('home/index.html.twig', [
-            'evenements' => $evenementRepository->findAll(),
-            'services' => $serviceRepository->findByEvent('Naissance'),
-        ]);
-    }
-
-    #[Route('/soiree-privee', name: 'app_soiree_privee')]
-    public function soireePrivee(ServiceRepository $serviceRepository, EvenementRepository $evenementRepository): Response
-    {
-        return $this->render('home/index.html.twig', [
-            'evenements' => $evenementRepository->findAll(),
-            'services' => $serviceRepository->findByEvent('Soiree privee'),
-        ]);
-    }
-
     #[Route('/service/{id}', name: 'app_home_service_show', methods: ['GET'])]
     public function show(Service $service, EvenementRepository $evenementRepository): Response
     {
