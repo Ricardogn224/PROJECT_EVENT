@@ -10,6 +10,7 @@ use PhpParser\Node\Stmt\Foreach_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -40,6 +41,26 @@ class MainController extends AbstractController
 
         return new JsonResponse($arr);
 
+    }
+
+    #[Route('/isLogged', name: 'app_is_logged', methods: ['GET', 'POST'])]
+    public function isLogged(Request $request, EntityManagerInterface $manager): Response
+    {
+
+        $resp = "";
+
+        if ($this->getUser()) {
+            
+            $resp = "logged";
+        }else {
+            $resp = 'not logged';
+        }
+
+        $arr = [
+            "succeed" => $resp
+        ];
+
+        return new JsonResponse($arr);
     }
 
     #[Route('/search', name: 'app_search_info')]
