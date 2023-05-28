@@ -97,12 +97,11 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector('.date-reservaton').showPicker()
     })
 
+
+
     for(const articleFav of articleFavs){
 
-        let idIsFav = articleFav.closest('.article-item').querySelector('.idDisplay').textContent
-        let urlIsFav = '/favori/isFav/' + idIsFav
-        
-        fetch(urlIsFav, {
+        fetch('/isLogged', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -110,74 +109,72 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }).then((response) => {
             return response.json().then((data) => {
-                if (data["succeed"] === 'favIn') {
-                    articleFav.querySelector('path').style.color = 'red'
+                if (data["succeed"] === 'logged') {
+                    let idIsFav = articleFav.closest('.article-item').querySelector('.idDisplay').textContent
+                    let urlIsFav = '/favori/isFav/' + idIsFav
+                
+                    fetch(urlIsFav, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    }).then((response) => {
+                        return response.json().then((data) => {
+                            if (data["succeed"] === 'favIn') {
+                                articleFav.querySelector('path').style.color = 'red'
+                            }
+                            
+                    }).catch((error) => {
+                        console.log(error)
+                    })
+                    });
+                
+                    articleFav.addEventListener('click', function(){
+
+                    let idFav = this.closest('.article-item').querySelector('.idDisplay').textContent
+                    let itemFav = this
+
+                    let urlAddFav = '/favori/add/' + idFav
+
+                    fetch(urlAddFav, {
+                            method: 'post',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        }).then((response) => {
+                            return response.json().then((data) => {
+                                if (data["succeed"] === 'oui') {
+                                    itemFav.querySelector('path').style.color = 'red'
+                                }else if (data["succeed"] === 'already') {
+                                    itemFav.querySelector('path').style.color = 'black'
+                                    if (itemFav.classList.contains('fav-page')) {
+                                        itemFav.closest('.article-item').remove()
+                                    }
+                                }else if (data["succeed"] === 'login') {
+                                    window.location.href = window.location.protocol + "//" + window.location.host + "/login"
+                                }
+                                
+                        }).catch((error) => {
+                            console.log(error)
+                        })
+                        });
+
+                    })
                 }
                 
         }).catch((error) => {
             console.log(error)
         })
         });
-       
-        articleFav.addEventListener('click', function(){
 
-           let idFav = this.closest('.article-item').querySelector('.idDisplay').textContent
-           let itemFav = this
-
-           let urlAddFav = '/favori/add/' + idFav
-
-           fetch(urlAddFav, {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }).then((response) => {
-                return response.json().then((data) => {
-                    if (data["succeed"] === 'oui') {
-                        itemFav.querySelector('path').style.color = 'red'
-                    }else if (data["succeed"] === 'already') {
-                        itemFav.querySelector('path').style.color = 'black'
-                        if (itemFav.classList.contains('fav-page')) {
-                            itemFav.closest('.article-item').remove()
-                        }
-                    }else if (data["succeed"] === 'login') {
-                        window.location.href = window.location.protocol + "//" + window.location.host + "/login"
-                    }
-                    
-            }).catch((error) => {
-                console.log(error)
-            })
-            });
-
-        })
 
     }
 
     if (showService) {
-        let actionFav = showService.querySelector('.actFavShow')
 
-        // let idIsFav = showService.querySelector('.table tr.showServId td').textContent
-        let idIsFav = showService.querySelector('.showServId').textContent
-        let heartIcon = document.createElement('i')
-
-        let heartIconRed = document.createElement('i')
-
-        heartIcon.classList.add('fa-solid', 'fa-heart')
-
-        heartIconRed.classList.add('fa-solid', 'fa-heart', 'heartIconRed')
-
-        // let colorHeartIconRed = document.querySelector('.heartIconRed')
-
-        // heartIconRed.style.color = 'red'
-
-        // heartIconRed.querySelector('path').style.color = "red"
-
-        console.log(heartIconRed)
-
-        let urlIsFav = '/favori/isFav/' + idIsFav
-        
-        fetch(urlIsFav, {
+        fetch('/isLogged', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -185,19 +182,97 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }).then((response) => {
             return response.json().then((data) => {
-                if (data["succeed"] === 'favIn') {
-                    // actionFav.textContent = "Retirer des favoris"
-                    // heartIcon.querySelector('path').style.color = "red"
+                if (data["succeed"] === 'logged') {
+                    let actionFav = showService.querySelector('.actFavShow')
 
-                    actionFav.innerHTML = ""
-                    actionFav.appendChild(heartIconRed)
+                    // let idIsFav = showService.querySelector('.table tr.showServId td').textContent
+                    let idIsFav = showService.querySelector('.showServId').textContent
+                    let heartIcon = document.createElement('i')
 
-                }else if(data["succeed"] === 'noFav'){
-                    // actionFav.textContent = html(heartIcon)
-                    actionFav.innerHTML = ""
+                    let heartIconRed = document.createElement('i')
+
+                    heartIcon.classList.add('fa-solid', 'fa-heart')
+
+                    heartIconRed.classList.add('fa-solid', 'fa-heart', 'heartIconRed')
+
+                    // let colorHeartIconRed = document.querySelector('.heartIconRed')
+
+                    // heartIconRed.style.color = 'red'
+
+                    // heartIconRed.querySelector('path').style.color = "red"
+
+                    console.log(heartIconRed)
+
+                    let urlIsFav = '/favori/isFav/' + idIsFav
                     
-                    actionFav.appendChild(heartIcon)
-                    console.log(actionFav.querySelector('a'))
+                    fetch(urlIsFav, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    }).then((response) => {
+                        return response.json().then((data) => {
+                            if (data["succeed"] === 'favIn') {
+                                // actionFav.textContent = "Retirer des favoris"
+                                // heartIcon.querySelector('path').style.color = "red"
+
+                                actionFav.innerHTML = ""
+                                actionFav.appendChild(heartIconRed)
+
+                            }else if(data["succeed"] === 'noFav'){
+                                // actionFav.textContent = html(heartIcon)
+                                actionFav.innerHTML = ""
+                                
+                                actionFav.appendChild(heartIcon)
+                                console.log(actionFav.querySelector('a'))
+                            }
+                            
+                    }).catch((error) => {
+                        console.log(error)
+                    })
+                    });
+
+
+                    actionFav.addEventListener('click', function(){
+
+
+                        // let idFav = this.closest('.showServ').querySelector('.table tr.showServId td').textContent
+                        let idFav = this.closest('.showServ').querySelector('.showServId').textContent
+                
+                        let urlAddFav = '/favori/add/' + idFav
+                
+                        fetch(urlAddFav, {
+                            method: 'post',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            }
+                        }).then((response) => {
+                            return response.json().then((data) => {
+                                if (data["succeed"] === 'oui') {
+                                    // actionFav.textContent = "Retirer des favoris"
+
+                                //     heartIcon.querySelector('path').style.color = "red"
+
+                                actionFav.innerHTML = ""
+
+                                actionFav.appendChild(heartIconRed)
+                                
+                                }else if (data["succeed"] === 'already') {
+                                    // actionFav.textContent = "Ajouter aux favoris"
+                                actionFav.innerHTML = ""
+
+                                    actionFav.appendChild(heartIcon)
+                                }else if (data["succeed"] === 'login') {
+                                    window.location.href = window.location.protocol + "//" + window.location.host + "/login"
+                                }
+                                
+                        }).catch((error) => {
+                            console.log(error)
+                        })
+                        });
+                    })
                 }
                 
         }).catch((error) => {
@@ -205,46 +280,6 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         });
 
-
-        actionFav.addEventListener('click', function(){
-
-
-            // let idFav = this.closest('.showServ').querySelector('.table tr.showServId td').textContent
-            let idFav = this.closest('.showServ').querySelector('.showServId').textContent
-    
-            let urlAddFav = '/favori/add/' + idFav
-    
-            fetch(urlAddFav, {
-                method: 'post',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }).then((response) => {
-                return response.json().then((data) => {
-                    if (data["succeed"] === 'oui') {
-                        // actionFav.textContent = "Retirer des favoris"
-
-                    //     heartIcon.querySelector('path').style.color = "red"
-
-                    actionFav.innerHTML = ""
-
-                    actionFav.appendChild(heartIconRed)
-                    
-                    }else if (data["succeed"] === 'already') {
-                        // actionFav.textContent = "Ajouter aux favoris"
-                    actionFav.innerHTML = ""
-
-                        actionFav.appendChild(heartIcon)
-                    }else if (data["succeed"] === 'login') {
-                        window.location.href = window.location.protocol + "//" + window.location.host + "/login"
-                    }
-                    
-            }).catch((error) => {
-                console.log(error)
-            })
-            });
-        })
     }
 
 
