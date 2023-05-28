@@ -10,7 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 #[Route('/profil')]
 class ProfileController extends AbstractController
@@ -31,9 +33,9 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/{id}/edit-picture-user', name: 'app_profile_edit_picture_user', methods: ['GET', 'POST'])]
-    public function profilEditPicture(User $user, Request $request, EntityManagerInterface $manager,EvenementRepository $evenementRepository ): Response
+    public function profilEditPicture(User $user, Request $request, EntityManagerInterface $manager,EvenementRepository $evenementRepository, UploaderHelper $uploaderHelper ): Response
     {
-        $form = $this->createForm(EditUserPictureType::class, $user);
+        $form = $this->createForm(EditUserPictureType::class, $user->getProfile());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

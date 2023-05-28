@@ -11,7 +11,7 @@
         <li class="edit-picture-user">
             <a href="{{ path('app_profile_edit_picture_user', {'id': app.user.id}) }}">
                 <i class="fa-regular fa-pen-to-square"></i>
-                <img class="circle profil-picture" title="{{ app.user.userIdentifier }}" src="{{ vich_uploader_asset(app.user, 'imageFile') }}">
+                <img class="circle profil-picture" title="{{ app.user.userIdentifier }}" src="{{ vich_uploader_asset(app.user.profile, 'imageFile') }}">
             </a>
         </li>
         <li>Nom: <strong>{{ app.user.nom }}</strong></li>
