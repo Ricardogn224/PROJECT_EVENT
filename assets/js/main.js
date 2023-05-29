@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
             princilalCategorie.style.background = 'rgba(118, 118, 118, 0.2)'
             console.log(princilalCategorie.querySelector('span').textContent)
             let even = princilalCategorie.querySelector('span').textContent
+            even = even.replace(/\s/g, '');
             
             for ( let index = 0; index < articleItem.length; index++) {
                 articleItem[index].style.background = 'rgba(118, 118, 118, 0.05)'

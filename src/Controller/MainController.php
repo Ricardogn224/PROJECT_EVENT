@@ -95,9 +95,20 @@ class MainController extends AbstractController
 
         $requestEmpty = true;
 
-        foreach ($request->request->all() as $req => $value) {
+        $newReqArr = $request->request->all();
+
+
+        foreach ($newReqArr as $req => $value) {
             if ($value !== "" ||  $value != null) {
                 $requestEmpty = false;
+            }
+
+            if (str_contains($req, '_')) {
+                $oldReq =   $req;
+                $expl_req = explode('_', $req);
+                $req = implode(" ", $expl_req);
+                $newReqArr[$req] = $newReqArr[$oldReq];
+                unset($newReqArr[$oldReq]);
             }
         }
 
@@ -164,14 +175,18 @@ class MainController extends AbstractController
         $serviceEvent = [];
         $serviceEvent['empty'] = true;
         foreach ($events as $event) {
-           
-            $services5 = $serviceRepository->findByEvent($request->request->get($event->getNom()));
+
+            $services5 = [];
+            if (array_key_exists($event->getNom(), $newReqArr)) {
+                $services5 = $serviceRepository->findByEvent($newReqArr[$event->getNom()]);
+                $serviceEvent['empty'] = false;
+            }
+
             if ($services5) {  
                 $serviceArrEntity = $services5;
                 foreach ($serviceArrEntity as $entity) {
                     $serviceEvent[] = $entity->getId();
                 }
-                $serviceEvent['empty'] = false;
             }
 
         }
@@ -195,7 +210,6 @@ class MainController extends AbstractController
         $services[] = $serviceNote;
 
 
-
         # on supprime les doublons 
 
         $serviceJoin = [];
@@ -216,6 +230,8 @@ class MainController extends AbstractController
             }
 
         } 
+
+        
 
         unset($se[0]['empty']);
 

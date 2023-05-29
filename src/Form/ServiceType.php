@@ -23,6 +23,7 @@ class ServiceType extends AbstractType
             ->add('localisation')
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Une image représentant votre service',
+                'required' => false
             ])
             ->add('evenements', EntityType::class, [
                 // looks for choices from this entity
