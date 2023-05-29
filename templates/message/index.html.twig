@@ -3,7 +3,13 @@
 {% block title %}Message index{% endblock %}
 
 {% block body %}
-    <h1>Message</h1>
+    <h1>Message</h1></br>
+
+    {% for message in app.flashes('messageDenied') %}
+        <div class="alert alert-danger">
+        {{ message }}
+        </div>
+    {% endfor %}
         <table class="table">
             <thead>
                 <tr>
