@@ -10,6 +10,7 @@ use PhpParser\Node\Stmt\Foreach_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -40,6 +41,26 @@ class MainController extends AbstractController
 
         return new JsonResponse($arr);
 
+    }
+
+    #[Route('/isLogged', name: 'app_is_logged', methods: ['GET', 'POST'])]
+    public function isLogged(Request $request, EntityManagerInterface $manager): Response
+    {
+
+        $resp = "";
+
+        if ($this->getUser()) {
+            
+            $resp = "logged";
+        }else {
+            $resp = 'not logged';
+        }
+
+        $arr = [
+            "succeed" => $resp
+        ];
+
+        return new JsonResponse($arr);
     }
 
     #[Route('/search', name: 'app_search_info')]
@@ -74,9 +95,20 @@ class MainController extends AbstractController
 
         $requestEmpty = true;
 
-        foreach ($request->request->all() as $req => $value) {
+        $newReqArr = $request->request->all();
+
+
+        foreach ($newReqArr as $req => $value) {
             if ($value !== "" ||  $value != null) {
                 $requestEmpty = false;
+            }
+
+            if (str_contains($req, '_')) {
+                $oldReq =   $req;
+                $expl_req = explode('_', $req);
+                $req = implode(" ", $expl_req);
+                $newReqArr[$req] = $newReqArr[$oldReq];
+                unset($newReqArr[$oldReq]);
             }
         }
 
@@ -143,14 +175,18 @@ class MainController extends AbstractController
         $serviceEvent = [];
         $serviceEvent['empty'] = true;
         foreach ($events as $event) {
-           
-            $services5 = $serviceRepository->findByEvent($request->request->get($event->getNom()));
+
+            $services5 = [];
+            if (array_key_exists($event->getNom(), $newReqArr)) {
+                $services5 = $serviceRepository->findByEvent($newReqArr[$event->getNom()]);
+                $serviceEvent['empty'] = false;
+            }
+
             if ($services5) {  
                 $serviceArrEntity = $services5;
                 foreach ($serviceArrEntity as $entity) {
                     $serviceEvent[] = $entity->getId();
                 }
-                $serviceEvent['empty'] = false;
             }
 
         }
@@ -174,7 +210,6 @@ class MainController extends AbstractController
         $services[] = $serviceNote;
 
 
-
         # on supprime les doublons 
 
         $serviceJoin = [];
@@ -195,6 +230,8 @@ class MainController extends AbstractController
             }
 
         } 
+
+        
 
         unset($se[0]['empty']);
 

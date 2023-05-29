@@ -194,12 +194,13 @@ class MessageController extends AbstractController
     #[Route('/reply/{id}', name: 'app_message_reply', methods: ['GET', 'POST'])]
     public function reply(Request $request, Message $message, MessageRepository $messageRepository, EvenementRepository $evenementRepository): Response
     {
-        $message->setIdDestinataire($message->getIdEmmeteur());
-        $message->setIdEmmeteur($this->getUser()->getId());
-        $message->setIdDemande($message->getIdDemande());
-        $message->setMessage('Bonjour, ');
 
         $reply = new Message();
+        if ($this->getUser()->getId() == $message->getIdEmmeteur()) {
+            $this->addFlash('messageDenied', 'Vous ne pouvez pas vous envoyer de messages');
+            return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         $reply->setIdDestinataire($message->getIdEmmeteur());
         $reply->setIdEmmeteur($this->getUser()->getId());
         $reply->setIdDemande($message->getIdDemande());

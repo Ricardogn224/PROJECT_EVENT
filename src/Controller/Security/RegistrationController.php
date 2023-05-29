@@ -2,8 +2,10 @@
 
 namespace App\Controller\Security;
 
+use App\Entity\Profile;
 use Exception;
 use App\Entity\User;
+use App\Form\EditUserPictureType;
 use GuzzleHttp\Client;
 use App\Security\EmailVerifier;
 use App\Form\RegistrationFormType;
@@ -44,8 +46,14 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
+        $user = new User();
+
+        $profile = new Profile(); 
+
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
+
+
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -56,7 +64,15 @@ class RegistrationController extends AbstractController
 
             $user->setRoles(array('ROLE_USER'));
 
+
+            $profile->setUser($user);
+
+            $profile->setImageFile($form->get('imageFile')->getData());
+
             $entityManager->persist($user);
+
+            $entityManager->persist($profile);
+
             $entityManager->flush();
 
             // generate a signed url and email it to the user
