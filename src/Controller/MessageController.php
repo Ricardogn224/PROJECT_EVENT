@@ -194,10 +194,6 @@ class MessageController extends AbstractController
     #[Route('/reply/{id}', name: 'app_message_reply', methods: ['GET', 'POST'])]
     public function reply(Request $request, Message $message, MessageRepository $messageRepository, EvenementRepository $evenementRepository): Response
     {
-        $message->setIdDestinataire($message->getIdEmmeteur());
-        $message->setIdEmmeteur($this->getUser()->getId());
-        $message->setIdDemande($message->getIdDemande());
-        $message->setMessage('Bonjour, ');
 
         $reply = new Message();
         $reply->setIdDestinataire($message->getIdEmmeteur());
