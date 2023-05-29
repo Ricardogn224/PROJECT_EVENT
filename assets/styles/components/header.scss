@@ -1,7 +1,7 @@
 header {
   background: $main-color-white;
   box-shadow: 0px 1px 10px rgba(118, 118, 118, 0.25);
-  padding: 20px 0;
+  // padding: 20px 0;
   position: sticky;
   top: 0;
   z-index: 2;
@@ -34,6 +34,9 @@ header {
         width: 400px;
         overflow-y: auto;
         display: none;
+        input[type="checkbox"]{
+          margin-right: 5px;
+        }
         .btn-valid-filter {
           background: $main-color;
           color: $main-color-white;
@@ -60,8 +63,11 @@ header {
           border: 1px solid rgba(118, 118, 118, 0.5);
           border-radius: 10px;
           padding: 5px;
-          width: 40%;
-          height: 50px;
+          // width: 40%;
+          // height: 50px;
+        }
+        label{
+          white-space: nowrap;
         }
         input.slider {
           width: 90%;

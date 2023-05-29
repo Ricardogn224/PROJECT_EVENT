@@ -1,72 +1,65 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-  Service
-              
-            
-          
-        
-      
-    
-  
+	Service
+
+
 {% endblock %}
 
 {% block body %}
-  {# <h1>Service</h1> #}
+	{# <h1>Service</h1> #}
 
-  {% for message in app.flashes('demandeAttente') %}
-    <div class="alert alert-danger">
-      {{ message }}
-    </div>
-  {% endfor %}
+	{% for message in app.flashes('demandeAttente') %}
+		<div class="alert alert-danger">
+			{{ message }}
+		</div>
+	{% endfor %}
 
-  <div class="showServ">
-  <div>
-  
-    <div style="display:none;" class="showServId">
-      {{ service.id }}
-    </div>
-    <div class="flex jcsb">
-      <div>
-        <div style="text-align: end; font-style: italic;">
-          Depuis le 
-                    
-          {{ service.updatedAt|date('d/m/Y') }}
-        </div>
-        <div class="p-relative serviceImg">
-          <img class="w-100" src="{{ vich_uploader_asset(service, 'imageFile') }}" alt="Article">
-        <a class="actFavShow"></a>
-        </div>
-        <h2>
-          {{ service.nom }}
-        </h2>
-      </div>
-      <div class="flex fdc gap-20">
-        <h1>
-          {{ service.prix }}
-        </h1>
-        <i style="color: #FF5A33">
-          {{ service.localisation }}
-        </i>
-        <span>
-          Par: 
-                              
-                    
-          {{ service.user.nom ~ ' ' ~ service.user.prenom }}
-        </span>
-          <a class="btn btn-default" href="{{ path('app_home_demande', {'id': service.id}) }}">Faire une demande</a>
-        </div>
-        </div>
-        <div class="service-description">
-      <h1>Description</h1>
-          <p>
-          {{ service.description }}
-          </p>
-        </div>
-        {# <a href="{{ path('app_home_demande', {'id': service.id}) }}">Faire une demande pour ce service</a> #}
-        
-      </div>
-  </div>
+	<div class="showServ">
+		<div>
+			<div style="display:none;" class="showServId">
+				{{ service.id }}
+			</div>
+			<div class="flex jca">
+				<div>
+					<div style="text-align: end; font-style: italic;">
+						Depuis le
 
-    {% endblock %}
-    
+						{{ service.updatedAt|date('d/m/Y') }}
+					</div>
+					<div class="p-relative serviceImg">
+						<img class="w-100" src="{{ vich_uploader_asset(service, 'imageFile') }}" alt="Article">
+						<a class="actFavShow"></a>
+					</div>
+					<h2>
+						{{ service.nom }}
+					</h2>
+				</div>
+				<div class="flex fdc gap-20">
+					<h1>
+						{{ service.prix }}
+					</h1>
+					<i style="color: #FF5A33">
+						{{ service.localisation }}
+					</i>
+					<span>
+						Par:
+
+
+						{{ service.user.nom ~ ' ' ~ service.user.prenom }}
+					</span>
+					<a class="btn btn-default" href="{{ path('app_home_demande', {'id': service.id}) }}">Faire une demande</a>
+				</div>
+			</div>
+			<div class="service-description">
+				<h1>Description</h1>
+				<p>
+					{{ service.description }}
+				</p>
+			</div>
+			{# <a href="{{ path('app_home_demande', {'id': service.id}) }}">Faire une demande pour ce service</a> #}
+
+		</div>
+	</div>
+
+{% endblock %}
