@@ -196,6 +196,11 @@ class MessageController extends AbstractController
     {
 
         $reply = new Message();
+        if ($this->getUser()->getId() == $message->getIdEmmeteur()) {
+            $this->addFlash('messageDenied', 'Vous ne pouvez pas vous envoyer de messages');
+            return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         $reply->setIdDestinataire($message->getIdEmmeteur());
         $reply->setIdEmmeteur($this->getUser()->getId());
         $reply->setIdDemande($message->getIdDemande());
