@@ -56,6 +56,18 @@ class MessageController extends AbstractController
                     
                 }
             }
+            
+            usort($messages, function ($a, $b) {
+                
+                $dateA = $a->getDate()->getTimestamp();
+                $dateB = $b->getDate()->getTimestamp();
+        
+                if ($dateA == $dateB) {
+                    return 0;
+                }
+        
+                return ($dateA < $dateB) ? 1 : -1;
+            });
         }else {
             $messages= [];
         }
