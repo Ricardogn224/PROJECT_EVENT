@@ -1,174 +1,170 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>
-      {% block title %}
-        Welcome!
-      {% endblock %}
-    </title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-  <link rel="shortcut icon" href={{ asset('build/images/favicon.svg') }}>
-    {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-    {% block stylesheets %}
-      {{ encore_entry_link_tags('app') }}
-    {% endblock %}
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}
+				Welcome!
+			{% endblock %}
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<link
+		rel="shortcut icon" href={{ asset('build/images/favicon.svg') }}>
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
 
-    {% block javascripts %}
-      {{ encore_entry_script_tags('app') }}
-    {% endblock %}
-  </head>
-  <body>
-    <header>
-      <nav class="container navbar flex jcb aic">
-        <h1>
-          <a href="/">
-            Lucie
-          </a>
-        </h1>
-        <div class="search flex aic">
-                    <form action="{{ path('app_search_info') }}" method="post" enctype="multipart/form-data">
-                        <i class="fa fa-search"></i>
-                        <input type="text" name="searchData" id="" placeholder="Filtrez vos recherches ici">
-                    </form>
+		{% block javascripts %}
+			{{ encore_entry_script_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+		<header>
+			<nav class="container navbar flex jcb aic">
+				<a href="/">
+					<img width="70px" height="70px" src="{{ asset('build/images/logo.svg') }}" alt="Event Presta" srcset="">
+				</a>
+        <div class="flex aic gap-10 w-100">
+        
+          <div class="search flex aic">
+            <form action="{{ path('app_search_info') }}" class="flex aic" method="post" enctype="multipart/form-data">
+              <i class="fa fa-search"></i>
+              <input type="text" name="searchData" id="" placeholder="Filtrez vos recherches ici">
+            </form>
+          </div>
+          <form form action="{{ path('app_filter_info') }}" method="post" enctype="multipart/form-data">
+            <img src="{{ asset('build/images/settings.svg') }}" alt="filtre" class="btn-filter">
+            <div class="filter-list">
+              <div class="flex aic">
+                <button class="close-btn-filter">
+                  <i class="fa-regular fa-circle-xmark"></i>
+                </button>
+                <span>Filtres</span>
+              </div>
+              <hr/>
+              <div>
+                <label>Fourchette de prix</label>
+                <div class="flex jcb container-price-filter">
+                  <input type="number" name="minPrice" id="" placeholder="Minimum">
+                  <hr/>
+                  <input type="number" name="maxPrice" id="" placeholder="Maximum">
                 </div>
-                <form form action="{{ path('app_filter_info') }}" method="post" enctype="multipart/form-data">
-                        <img src="{{ asset('build/images/settings.svg') }}" alt="filtre" class="btn-filter">
-                        <div class="filter-list">
-                            <div>
-                                <button class="close-btn-filter"><i class="fa-regular fa-circle-xmark"></i></button>
-                                <span>Filtres</span>
-                            </div>
-                            <hr />
-                            <div>
-                                <label>Fourchette de prix</label>
-                                <div class="flex jcb container-price-filter">
-                                    <input type="number" name="minPrice" id="" placeholder="Minimum">
-                                    <hr />
-                                    <input type="number" name="maxPrice" id="" placeholder="Maximum">
-                                </div>
-                                
-                            </div>
-                            <hr />
-                            <div>
-                                <label for="">Type d’évènement </label>
-                                <div>
-                                    <ul class="flex jcb fww">
-                                    
-                                    </ul>
-                                </div>
-                            </div>
-                            <hr />
-                            <div>
-                                <label for="">Note du service</label>
-                                <div>
-                                    <input type="number" min="1" max="5" name="note" id="myRange">
-                                </div>
-                            </div>
-                            <hr />
-                        
-                            <div class="text-center">
-                                <button class="btn-valid-filter">Valider</button>
-                            </div>
-                        </div>
-                        
-                    </form>
-        <ul class="flex jcb">
-          <li class="flex">
-            <a href="/favori" class="flex aic">
-              <i class="fa-regular fa-heart"></i>
-              <span>
-                Favori
-              </span>
-            </a>
-          </li>
-          <li class="flex">
-            <a href="/profil/demandes" class="flex aic calendar-link">
-              <i class="fa-regular fa-calendar-days"></i>
-              <input type="date" class="date-reservaton" name="" id="">
-              <span>
-                Demandes
-              </span>
-            </a>
-          </li>
-          <li class="flex">
-            <a href="/message" class="flex aic p-relative">
-              <i class="fa-regular fa-comment-dots"></i>
-              <span>
-                Messages
-              </span>
-            </a>
-          </li>
-          <li class="flex">
-            {% if app.user %}
-              <a href="/profil" class="flex aic">
-                <div style="display: flex; width: 20px; height: 20px;">
-                  <img class="circle profil-picture" title="{{ app.user.userIdentifier }}" src="{{ vich_uploader_asset(app.user.profile, 'imageFile') }}">
+  
+              </div>
+              <hr/>
+              <div>
+                <label for="">Type d’évènement
+                </label>
+                <div>
+                  <ul class="flex jcb fww"></ul>
                 </div>
-                <span>
-                  {{ app.user.userIdentifier }}
-                </span>
-
-              </a>
-            {% else %}
-              <a href="/login" class="flex aic">
-                <span>
-                  Connexion
-                </span>
-                <i class="fa-regular fa-circle-user"></i>
-              </a>
-            {% endif %}
-          </li>
-        </ul>
-      </nav>
-    </header>
-    {% block aside %}{% endblock %}
-
-    <main class="container">
-
-      {% block body %}{% endblock %}
-    </main>
-
-    <footer>
-      <nav class="container flex jcb">
-        <div>
-          <a href="#" class="menu-title">
-            Mariage
-          </a>
-          <ul>
-            
-          </ul>
+              </div>
+              <hr/>
+              <div>
+                <label for="">Note du service</label>
+                <div>
+                  <input type="number" min="1" max="5" name="note" id="myRange">
+                </div>
+              </div>
+              <hr/>
+  
+              <div class="text-center">
+                <button class="btn-valid-filter">Valider</button>
+              </div>
+            </div>
+  
+          </form>
         </div>
-        <div>
-          <a href="#" class="menu-title">
-            Anniversaire
-          </a>
-          <ul>
-            
-          </ul>
-        </div>
-        <div>
-          <a href="#" class="menu-title">
-            Soirée privée
-          </a>
-          <ul>
+				<ul class="flex jcb">
+					<li class="flex">
+						<a href="/favori" class="flex aic">
+							<i class="fa-regular fa-heart"></i>
+							<span>
+								Favori
+							</span>
+						</a>
+					</li>
+					<li class="flex">
+						<a href="/profil/demandes" class="flex aic calendar-link">
+							<i class="fa-regular fa-calendar-days"></i>
+							<input type="date" class="date-reservaton" name="" id="">
+							<span>
+								Demandes
+							</span>
+						</a>
+					</li>
+					<li class="flex">
+						<a href="/message" class="flex aic p-relative">
+							<i class="fa-regular fa-comment-dots"></i>
+							<span>
+								Messages
+							</span>
+							{# <div class="user-message">11</div> #}
+						</a>
+					</li>
+					<li class="flex">
+						{% if app.user %}
+							<a href="/profil" class="flex aic">
+								<div style="display: flex; width: 20px; height: 20px;">
+									<img class="circle profil-picture" title="{{ app.user.userIdentifier }}" src="{{ vich_uploader_asset(app.user.profile, 'imageFile') }}">
+								</div>
+								<span>
+									{{ app.user.userIdentifier }}
+								</span>
 
-          </ul>
-        </div>
-        <div>
-          <a href="#" class="menu-title">
-            Contact
-          </a>
-          <ul>
-            <li><a href="#">Tel: +33 6 87 54 12 02</a></li>
-            <li><a href="#">Fax: +33 1 85 04 00 02</a></li>
-            <li><a href="#">Adresse: 7 rue gracieuse, Paris 75009</a></li>
-            <li><a href="#">Email: contact@eventpresta.com</a></li>
-            <li><a href="#">Aide ?</a></li>
-            <li><a href="#">Règle de confidentialité</a></li>
-          </ul>
-        </div>
-      </nav>
-    </footer>
-  </body>
-</html>
+							</a>
+						{% else %}
+							<a href="/login" class="flex aic">
+								<span>
+									Connexion
+								</span>
+								<i class="fa-regular fa-circle-user"></i>
+							</a>
+						{% endif %}
+					</li>
+				</ul>
+			</nav>
+		</header>
+		{% block aside %}{% endblock %}
+
+		<main class="container"> {% block body %}{% endblock %}
+			</main>
+
+			<footer>
+				<nav class="container flex jcb">
+					<div>
+						<a href="#" class="menu-title">
+							Mariage
+						</a>
+						<ul></ul>
+					</div>
+					<div>
+						<a href="#" class="menu-title">
+							Anniversaire
+						</a>
+						<ul></ul>
+					</div>
+					<div>
+						<a href="#" class="menu-title">
+							Soirée privée
+						</a>
+						<ul></ul>
+					</div>
+					<div>
+						<a href="#" class="menu-title">
+							Contact
+						</a>
+						<ul>
+							<li><a href="#">Tel: +33 6 87 54 12 02</a></li>
+							<li><a href="#">Fax: +33 1 85 04 00 02</a></li>
+							<li><a href="#">Adresse: 7 rue gracieuse, Paris 75009</a></li>
+							<li><a href="#">Email: contact@eventpresta.com</a></li>
+							<li><a href="#">Aide ?</a></li>
+							<li><a href="#">Règle de confidentialité</a></li>
+						</ul>
+					</div>
+				</nav>
+			</footer>
+		</body>
+	</html>
