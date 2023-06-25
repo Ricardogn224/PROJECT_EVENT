@@ -85,6 +85,8 @@ class MessageController extends AbstractController
         $id_demande = $request->query->get('id_demande');
         $destinataire = $request->query->get('id_destinataire');
 
+        $prefixUrl = explode("message", $request->getUri())[0];
+
         $message = new Message();
 
         $message->setMessage('Bonjour, je souhaiterais vous contacter pour votre annonce');
@@ -115,7 +117,7 @@ class MessageController extends AbstractController
             $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $_ENV['SENDINBLUE_API_KEY']);
 
             
-            $LinkToMessage = 'http://127.0.0.1:8000/message/'. $message->getId();
+            $LinkToMessage = $prefixUrl . 'message/'. $message->getId();
 
             $apiInstance = new TransactionalEmailsApi(
                 // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
@@ -204,8 +206,10 @@ class MessageController extends AbstractController
 
     # route for reply message 
     #[Route('/reply/{id}', name: 'app_message_reply', methods: ['GET', 'POST'])]
-    public function reply(Request $request, Message $message, MessageRepository $messageRepository, EvenementRepository $evenementRepository): Response
+    public function reply(Request $request, Message $message, MessageRepository $messageRepository, EvenementRepository $evenementRepository, UserRepository $userRepository): Response
     {
+        
+        $prefixUrl = explode("message", $request->getUri())[0];
 
         $reply = new Message();
         if ($this->getUser()->getId() == $message->getIdEmmeteur()) {
@@ -224,6 +228,35 @@ class MessageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $messageRepository->save($reply, true);
+
+            $destinataire = $userRepository -> findUserById($reply->getIdDestinataire());
+            #envoi d'un mail pour lui notifier d u message
+            // Configure API key authorization: api-key
+            $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', $_ENV['SENDINBLUE_API_KEY']);
+
+            
+            $LinkToMessage = $prefixUrl . 'message/'. $reply->getId();
+
+            $apiInstance = new TransactionalEmailsApi(
+                // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+                // This is optional, `GuzzleHttp\Client` will be used as default.
+                new Client(['verify' => false]),
+                $config
+            );
+            $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail(); // \SendinBlue\Client\Model\SendSmtpEmail | Values to send a transactional email
+            $sendSmtpEmail['to'] = array(array('email'=> $destinataire->getEmail()));
+            $sendSmtpEmail['sender'] =  array('name' => 'Event Presta', 'email' => 'noreply-event-presta@gmail.com');
+            $sendSmtpEmail['htmlContent'] = 'L\'utilisateur ' . $this->getUser()->getNom() . ' ' . $this->getUser()->getPrenom() . ' vous a envoyé un message. Allez le consulter sur Presta Event ' . '<a href=' . $LinkToMessage . '>Cliquez ici</a>';
+            $sendSmtpEmail['subject'] = 'Message sur Presta Event';
+            $sendSmtpEmail['params'] = array('name'=>'John', 'surname'=>'Doe');
+            $sendSmtpEmail['headers'] = array('X-Mailin-custom'=>'custom_header_1:custom_value_1|custom_header_2:custom_value_2');
+
+            try {
+                $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
+            } catch (Exception $e) {
+                echo 'Exception when calling TransactionalEmailsApi->sendTransacEmail: ', $e->getMessage(), PHP_EOL;
+            }
+
             return $this->redirectToRoute('app_message_index', [], Response::HTTP_SEE_OTHER);
         }
 
